@@ -8,5 +8,6 @@ typedef struct {
 } Metricas;
 
 void bubble_sort(int *vetor, int n, Metricas *m);
+void insertion_sort(int *vetor, int n, Metricas *m);
 
 #endif

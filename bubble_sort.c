@@ -26,7 +26,7 @@ void bubble_sort(int *vetor, int n, Metricas *m){
             }
         }
 
-        if (houveTroca == 0){
+        if (houveTroca == 0){ //se não houve troca, já está ordenado
             break;
         }
     }
