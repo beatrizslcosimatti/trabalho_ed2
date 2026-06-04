@@ -16,5 +16,6 @@ void bubble_sort(int *vetor, int n, Metricas *m);
 void insertion_sort(int *vetor, int n, Metricas *m);
 void radix_sort(int* vetor, int n, Metricas* m);
 void heap_sort(int* vetor,int n,Metricas* m);
+void quick_sort(int* vetor,int n,Metricas* m);
 
 #endif
