@@ -6,7 +6,7 @@
 //Pode ser problematico para o Heap, caso o
 void vetor_aletorio(int*arr, int tamanho, int tamanho_elementos){
     srand(time(NULL));
-    for(int i = 0;i<tamanho;i++){
+    for(int i = 0; i<tamanho; i++){
         arr[i]=rand()%tamanho_elementos;
     }
 
@@ -54,6 +54,7 @@ void gera_vetor_decrescente(int* arr, int n) {
         arr[i] = n - i; 
     }
 }
+
 int main(int argc, int** argv){
 /* ANTES DE ESCOLHER O VETOR fazer coisas como:
     achar tamanho de entrada n

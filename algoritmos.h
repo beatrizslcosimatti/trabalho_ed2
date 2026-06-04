@@ -10,11 +10,13 @@ typedef struct {
     unsigned long long int operacoes;
     unsigned long long int copias;
     unsigned long long int chamadas_recursivas;
+    unsigned long long int profundidade_maxima;
 } Metricas;
 
-void bubble_sort(int *vetor, int n, Metricas *m);
-void insertion_sort(int *vetor, int n, Metricas *m);
-void radix_sort(int* vetor, int n, Metricas* m);
-void heap_sort(int* vetor,int n,Metricas* m);
+void bubble_sort (int *vetor, int n, Metricas *m);
+void insertion_sort (int *vetor, int n, Metricas *m);
+void radix_sort (int* vetor, int n, Metricas* m);
+void heap_sort (int* vetor, int n, Metricas* m);
+void quick_sort (int* vetor, int n, Metricas* m);
 
 #endif
