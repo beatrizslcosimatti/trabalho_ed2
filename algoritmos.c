@@ -164,7 +164,7 @@ int medianaDeTres(int *vetor, int inicio, int fim, Metricas *m)
         troca(&vetor[inicio], &vetor[meio], m);
     }
 
-    m->comparacoes++;
+    m->comparacoes++; 
     m->operacoes++; // operação de comparação
     if (vetor[inicio] > vetor[fim])
     {
@@ -212,7 +212,7 @@ int particionamento(int *vetor, int inicio, int fim, Metricas *m)
         }
         while (vetor[j] > pivo);
 
-        m->comparacoes++;
+        // m->comparacoes++; - comparação entre elementos fora da ordenação
         if (i >= j)
             return j;
 
@@ -225,12 +225,13 @@ void quick_sort_rec(int *vetor, int inicio, int fim, Metricas *m, int profundida
     profundidade_atual++;
     m->chamadas_recursivas++;
 
+    // m->comparacoes++; - comparação entre elementos fora da ordenação 
     if (profundidade_atual > m->profundidade_maxima)
     {
         m->profundidade_maxima = profundidade_atual;
     }
     
-    m->comparacoes++;
+    // m->comparacoes++; - comparação entre elementos fora da ordenação 
     if (inicio < fim)
     {
         int p = particionamento(vetor, inicio, fim, m);

@@ -215,12 +215,13 @@ int main(int argc, char** argv){
         clock_t fim = clock();
         double tempo_execucao = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
-        printf("Algoritmo: %s, \nTamanho: %d, \nTipo de distribuicao: %s, \nTempo de execucao: %.12f s, \nNumero de comparacoes: %llu, \nNumero de copias: %llu, \nNumero de operacoes: %llu, \nNumero de chamadas recursivas: %llu, \nMemoria extra utilizada: %llu bytes\n", 
+        printf("Algoritmo: %s, \nTamanho: %d, \nTipo de distribuicao: %s, \nTempo de execucao: %.12f s, \nNumero de comparacoes: %llu, \nNumero de trocas: %llu, \nNumero de copias: %llu, \nNumero de operacoes: %llu, \nNumero de chamadas recursivas: %llu, \nMemoria extra utilizada: %llu bytes\n", 
                 algoritmo, 
                 n, 
                 tipo_distribuicao, 
                 tempo_execucao, 
-                m.comparacoes, 
+                m.comparacoes,
+                m.trocas,
                 m.copias, 
                 m.operacoes,
                 m.chamadas_recursivas,
