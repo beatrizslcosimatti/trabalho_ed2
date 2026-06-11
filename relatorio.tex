@@ -1,26 +1,60 @@
 \documentclass{article}
-\usepackage[utf8]{inputenc}
 
 
-\title{Trab ED2}
-\author{Nomes}
-\date{\today}
+% pacotes
+\usepackage[brazil]{babel}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{fancyhdr}
 
+\pagestyle{fancy}       % Ativa o estilo fancyhdr
+\fancyhf{}              % Limpa todos os cabeçalhos e rodapés padrão
+\renewcommand{\headrulewidth}{0pt}
+
+% rodapé
+\fancyfoot[L]{Relatório}
+\fancyfoot[R]{\thepage}
 
 
 
 \begin{document}
-
-
-\maketitle
+%capa
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    {\large
+    Beatriz São Leandro Cosimatti\\
+    17024130\\
+    João Victor Bozola Bosi\\
+    5979703\\
+    João Vitor Vasconcelos Jacob\\
+    nUsp do jacob\\
+    Laís Antunes Cayres Quintão\\
+    16880392\\ 
+    }
+    \vspace{2cm}
+    \vspace{3cm}
+    
+    {\Large {Trabalho de Estrutura de Dados II:\\}}
+    {\Large \textbf{Análise e Implementação de Algoritmos\\}}
+    \vspace{3cm}
+    {\large
+    Disciplina: Estrutura de Dados II\\
+    SCC0606\\
+    Professor: 
+    }
+    \vfill
+    {\large
+    São Carlos\\
+    {14 jun. 2026}
+    }
+\end{titlepage}
 
 
 \section{Introdução}
-Este é um arquivo LaTeX criado no VS Code e versionado pelo GitHub!
-Apresentar uma descrição geral do problema abordado, dos objetivos do projeto e dos algoritmos
-implementados no sistema adaptativo, justificando brevemente as escolhas realizadas pelo grupo.
+intro\\
 Acho que coloca o link do vídeo aqui
 
+\newpage
 
 \section{Algoritmos Base}
 
@@ -41,7 +75,8 @@ Acho que coloca o link do vídeo aqui
 
     \subsection{Radix Sort}
     explicação do radix
-    vghghgvhgvghvh
+
+\newpage
 
 \section{Arquitetura do Sistema}
 Descrição:
@@ -49,6 +84,7 @@ Descrição:
 • das heurísticas;
 • das decisões implementadas -> parte da bia
 
+\newpage
 
 \section{Metodologia Experimental}
 Descrever:
@@ -57,6 +93,7 @@ Descrever:
 • tamanhos testados;
 • critérios de avaliação
 
+\newpage
 
 \section{Resultados}
 Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Explicar:
@@ -67,6 +104,7 @@ Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Exp
 • impacto das características da entrada.
 • impactos das entradas adversariais
 
+\newpage
 
 \section{Reflexão sobre Uso de IA}
 O grupo deverá informar:
@@ -75,14 +113,13 @@ O grupo deverá informar:
 • erros encontrados nas respostas geradas;
 • correções realizadas pelo grupo.
 
+\newpage
 
 \section{Conclusão}
 Resumo dos principais achados.
 
+\newpage
 
 \section{Referências Bibliográficas}
-
-
-
 
 \end{document}
