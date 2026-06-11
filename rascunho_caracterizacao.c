@@ -164,6 +164,33 @@ void max_e_min(int *v, int n, int *max, int *min){
     }
 }
 
+//decidir qual algoritmo
+void decidir_algoritmo(int n, float desordem, int repetidos, int range, double desvio, int min) {
+    //INSERTION: vetores muito pequenos ou quase ordenados
+    if (n < 50 || desordem < 5.0) {
+        printf("Algoritmo Escolhido: INSERTION SORT\n");
+    }
+
+    //RADIX: vetores grandes(n>=50) (ja ta subentendido do else)
+    //e com range pequeno(se ele for menor ou igual a duas vezes o tamanho do vetor)
+    else if (range <= (2 * n) && min >= 0) {
+        printf("Algoritmo Escolhido: RADIX SORT\n");
+    }
+
+    //HEAP: vetores grandes (n>=50) e que estejam praticamente ou totalmente invertido (desordem > 90%)
+    // ou onde o número de repetidos seja absurdamente alto
+    else if (desordem>90 || repetidos>50) {
+        printf("Algoritmo Escolhido: HEAP SORT\n");
+    }
+
+    //QUICK: vetores grandes (n>=50), com alta desordem, -> ja ta subentendido 
+    //onde os dados sejam bem espalhados (desvio padrão alto) -> onde colocar isso aqui?
+    //e não seja totalmente invertido (desordem > 90%) -> ja ta subentendido 
+    //em resumo: caso geral (vetor caotico e espalhado)
+    else {
+        printf("Algoritmo Escolhido: QUICK SORT\n");
+    }
+}
 
 
 
@@ -200,19 +227,11 @@ int main(int argc, char *argv[]) {
     if (meu_vetor != NULL) {
         printf("Vetor lido com sucesso!\n");
         printf("[Metrica 1] Tamanho detectado: %d elementos\n", tamanho_do_vetor);
-
-        printf("Elementos do vetor: ");
-        for (int i = 0; i < tamanho_do_vetor; i++) {
-
-            printf("%d ", meu_vetor[i]);
-
-        }
-        printf("\n");
        
 
         //imprimir o grau de desordem:
         float desordem = calcular_desordem(meu_vetor, tamanho_do_vetor);
-        printf("[Metrica 2] Grau de desordem: %.2f%%\n", desordem);
+        printf("[Metrica 2] Grau de desordem: %.2f\n", desordem);
 
 
         //quantos valores repetidos:
@@ -227,12 +246,15 @@ int main(int argc, char *argv[]) {
 
         //desvio padrao:
         double desvio = desvio_padrao(meu_vetor, tamanho_do_vetor);
-        printf("[Metrica 5] Desvio padrao: %.2f\n", desvio);
+        printf("[Metrica 5] Desvio padrao: %.2f%%\n", desvio);
 
         //max e min:
         int meu_max = 0, meu_min = 0;
         max_e_min(meu_vetor, tamanho_do_vetor, &meu_max, &meu_min);
         printf("[Metrica 6] Amplitude: \nMaximo = %d\nMinimo = %d\n", meu_max, meu_min);
+
+
+        decidir_algoritmo(tamanho_do_vetor, desordem, repetidos, range, desvio, meu_min);
 
 
 
