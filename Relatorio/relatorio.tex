@@ -5,13 +5,14 @@
 \usepackage[brazil]{babel}
 \usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 \usepackage{fancyhdr}
+\usepackage{indentfirst}
 
 \pagestyle{fancy}       % Ativa o estilo fancyhdr
 \fancyhf{}              % Limpa todos os cabeçalhos e rodapés padrão
 \renewcommand{\headrulewidth}{0pt}
 
 % rodapé
-\fancyfoot[L]{Relatório}
+\fancyfoot[L]{Análise e Implementação de Algoritmos - Estrutura de Dados II}
 \fancyfoot[R]{\thepage}
 
 
@@ -27,7 +28,7 @@
     João Victor Bozola Bosi\\
     5979703\\
     João Vitor Vasconcelos Jacob\\
-    nUsp do jacob\\
+    16987258\\
     Laís Antunes Cayres Quintão\\
     16880392\\ 
     }
@@ -51,19 +52,37 @@
 
 
 \section{Introdução}
-intro\\
-Acho que coloca o link do vídeo aqui
+O objetivo do trabalho desenvolvido foi estudar e implementar diferentes algoritmos de ordenação na linguagem C.
+Como cada algoritmo se comporta de uma maneira específica dependendo do tamanho do vetor ou de como os números estão organizados, o objetivo final do projeto é a criação de um Sistema Adaptativo.
+Esse sistema funciona como um analisador que avalia o vetor de entrada e, através de heurísticas, escolhe automaticamente o melhor algoritmo para realizar a ordenação.
+
+Para fundamentar as tomadas de decisão desse sistema, o projeto foi estruturado de maneira modular, englobando a implementação de cinco algoritmos: Bubble Sort, Insertion Sort, Quick Sort, Heap Sort e Radix Sort.
+
+ACHO Q COLOCA O LINK DO VIDEO AQ
 
 \newpage
 
 \section{Algoritmos Base}
 
     \subsection{Bubble Sort}
-    explicação do Bubble
-
+    O Bubble Sort (Ordenação por Bolha) é um algoritmo de ordenação baseado no princípio de comparações e trocas adjacentes. 
+    Ele percorre o vetor repetidamente a partir do início comparando pares de elementos vizinhos (vetor[i] e vetor [i+1]), e troca-os de lugar se o elemento da esquerda for maior que o da direita.
+    Esse processo é repetido até que nenhuma troca seja necessária em uma passada completa, indicando que o conjunto de dados está totalmente ordenado, sendo essa a versão aprimorada do Bubble Sort.
+    
+    Dessa forma, a sua complexidade de tempo é $O(n^2)$, exceto no caso em que o vetor ja está ordenado. 
+    Nessa situação, o vetor só é percorrido uma única vez, tornando a complexidade $O(n)$.
+    É um algoritmo estável e in-place, mas seu comportamento degrada-se drasticamente em entradas grandes devido ao crescimento quadrático das operações de comparação e movimentação de dados.
 
     \subsection{Insertion Sort}
-    explicação do Insertion
+    O Insertion Sort (Ordenação por Inserção) consiste em inserir um novo elemento em um vetor já ordenado ou quase ordenado.
+    Ele percorre o vetor a partir do segundo elemento (índice 1), selecionando-o como uma "chave", e compara essa chave com os elementos que estão nas posições anteriores (à sua esquerda).
+    Caso os elementos anteriores sejam maiores que a chave, eles são deslocados uma posição para a direita para abrir espaço, e esse processo se repete até encontrar a posição correta, onde a chave é inserida.
+    Ele percorre o vetor a partir do segundo elemento (índice 1), selecionando-o como uma "chave", e compara essa chave com os elementos que estão nas posições anteriores (à sua esquerda).
+    Caso os elementos anteriores sejam maiores que a chave, eles são deslocados uma posição para a direita para abrir espaço, e esse processo se repete até encontrar a posição correta, onde a chave é finalmente inserida.
+
+    Assim, sua complexidade de tempo é $O(n^2)$, exceto no caso em que o vetor já está ordenado (ou quase ordenado).
+    Nessa situação, a chave é comparada apenas uma vez com o elemento imediatamente anterior e o loop interno é interrompido por um break, tornando a complexidade $O(n)$.
+    É um algoritmo estável e in-place, mas seu comportamento degrada-se drasticamente em entradas grandes e aleatórias.
 
 
     \subsection{Quick Sort}
