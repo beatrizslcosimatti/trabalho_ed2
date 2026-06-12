@@ -121,7 +121,7 @@ int main(int argc, char** argv){
 */
     srand(time(NULL));
 
-    char* algoritmo = "não informado";
+    char* algoritmo = "auto";
     int tamanho = 0;
     char* arquivo_input=NULL;
     char* modo="padrao";
@@ -179,7 +179,6 @@ int main(int argc, char** argv){
     if (arr != NULL && n > 0) {
         tipo_distribuicao = "terminal_manual";
         printf("Modo: Utilizando %d dados passados diretamente via terminal...\n", n);
-        //Chama funções de caracterização do array
         
     } else if (arquivo_input != NULL) {
         printf("Modo: Lendo dados do arquivo '%s'...\n", arquivo_input);
@@ -188,7 +187,6 @@ int main(int argc, char** argv){
         if (arr == NULL) {
             return 1; 
         }
-        //Chama funções de caracterização do array
 
     } else if (tamanho > 0) {
         printf("Modo: Gerando %d dados dinamicamente para o algoritmo %s...\n", tamanho, algoritmo);
@@ -225,7 +223,7 @@ int main(int argc, char** argv){
     m.memoria_extra_bytes = 0;
 
     if (strcmp(algoritmo, "auto") == 0) {
-        //Chama os metodos de verificação//Chama funções de caracterização do array
+        //Chama funções de caracterização do array
     }
 
     clock_t inicio = clock();
