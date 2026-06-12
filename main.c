@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include "algoritmos.h"
+#include "caracterizacao.h"
 
 //Pode ser problematico para o Heap, caso o
 void vetor_aletorio(int*arr, int tamanho, int tamanho_elementos){
@@ -126,6 +127,8 @@ int main(int argc, char** argv){
     char* modo="padrao";
     char* tipo_distribuicao = "aleatorio";
 
+    int* arr = NULL; 
+    int n = 0;       
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--algoritmo") == 0 && i + 1 < argc) {
             algoritmo = argv[i + 1];
@@ -146,25 +149,48 @@ int main(int argc, char** argv){
         else if (strcmp(argv[i], "--distribuicao") == 0 && i + 1 < argc) {
             tipo_distribuicao = argv[i + 1];
             i++;
+        }else if (strcmp(argv[i], "--array") == 0) {
+            int count = 0;
+            int j = i + 1;
+            while (j < argc && argv[j][0] != '-') {
+                count++;
+                j++;
+            }
+
+            if (count > 0) {
+                n = count;
+                arr = (int*)malloc(n * sizeof(int));
+                
+                for (int k = 0; k < n; k++) {
+                    arr[k] = atoi(argv[i + 1 + k]);
+                }
+                
+                i = j - 1; 
+            } else {
+                printf("ERRO: Nenhum numero fornecido apos a flag --array.\n");
+                return 1; 
+            }
         }
     }
-    int* arr=NULL;
-    int n=0;
-    if (arquivo_input != NULL) {
+
+    // =================================================================
+    // ETAPA 1: OBTENÇÃO DO VETOR (Independente da Origem)
+    // =================================================================
+    if (arr != NULL && n > 0) {
+        tipo_distribuicao = "terminal_manual";
+        printf("Modo: Utilizando %d dados passados diretamente via terminal...\n", n);
+        //Chama funções de caracterização do array
         
+    } else if (arquivo_input != NULL) {
         printf("Modo: Lendo dados do arquivo '%s'...\n", arquivo_input);
         
-        // Chama a nossa nova função! Passamos o &n para que a função preencha o tamanho real.
         arr = ler_vetor_arquivo(arquivo_input, &n);
-        
         if (arr == NULL) {
-            return 1; // Encerra o programa se deu erro na leitura
+            return 1; 
         }
-        
-        printf("Sucesso! %d numeros foram carregados na memoria.\n", n);
+        //Chama funções de caracterização do array
 
-    }
-    else if (tamanho > 0) {
+    } else if (tamanho > 0) {
         printf("Modo: Gerando %d dados dinamicamente para o algoritmo %s...\n", tamanho, algoritmo);
         n = tamanho;
         arr = (int*)malloc(n * sizeof(int));
@@ -185,53 +211,85 @@ int main(int argc, char** argv){
         } else if (strcmp(tipo_distribuicao, "discrepante") == 0) {
             gera_vetor_discrepante(arr, n);
         }
+    } else {
+        printf("Uso incorreto. Forneca --tamanho, --input ou --array.\n");
+        return 1;
+    }
 
-        Metricas m;
-        m.comparacoes = 0;
-        m.trocas = 0;
-        m.operacoes = 0;
-        m.copias = 0;
-        m.chamadas_recursivas = 0;
-        m.memoria_extra_bytes = 0;
+    Metricas m;
+    m.comparacoes = 0;
+    m.trocas = 0;
+    m.operacoes = 0;
+    m.copias = 0;
+    m.chamadas_recursivas = 0;
+    m.memoria_extra_bytes = 0;
 
-        clock_t inicio = clock();
+    if (strcmp(algoritmo, "auto") == 0) {
+        //Chama os metodos de verificação//Chama funções de caracterização do array
+    }
 
-        if (strcmp(algoritmo, "heap") == 0) {
-            heap_sort(arr, n, &m);
-        }else if (strcmp(algoritmo, "radix") == 0) {
-            radix_sort(arr, n, &m);
-        }else if (strcmp(algoritmo, "bubble") == 0){
-            bubble_sort(arr,n,&m);
-        }else if (strcmp(algoritmo,"insertion") == 0){
-            insertion_sort(arr,n,&m);
-        }else if (strcmp(algoritmo, "quick")==0){
-            quick_sort(arr,n,&m);
-        }else {
-            printf("ERRO: Algoritmo '%s' desconhecido!\n", algoritmo);
-            free(arr);
-            return 1;
-        }
+    clock_t inicio = clock();
 
-        clock_t fim = clock();
-        double tempo_execucao = (double)(fim - inicio) / CLOCKS_PER_SEC;
+    if (strcmp(algoritmo, "heap") == 0) {
+        heap_sort(arr, n, &m);
+    } 
+    else if (strcmp(algoritmo, "radix") == 0) {
+        radix_sort(arr, n, &m);
+    } 
+    else if (strcmp(algoritmo, "bubble") == 0) {
+        bubble_sort(arr, n, &m);
+    } 
+    else if (strcmp(algoritmo, "insertion") == 0) {
+        insertion_sort(arr, n, &m);
+    } 
+    else if (strcmp(algoritmo, "quick") == 0) {
+        quick_sort(arr, n, &m); 
+    } 
+    else {
+        printf("ERRO: Algoritmo '%s' desconhecido!\n", algoritmo);
+        if (arr != NULL) free(arr);
+        return 1;
+    }
 
-        printf("Algoritmo: %s, \nTamanho: %d, \nTipo de distribuicao: %s, \nTempo de execucao: %.12f s, \nNumero de comparacoes: %llu, \nNumero de trocas: %llu, \nNumero de copias: %llu, \nNumero de operacoes: %llu, \nNumero de chamadas recursivas: %llu, \nMemoria extra utilizada: %llu bytes\n", 
+    clock_t fim = clock();
+    double tempo_execucao = (double)(fim - inicio) / CLOCKS_PER_SEC;
+
+    const char* caminho_csv = "output/dados.csv";
+
+    FILE *check_arquivo = fopen(caminho_csv, "r");
+    int precisa_cabecalho = 0;
+    
+    if (check_arquivo == NULL) {
+        precisa_cabecalho = 1; 
+    } else {
+        fclose(check_arquivo);
+    }
+
+    FILE *arquivo_csv = fopen(caminho_csv, "a");
+    if (arquivo_csv != NULL) {
+        
+        if (precisa_cabecalho) {
+            fprintf(arquivo_csv, "Algoritmo,Tamanho,Distribuicao,Tempo(s),Comparacoes,Copias,Operacoes\n");
+        } 
+        
+        fprintf(arquivo_csv, "%s,%d,%s,%.6f,%llu,%llu,%llu\n", 
                 algoritmo, 
                 n, 
                 tipo_distribuicao, 
                 tempo_execucao, 
-                m.comparacoes,
-                m.trocas,
+                m.comparacoes, 
                 m.copias, 
-                m.operacoes,
-                m.chamadas_recursivas,
-                m.memoria_extra_bytes);
-
-        free(arr);
-    } 
-    else {
-        printf("Uso incorreto. Exemplo: ./programa --algoritmo quick --tamanho 10000\n");
-        return 1;
+                m.operacoes);
+        
+        fclose(arquivo_csv);
+        printf("Teste finalizado! Dados salvos com sucesso em '%s'.\n", caminho_csv);
+    } else {
+        printf("ERRO: Nao foi possivel criar o arquivo em '%s'. Certifique-se de que a pasta 'output' existe.\n", caminho_csv);
     }
+
+    if (arr != NULL) {
+        free(arr);
+    }
+
     return 0;
 }
