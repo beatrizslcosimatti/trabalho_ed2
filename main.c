@@ -13,11 +13,12 @@ void vetor_aletorio(int*arr, int tamanho, int tamanho_elementos){
 
 }
 
-void gera_vetor_quase_ordenado(int* arr, int n) {
+void gera_vetor_quase_ordenado(int* arr, int n, double percentual) { //adicionei o double percentual aqui
     for (int i = 0; i < n; i++) {
         arr[i] = i + 1; // Fica: 1, 2, 3, 4, 5...
     }
-    int qtd_trocas = n * 0.05; 
+    //int qtd_trocas = n * 0.05; 
+    int qtd_trocas = n * percentual / 100.0;
     
     for (int i = 0; i < qtd_trocas; i++) {
         int pos1 = rand() % n;
@@ -121,11 +122,14 @@ int main(int argc, char** argv){
 */
     srand(time(NULL));
 
-    char* algoritmo = "auto";
+    const char* algoritmo = "auto";
     int tamanho = 0;
     char* arquivo_input=NULL;
     char* modo="padrao";
     char* tipo_distribuicao = "aleatorio";
+
+    //adicionando aqui p/ testar
+    double percentual_desordem = 5.0;
 
     int* arr = NULL; 
     int n = 0;       
@@ -171,6 +175,17 @@ int main(int argc, char** argv){
                 return 1; 
             }
         }
+
+
+        //adicionando aqui p/ testar
+        else if (strcmp(argv[i], "--desordem") == 0 && i + 1 < argc) {
+            percentual_desordem = atof(argv[i + 1]);
+            i++;
+        }
+
+
+
+
     }
 
     // =================================================================
@@ -205,7 +220,7 @@ int main(int argc, char** argv){
         } else if (strcmp(tipo_distribuicao, "decrescente") == 0) {
             gera_vetor_decrescente(arr, n);
         } else if (strcmp(tipo_distribuicao, "quase_ordenado") == 0) {
-            gera_vetor_quase_ordenado(arr, n);
+            gera_vetor_quase_ordenado(arr, n, percentual_desordem); //adicionando o percentual aqui p/ testar tbm
         } else if (strcmp(tipo_distribuicao, "discrepante") == 0) {
             gera_vetor_discrepante(arr, n);
         }
@@ -224,6 +239,26 @@ int main(int argc, char** argv){
 
     if (strcmp(algoritmo, "auto") == 0) {
         //Chama funções de caracterização do array
+        
+        float desordem = calcular_desordem(arr, n);
+        printf("[Metrica 2] Grau de desordem: %.2f\n", desordem);
+        
+        int repetidos = contar_repetidos(arr, n);
+        printf("[Metrica 3] Quantos repetidos: %d\n", repetidos);
+
+        int range = faixa_valores (arr, n);
+        printf("[Metrica 4] Range maximo: %d\n", range);
+
+        double desvio = desvio_padrao(arr, n);
+        printf("[Metrica 5] Desvio padrao: %.2f%%\n", desvio);
+
+        int meu_max = 0, meu_min = 0;
+        max_e_min(arr, n, &meu_max, &meu_min);
+        printf("[Metrica 6] Amplitude: \nMaximo = %d\nMinimo = %d\n", meu_max, meu_min);
+
+
+        algoritmo = decidir_algoritmo(n, desordem, repetidos, range, desvio, meu_min);
+
     }
 
     clock_t inicio = clock();

@@ -11,6 +11,6 @@ double desvio_padrao(int *v, int n);
 void max_e_min(int *v, int n, int *max, int *min);
 
 //arvore de decisao dos algoritmos
-void decidir_algoritmo(int n, float desordem, int repetidos, int range, double desvio, int min);
+const char* decidir_algoritmo(int n, float desordem, int repetidos, int range, double desvio, int min);
 
 #endif // CARACTERIZACAO_H
