@@ -5,31 +5,33 @@
 \usepackage[brazil]{babel}
 \usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 \usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{booktabs}
+\usepackage{float}
 
 \pagestyle{fancy}       % Ativa o estilo fancyhdr
 \fancyhf{}              % Limpa todos os cabeçalhos e rodapés padrão
 \renewcommand{\headrulewidth}{0pt}
 
 % rodapé
-\fancyfoot[L]{Relatório}
+\fancyfoot[L]{Análise e Implementação de Algoritmos - Estrutura de Dados II}
 \fancyfoot[R]{\thepage}
 
-
-
 \begin{document}
-%capa
+
+% CAPA
 \begin{titlepage}
     \centering
     \vspace*{2cm}
     {\large
-    Beatriz São Leandro Cosimatti\\
-    17024130\\
-    João Victor Bozola Bosi\\
-    5979703\\
-    João Vitor Vasconcelos Jacob\\
-    nUsp do jacob\\
-    Laís Antunes Cayres Quintão\\
-    16880392\\ 
+        Beatriz São Leandro Cosimatti\\
+        17024130\\
+        João Victor Bozola Bosi\\
+        5979703\\
+        João Vitor Vasconcelos Jacob\\
+        16987258\\
+        Laís Antunes Cayres Quintão\\
+        16880392\\ 
     }
     \vspace{2cm}
     \vspace{3cm}
@@ -38,36 +40,120 @@
     {\Large \textbf{Análise e Implementação de Algoritmos\\}}
     \vspace{3cm}
     {\large
-    Disciplina: Estrutura de Dados II\\
-    SCC0606\\
-    Professor: 
+        Disciplina: Estrutura de Dados II\\
+        SCC0606\\
+        Professor: Careca safado
     }
     \vfill
     {\large
-    São Carlos\\
-    {14 jun. 2026}
+    São Carlos \\ {14 de Junho de 2026}
     }
 \end{titlepage}
 
 
 \section{Introdução}
-intro\\
-Acho que coloca o link do vídeo aqui
+O objetivo do trabalho desenvolvido foi estudar e implementar diferentes algoritmos de ordenação na linguagem C.
+Como cada algoritmo se comporta de uma maneira específica dependendo do tamanho do vetor ou de como os números estão organizados, o objetivo final do projeto é a criação de um Sistema Adaptativo.
+Esse sistema funciona como um analisador que avalia o vetor de entrada e, através de heurísticas, escolhe automaticamente o melhor algoritmo para realizar a ordenação.
+
+Para fundamentar as tomadas de decisão desse sistema, o projeto foi estruturado de maneira modular, englobando a implementação de cinco algoritmos: Bubble Sort, Insertion Sort, Quick Sort, Heap Sort e Radix Sort.
+
+ACHO Q COLOCA O LINK DO VIDEO AQ
 
 \newpage
 
 \section{Algoritmos Base}
 
     \subsection{Bubble Sort}
-    explicação do Bubble
+        O Bubble Sort (Ordenação por Bolha) é um algoritmo de ordenação baseado no princípio de comparações e trocas adjacentes. 
+        Ele percorre o vetor repetidamente a partir do início comparando pares de elementos vizinhos (vetor[i] e vetor [i+1]), e troca-os de lugar se o elemento da esquerda for maior que o da direita.
+        Esse processo é repetido até que nenhuma troca seja necessária em uma passada completa, indicando que o conjunto de dados está totalmente ordenado, sendo essa a versão aprimorada do Bubble Sort.
 
+        Dessa forma, a sua complexidade de tempo é $O(n^2)$, exceto no caso em que o vetor ja está ordenado. 
+        Nessa situação, o vetor só é percorrido uma única vez, tornando a complexidade $O(n)$.
+        É um algoritmo estável e in-place, mas seu comportamento degrada-se drasticamente em entradas grandes devido ao crescimento quadrático das operações de comparação e movimentação de dados.
 
     \subsection{Insertion Sort}
-    explicação do Insertion
+        O Insertion Sort (Ordenação por Inserção) consiste em inserir um novo elemento em um vetor já ordenado ou quase ordenado.
+        Ele percorre o vetor a partir do segundo elemento (índice 1), selecionando-o como uma "chave", e compara essa chave com os elementos que estão nas posições anteriores (à sua esquerda).
+        Caso os elementos anteriores sejam maiores que a chave, eles são deslocados uma posição para a direita para abrir espaço, e esse processo se repete até encontrar a posição correta, onde a chave é inserida.
+        Ele percorre o vetor a partir do segundo elemento (índice 1), selecionando-o como uma "chave", e compara essa chave com os elementos que estão nas posições anteriores (à sua esquerda).
+        Caso os elementos anteriores sejam maiores que a chave, eles são deslocados uma posição para a direita para abrir espaço, e esse processo se repete até encontrar a posição correta, onde a chave é finalmente inserida.
 
+        Assim, sua complexidade de tempo é $O(n^2)$, exceto no caso em que o vetor já está ordenado (ou quase ordenado).
+        Nessa situação, a chave é comparada apenas uma vez com o elemento imediatamente anterior e o loop interno é interrompido por um break, tornando a complexidade $O(n)$.
+        É um algoritmo estável e in-place, mas seu comportamento degrada-se drasticamente em entradas grandes e aleatórias.
 
     \subsection{Quick Sort}
-        O algoritmo de ordenação Quick Sort foi desenvolvido e publicado pela primeira vez em 1961, pelo cientista da computação britânico Charles Antony Richard Hoare (1934 - 2026). A técnica de ordenação foi concebida enquanto o cientista estudava na Universidade de Moscou e trabalhava no \textit{National Physical Laboratory (NPL)}, do Reino Unido. Na ocasião, Hoare estava participando de um projeto que tinha como objetivo a tradução de textos em russo para inglês e, para isso, como os dicionários erar armazenados em fita magnética, necessitava ordenar das palavras dentro de uma sentença em ordem alfabética. Nesse contexto, surgiu a necessidade de desenvolver um algoritmo de ordenação que fosse assintoticamente menor que $O(n^2)$.
+        O algoritmo de ordenação Quick Sort foi desenvolvido e publicado pela primeira vez em 1961, pelo cientista da computação britânico Charles Antony Richard Hoare (1934 - 2026). 
+        A técnica de ordenação foi concebida enquanto o cientista estudava na Universidade de Moscou e trabalhava no \textit{National Physical Laboratory (NPL)}, do Reino Unido. 
+        Na ocasião, Hoare estava participando de um projeto que tinha como objetivo a tradução de textos em russo para inglês e, para isso, como os dicionários erar armazenados em fita magnética, necessitava ordenar das palavras dentro de uma sentença em ordem alfabética. 
+        Nesse contexto, surgiu a necessidade de desenvolver um algoritmo de ordenação que fosse assintoticamente menor que $O(n^2)$.
+
+        Sob essa ótica, o algoritmo é baseado no paradigma da divisão e conquista. 
+        Nesse sentido, a aplicação se consiste em ordenar o vetor em torno de um pivô escolhido, de modo que, os elementos à esquerda do pivô sejam menores que ele e os elementos à direita, consequentemente, sejam maiores.
+        Dessa forma, o vetor é subdividido em duas partições, que terão o mesmo processo aplicado sobre elas, através de chamadas recursivas da função. 
+        Assim, as chamadas se encerram quando o caso base de um elemento na partição é atingido, uma vez que ele já estará ordenado. 
+        
+        Tais comportamentos destacados são os aspectos base do algoritmo quick sort, no entanto, cada aplicação dista da técnica utilizada para escolher o elemento pivô e para como o particionamento será realizado.
+        Para o algoritmo implementado neste projeto, utilizou-se o método da mediana de 3 para se determinar o pivô. Ele se consiste em armazenar o primeiro, central e último elemento do vetor em variáveis auxiliares e retornar a mediana entre eles, nesse caso, o elemento do meio.
+        Essa técnica, embora seja mais complexa do que aplicações comuns que utilizam o primero ou último elemento do array como pivôs, tem como benefícios a melhora do tempo de execução e a possibilidade da execução possuir uma complexidade de $O(n \ log \ n)$ mesmo para vetores ordenados ou parcialmente ordenados - embora as métricas de análise dos vetores utilizadas para esse projeto evitem tais casos.
+
+        No caso da partição, existem três principais métodos comumente utilizados para o quick sort, o particonamento de Lomoto, Naive e Hoare, para este trabalho se utilizou o particionamento de Hoare. 
+        O método se consiste em na definição de dois ponteiros, nas duas extremidades do vetor e que, a cada interação, se movem em direção de seu encontro até que um elemento que necessita ser trocado de lugar seja encontrado. 
+        Considerando \textit{i} o elemento na posição zero do vetor e \textit{j} o elemento na posição final ambos são movidos até que \textit{i} encontre um elemento maior que o pivô e, analogamente, \textit{j} encontre um elemento menor que o pivô.
+        Nesse caso, os valores encontrados trocam de posição e \textit{i} e \textit{j} voltam a percorrer o vetor até que eles se cruzem ou sobrepassem. 
+        Destaca-se, que assim como a partição de Lomoto, o algoritimo de Hoare possui uma complexidade de tempo de $O(n)$ e de espaço de $O(1)$, contudo, ela é considerada mais rápida que o outro método, uma vez que, no geral, realiza menos trocas entre elementos.
+        Em relação ao particionamento de Naive, o algoritmo se baseia na criação de um vetor auxiliar, ou seja, a complexidade de espaço é de $O(n)$, sendo significaativamente menos eficiente que o método utilizado.
+
+        Dado as características da partição de Hoare, é importante destacar que o quick sort é um algoritmo \textit{in-place}, ou seja, não utliza nenhum vetor auxiliar para a ordenação, uma vez que as trocas são realizadas dentro do próprio vetor.
+        Além disso, o algoritmo não é estável, uma vez que não preserva a ordem relativa entre elementos de mesmo valor. 
+        É também importante destacar que o quick sort apresenta um comportamento muito eficiente em termos de acesso à memória devido à forma como realiza o particionamento do vetor. 
+        Durante essa etapa, os elementos são percorridos sequencialmente por meio de índices que avançam a partir das extremidades do arranjo, favorecendo a localidade espacial dos dados. 
+        Como elementos próximos na memória tendem a ser acessados em instantes próximos, a hierarquia de memória do processador, especialmente os níveis de cache, é utilizada de maneira mais eficiente. Além disso, à medida que as partições são realizadas, o algoritmo passa a operar sobre subvetores progressivamente menores, os quais frequentemente passam a caber integralmente na memória cache. 
+        Dessa forma, reduz-se a quantidade de acessos à memória principal, resultando em uma diminuição da latência de acesso aos dados e contribuindo significativamente para o elevado desempenho prático do algoritmo.
+
+        Ademais, é possível analisar o melhor, pior e médio caso do quick sort. 
+        Nota-se que o melhor caso ocorre quando o pivô selecionado é exatamente o elemento central do vetor analisado.
+
+        $$
+            T(n) = 2T\!\left(\frac{n}{2}\right) + n
+        $$
+
+        Pela análise da recursão, através do Teorema Mestre, obtem-se a complexidade de espaço para o melhor caso como $O (n \ log \ n)$. 
+        Nesse sentido, para o médio caso, considera-se que o array é divido em duas partes de tamanho K, sendo assim:
+
+        $$
+            T(n) = T(n - K) + T(n)
+        $$
+
+        Após a resolução da recorrência, também nota-se que a complexidade é de $O (n \ log \ n)$.
+        Por fim, o pior caso ocorre quando o pivô escolhido é sempre o menor ou o maior elemento do subvetor analisado. 
+        Nessa situação, a cada etapa do algoritmo são geradas partições extremamente desbalanceadas, contendo 0 e $n-1$ elementos, o que resulta em uma árvore de recursão linear e leva a uma complexidade temporal de $O(n^2)$:
+
+        $$
+            T(n) = T(n - 1) + n
+        $$
+
+        Em relação à complexidade de espaço, cada chamada recursiva apresenta complexidade $O(1)$ - devido a característica \textit{in-place} do algoritimo -, no entanto, multiplas chamadas ocorrem simultaneamente, modificando o comportamento da complexidade espacial conforme o caso de execução. 
+        Para o médio e melhor cado, a árvore de recursão gerada é balanceada e possui profundidade de $O(log \ n)$, o que acarreta em uma complexidade de espaço de $O(log \ n)$.
+        Em contrapartida, devido ao comportamento linear da árvore no pior caso, sua altura é de $O(n)$, acarretando em uma complexidade assintótica de $O(n)$.
+        Assim, foi possível elaborar a seguinte tabela comparativa:
+
+        \begin{table}[H]
+            \centering
+            \label{tab:complexidade}
+            \begin{tabular}{lcc}
+            \toprule
+            \textbf{Variação} & \textbf{Complexidade de tempo} & \textbf{Complexidade de espaço} \\
+            \midrule
+            Melhor caso     & $O(n\log n)$ & $O(\log n)$ \\
+            Caso médio      & $O(n\log n)$ & $O(\log n)$ \\
+            Pior caso       & $O(n^2)$     & $O(n)$ \\
+            \bottomrule
+            \end{tabular}
+            \caption{Complexidade de tempo e espaço do quick sort.}
+        \end{table}
 
     \subsection{Heap Sort}
     explicação do Heap

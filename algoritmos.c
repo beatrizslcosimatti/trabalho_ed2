@@ -154,35 +154,37 @@ void heap_sort(int* arr, int n, Metricas* m) {
 
 int medianaDeTres(int *vetor, int inicio, int fim, Metricas *m)
 {
-    int meio = inicio + (fim - inicio) / 2; // calcula o índice central do vetor
+    // armazena o índice do elemento central na variável meio
+    int meio = inicio + (fim - inicio)/2;
 
-    m->comparacoes++;
-    m->operacoes++; // operação de comparação
-    if (vetor[inicio] > vetor[meio])
+    int a = vetor[inicio];
+    int b = vetor[meio];
+    int c = vetor[fim];
+
+    // comparações para ordenar os elementos a, b e c
+
+    if (a > b)
     {
-        // troca entre os valores: 
-        troca(&vetor[inicio], &vetor[meio], m);
+        int temp = a;
+        a = b;
+        b = temp;
     }
 
-    m->comparacoes++; 
-    m->operacoes++; // operação de comparação
-    if (vetor[inicio] > vetor[fim])
+    if (a > c)
     {
-        // troca entre os valores: 
-        troca(&vetor[inicio], &vetor[fim], m);
+        int temp = a;
+        a = c;
+        c = temp;
     }
 
-    m->comparacoes++;
-    m->operacoes++; // operação de comparação
-    if (vetor[meio] > vetor[fim])
+    if (b > c)
     {
-        // troca entre os valores: 
-        troca(&vetor[meio], &vetor[fim], m);
+        int temp = b;
+        b = c;
+        c = temp;
     }
 
-    // após a ordenação: vetor[inicio] <= vetor[meio] <= vetor[fim]
-
-    return vetor[meio];
+    return b; //retorna a mediana
 }
 
 // PARTICIONAMENTO DE HOARE
@@ -191,7 +193,9 @@ int particionamento(int *vetor, int inicio, int fim, Metricas *m)
 {
     int pivo = medianaDeTres(vetor, inicio, fim, m);
 
+    // i -> índice inicial da partição
     int i = inicio - 1;
+    // j -> índice final da partição
     int j = fim + 1;
 
     while (1)
@@ -212,9 +216,9 @@ int particionamento(int *vetor, int inicio, int fim, Metricas *m)
         }
         while (vetor[j] > pivo);
 
-        // m->comparacoes++; - comparação entre elementos fora da ordenação
+        // caso em que os ponteiros se cruzam, interrupção do loop
         if (i >= j)
-            return j;
+            return j; 
 
         troca(&vetor[i], &vetor[j], m);
     }
@@ -225,16 +229,14 @@ void quick_sort_rec(int *vetor, int inicio, int fim, Metricas *m, int profundida
     profundidade_atual++;
     m->chamadas_recursivas++;
 
-    // m->comparacoes++; - comparação entre elementos fora da ordenação 
     if (profundidade_atual > m->profundidade_maxima)
     {
         m->profundidade_maxima = profundidade_atual;
     }
     
-    // m->comparacoes++; - comparação entre elementos fora da ordenação 
     if (inicio < fim)
     {
-        int p = particionamento(vetor, inicio, fim, m);
+        int p = particionamento(vetor, inicio, fim, m); // retorna o índice do pivô
 
         quick_sort_rec(vetor, inicio, p, m, profundidade_atual);
         quick_sort_rec(vetor, p + 1, fim, m, profundidade_atual);
