@@ -302,20 +302,48 @@ int main(int argc, char** argv){
     if (arquivo_csv != NULL) {
         
         if (precisa_cabecalho) {
-            fprintf(arquivo_csv, "Algoritmo,Tamanho,Distribuicao,Tempo(s),Comparacoes,Copias,Operacoes\n");
+            fprintf(arquivo_csv, "Algoritmo,Tamanho,Distribuicao,Tempo (s),Comparacoes,Trocas,Copias,Memoria Extra (bytes),Chamadas recursivas,Profundidade maxima,Operacoes\n");
         } 
         
-        fprintf(arquivo_csv, "%s,%d,%s,%.6f,%llu,%llu,%llu\n", 
+        fprintf(arquivo_csv, "%s,%d,%s,%.6f,%llu,%llu,%llu,%llu, %llu, %llu, %llu\n", 
                 algoritmo, 
                 n, 
                 tipo_distribuicao, 
                 tempo_execucao, 
                 m.comparacoes, 
-                m.copias, 
+                m.trocas,
+                m.copias,
+                m.memoria_extra_bytes,
+                m.chamadas_recursivas,
+                m.profundidade_maxima, 
                 m.operacoes);
         
         fclose(arquivo_csv);
+
         printf("Teste finalizado! Dados salvos com sucesso em '%s'.\n", caminho_csv);
+
+        printf("\n");
+
+        // tabela para imprimir os dados no terminal
+
+        printf("+==============================================================================+\n");
+        printf("|                            RESULTADOS DA EXECUCAO                            |\n");
+        printf("+----------------------+-------------------------------------------------------+\n");
+        printf("| %-20s | %-53s |\n", "Algoritmo", algoritmo);
+        printf("| %-20s | %-53d |\n", "Tamanho do vetor", n);
+        printf("| %-20s | %-53s |\n", "Distribuicao", tipo_distribuicao);
+        printf("| %-20s | %-53.9f |\n", "Tempo de execucao", tempo_execucao);
+        printf("| %-20s | %-53llu |\n", "Comparacoes", m.comparacoes);
+        printf("| %-20s | %-53llu |\n", "Trocas", m.trocas);
+        printf("| %-20s | %-53llu |\n", "Memoria extra", m.memoria_extra_bytes);
+        printf("| %-20s | %-53llu |\n", "Chamadas recursivas", m.chamadas_recursivas);
+        printf("| %-20s | %-53llu |\n", "Profundidade maxima", m.profundidade_maxima);
+        printf("| %-20s | %-53llu |\n", "Copias", m.copias);
+        printf("| %-20s | %-53llu |\n", "Operacoes", m.operacoes);
+        printf("+==============================================================================+\n");
+
+        printf("\n");
+
     } else {
         printf("ERRO: Nao foi possivel criar o arquivo em '%s'. Certifique-se de que a pasta 'output' existe.\n", caminho_csv);
     }
