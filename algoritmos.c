@@ -154,13 +154,14 @@ void heap_sort(int* arr, int n, Metricas* m) {
 
 int medianaDeTres(int *vetor, int inicio, int fim, Metricas *m)
 {
+    // armazena o índice do elemento central na variável meio
     int meio = inicio + (fim - inicio)/2;
 
     int a = vetor[inicio];
     int b = vetor[meio];
     int c = vetor[fim];
 
-    // comparações para ordenar os elementos a,b e c
+    // comparações para ordenar os elementos a, b e c
 
     if (a > b)
     {
@@ -192,7 +193,9 @@ int particionamento(int *vetor, int inicio, int fim, Metricas *m)
 {
     int pivo = medianaDeTres(vetor, inicio, fim, m);
 
+    // i -> índice inicial da partição
     int i = inicio - 1;
+    // j -> índice final da partição
     int j = fim + 1;
 
     while (1)
@@ -213,9 +216,9 @@ int particionamento(int *vetor, int inicio, int fim, Metricas *m)
         }
         while (vetor[j] > pivo);
 
-        // m->comparacoes++; - comparação entre elementos fora da ordenação
+        // caso em que os ponteiros se cruzam, interrupção do loop
         if (i >= j)
-            return j;
+            return j; 
 
         troca(&vetor[i], &vetor[j], m);
     }
@@ -226,16 +229,14 @@ void quick_sort_rec(int *vetor, int inicio, int fim, Metricas *m, int profundida
     profundidade_atual++;
     m->chamadas_recursivas++;
 
-    // m->comparacoes++; - comparação entre elementos fora da ordenação 
     if (profundidade_atual > m->profundidade_maxima)
     {
         m->profundidade_maxima = profundidade_atual;
     }
     
-    // m->comparacoes++; - comparação entre elementos fora da ordenação 
     if (inicio < fim)
     {
-        int p = particionamento(vetor, inicio, fim, m);
+        int p = particionamento(vetor, inicio, fim, m); // retorna o índice do pivô
 
         quick_sort_rec(vetor, inicio, p, m, profundidade_atual);
         quick_sort_rec(vetor, p + 1, fim, m, profundidade_atual);
