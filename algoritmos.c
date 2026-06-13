@@ -154,35 +154,36 @@ void heap_sort(int* arr, int n, Metricas* m) {
 
 int medianaDeTres(int *vetor, int inicio, int fim, Metricas *m)
 {
-    int meio = inicio + (fim - inicio) / 2; // calcula o índice central do vetor
+    int meio = inicio + (fim - inicio)/2;
 
-    m->comparacoes++;
-    m->operacoes++; // operação de comparação
-    if (vetor[inicio] > vetor[meio])
+    int a = vetor[inicio];
+    int b = vetor[meio];
+    int c = vetor[fim];
+
+    // comparações para ordenar os elementos a,b e c
+
+    if (a > b)
     {
-        // troca entre os valores: 
-        troca(&vetor[inicio], &vetor[meio], m);
+        int temp = a;
+        a = b;
+        b = temp;
     }
 
-    m->comparacoes++; 
-    m->operacoes++; // operação de comparação
-    if (vetor[inicio] > vetor[fim])
+    if (a > c)
     {
-        // troca entre os valores: 
-        troca(&vetor[inicio], &vetor[fim], m);
+        int temp = a;
+        a = c;
+        c = temp;
     }
 
-    m->comparacoes++;
-    m->operacoes++; // operação de comparação
-    if (vetor[meio] > vetor[fim])
+    if (b > c)
     {
-        // troca entre os valores: 
-        troca(&vetor[meio], &vetor[fim], m);
+        int temp = b;
+        b = c;
+        c = temp;
     }
 
-    // após a ordenação: vetor[inicio] <= vetor[meio] <= vetor[fim]
-
-    return vetor[meio];
+    return b; //retorna a mediana
 }
 
 // PARTICIONAMENTO DE HOARE
