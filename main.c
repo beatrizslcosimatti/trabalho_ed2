@@ -57,6 +57,33 @@ void gera_vetor_decrescente(int* arr, int n) {
     }
 }
 
+// pior caso do quick sort com mediana de 3
+void gera_vetor_organ_pipe(int* arr, int n) {
+    int meio = (n + 1) / 2;
+
+    for (int i = 0; i < meio; i++) {
+        arr[i] = i + 1;
+    }
+
+    for (int i = meio; i < n; i++) {
+        arr[i] = n - i;
+    }
+}
+
+// pior caso do quick sort com mediana de 3
+void gera_vetor_intercalado(int* arr, int n) {
+    int menor = 1;
+    int maior = n;
+
+    for (int i = 0; i < n; i++) {
+        if (i % 2 == 0) {
+            arr[i] = menor++;
+        } else {
+            arr[i] = maior--;
+        }
+    }
+}
+
 int* ler_vetor_arquivo(const char* nome_arquivo, int* n) {
     // Tenta abrir o arquivo no modo leitura ("r" = read)
     FILE *arquivo = fopen(nome_arquivo, "r");
@@ -182,10 +209,7 @@ int main(int argc, char** argv){
             percentual_desordem = atof(argv[i + 1]);
             i++;
         }
-
-
-
-
+        
     }
 
     // =================================================================
@@ -223,10 +247,14 @@ int main(int argc, char** argv){
             gera_vetor_quase_ordenado(arr, n, percentual_desordem); //adicionando o percentual aqui p/ testar tbm
         } else if (strcmp(tipo_distribuicao, "discrepante") == 0) {
             gera_vetor_discrepante(arr, n);
+        } else if (strcmp(tipo_distribuicao, "organ_pipe") == 0) {
+            gera_vetor_organ_pipe(arr, n);
+        } else if (strcmp(tipo_distribuicao, "intercalado") == 0) {
+            gera_vetor_intercalado(arr, n);
+        } else {
+            printf("Uso incorreto. Forneca --tamanho, --input ou --array.\n");
+            return 1;
         }
-    } else {
-        printf("Uso incorreto. Forneca --tamanho, --input ou --array.\n");
-        return 1;
     }
 
     Metricas m;
@@ -256,7 +284,6 @@ int main(int argc, char** argv){
         max_e_min(arr, n, &meu_max, &meu_min);
         printf("[Metrica 6] Amplitude: \nMaximo = %d\nMinimo = %d\n", meu_max, meu_min);
 
-
         algoritmo = decidir_algoritmo(n, desordem, repetidos, range, desvio, meu_min);
 
     }
@@ -285,6 +312,7 @@ int main(int argc, char** argv){
     }
 
     clock_t fim = clock();
+
     double tempo_execucao = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
     const char* caminho_csv = "output/dados.csv";

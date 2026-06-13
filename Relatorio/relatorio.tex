@@ -52,13 +52,14 @@
 
 
 \section{Introdução}
-O objetivo do trabalho desenvolvido foi estudar e implementar diferentes algoritmos de ordenação na linguagem C.
-Como cada algoritmo se comporta de uma maneira específica dependendo do tamanho do vetor ou de como os números estão organizados, o objetivo final do projeto é a criação de um Sistema Adaptativo.
-Esse sistema funciona como um analisador que avalia o vetor de entrada e, através de heurísticas, escolhe automaticamente o melhor algoritmo para realizar a ordenação.
 
-Para fundamentar as tomadas de decisão desse sistema, o projeto foi estruturado de maneira modular, englobando a implementação de cinco algoritmos: Bubble Sort, Insertion Sort, Quick Sort, Heap Sort e Radix Sort.
+    O objetivo do trabalho desenvolvido foi estudar e implementar diferentes algoritmos de ordenação na linguagem C.
+    Como cada algoritmo se comporta de uma maneira específica dependendo do tamanho do vetor ou de como os números estão organizados, o objetivo final do projeto é a criação de um Sistema Adaptativo.
+    Esse sistema funciona como um analisador que avalia o vetor de entrada e, através de heurísticas, escolhe automaticamente o melhor algoritmo para realizar a ordenação.
 
-ACHO Q COLOCA O LINK DO VIDEO AQ
+    Para fundamentar as tomadas de decisão desse sistema, o projeto foi estruturado de maneira modular, englobando a implementação de cinco algoritmos: Bubble Sort, Insertion Sort, Quick Sort, Heap Sort e Radix Sort.
+
+    ACHO Q COLOCA O LINK DO VIDEO AQ
 
 \newpage
 
@@ -128,6 +129,7 @@ ACHO Q COLOCA O LINK DO VIDEO AQ
         $$
 
         Após a resolução da recorrência, também nota-se que a complexidade é de $O (n \ log \ n)$.
+        Nesse sentido, evidencia-se que no melhor e pior caso, o quick sort utiliza em média $2 \ n \ log \ n$ comparações entre elementos distintos do vetor para ordená-lo, e aproximadamente, um sexto desse número de trocas.
         Por fim, o pior caso ocorre quando o pivô escolhido é sempre o menor ou o maior elemento do subvetor analisado. 
         Nessa situação, a cada etapa do algoritmo são geradas partições extremamente desbalanceadas, contendo 0 e $n-1$ elementos, o que resulta em uma árvore de recursão linear e leva a uma complexidade temporal de $O(n^2)$:
 
@@ -135,6 +137,7 @@ ACHO Q COLOCA O LINK DO VIDEO AQ
             T(n) = T(n - 1) + n
         $$
 
+        Para o pior caso, observa-se que o algoritmo necessita realizar, em média, $n^2 / 2$ comparações para ordenar o vetor, o que representa um aumento assintótico significativo em relação aos outros casos. 
         Em relação à complexidade de espaço, cada chamada recursiva apresenta complexidade $O(1)$ - devido a característica \textit{in-place} do algoritimo -, no entanto, multiplas chamadas ocorrem simultaneamente, modificando o comportamento da complexidade espacial conforme o caso de execução. 
         Para o médio e melhor cado, a árvore de recursão gerada é balanceada e possui profundidade de $O(log \ n)$, o que acarreta em uma complexidade de espaço de $O(log \ n)$.
         Em contrapartida, devido ao comportamento linear da árvore no pior caso, sua altura é de $O(n)$, acarretando em uma complexidade assintótica de $O(n)$.
@@ -182,6 +185,7 @@ Descrever:
 \newpage
 
 \section{Resultados}
+
 Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Explicar:
 • decisões corretas;
 • decisões ruins;
@@ -190,6 +194,17 @@ Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Exp
 • impacto das características da entrada.
 • impactos das entradas adversariais
 
+    \subsection{Validação dos Algoritmos utilizados}
+    Esta sessão tem como intuito demonstrar o comportamento dos algoritmos em relação ao comportamento teórico esperado.
+    
+    \subsubsection{Quick Sort}
+    
+    Na implementação do quick sort desenvolvida, o pivô é escolhido por meio do método da mediana de três, utilizando os elementos inicial, central e final do subvetor. Essa estratégia reduz significativamente a ocorrência de partições desbalanceadas, especialmente em vetores já ordenados ou parcialmente ordenados. 
+    Ainda assim, o pior caso permanece teoricamente possível e ocorre quando a mediana desses três elementos produz repetidamente pivôs próximos aos extremos do subvetor, gerando partições de tamanhos aproximadamente 0 e $n-1$.
+    Nesse sentido, o método da mediana de três foi amplamente estudada por cientistas como David Musser, pesquisador conhecido por desenvolver o algoritmo Introsort, atualmente utilizado em diversas bibliotecas padrão da linguagem C++. 
+    Em seu trabalho, Musser demonstrou que, embora a estratégia da mediana de três reduza significativamente a probabilidade de partições desbalanceadas em entradas comuns, ela não elimina completamente o pior caso do Quick Sort. 
+    O autor apresentou famílias de sequências especialmente construídas, conhecidas como \textit{Median-of-Three Killer Sequences}, capazes de induzir a escolha repetida de pivôs inadequados, resultando em partições altamente desbalanceadas e levando o algoritmo a uma complexidade temporal quadrática $O(n^2)$.
+    
 \newpage
 
 \section{Reflexão sobre Uso de IA}
