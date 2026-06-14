@@ -161,30 +161,26 @@
             \caption{Complexidade de tempo e espaço do quick sort.}
         \end{table}
 
-    \subsection{Heap Sort}
-O algoritmo de ordenação Heap Sort foi inventado em 1964 pelo cientista da computação J. W. J. Williams. A sua criação foi um marco na computação, pois introduziu simultaneamente a estrutura de dados homônima, o \textit{Heap} (ou monte). A motivação original de Williams era desenvolver um algoritmo que fosse superior ao Quick Sort no pior caso, garantindo um limite assintótico restrito sem sacrificar a eficiência do uso de memória. Posteriormente, no mesmo ano, Robert Floyd refinou o algoritmo com uma função matemática capaz de construir o heap em tempo linear, consolidando a versão clássica estudada até hoje.
+ \subsection{Heap Sort}
+    O Heap Sort baseia-se na estrutura de dados \textit{Max-Heap}, uma árvore binária quase completa mapeada implicitamente em um vetor. Para um nó no índice $i$, seus filhos estão localizados em $2i + 1$ e $2i + 2$, e o valor do pai é sempre maior ou igual ao de seus filhos.
 
-    Sob essa ótica, o Heap Sort opera convertendo o vetor original em uma árvore binária quase completa, mapeada implicitamente no próprio arranjo sem a necessidade de ponteiros estruturais. Para o propósito de ordenação crescente, utiliza-se a variante \textit{Max-Heap}, cuja propriedade fundamental determina que o valor de qualquer nó pai, localizado no índice $i$, deve ser obrigatoriamente maior ou igual aos valores de seus filhos, localizados nos índices $2i + 1$ e $2i + 2$.
+    A ordenação ocorre em duas etapas: a construção do heap (\texttt{Build-Max-Heap}), que reorganiza o vetor em tempo linear, e a extração sucessiva do elemento máximo. A cada extração, o último elemento do subvetor substitui a raiz, e a função \texttt{Max-Heapify} restaura a propriedade da árvore.
 
-    O processo de ordenação é dividido em duas etapas principais. A primeira etapa é a construção do heap (\texttt{Build-Max-Heap}), que reorganiza o vetor desordenado de baixo para cima. A segunda etapa consiste na extração repetida do elemento máximo. Como o maior valor garantidamente reside na raiz da árvore (índice 0), ele é trocado de lugar com o último elemento do vetor. O tamanho virtual do heap é então decrementado, e a função auxiliar \texttt{Max-Heapify} é acionada para rebaixar a nova raiz até a sua posição correta, restaurando a propriedade original do \textit{Max-Heap}. Esse ciclo se repete sucessivamente até que todo o subvetor se esgote.
-
-    Matematicamente, a eficiência do algoritmo é garantida por sua estrutura de árvore. A etapa inicial de construção do heap realiza um número de operações proporcional à altura dos nós. A soma dessas operações ao longo de todos os níveis converge para uma série geométrica cuja soma assintótica é de tempo estritamente linear:
+    Matematicamente, a etapa de construção possui custo assintótico linear:
 
     $$
         O\left(\sum_{h=0}^{\lfloor\log_2 n\rfloor} \frac{n}{2^{h+1}} h\right) = O(n)
     $$
 
-    Para a segunda etapa, a função \texttt{Max-Heapify} percorre a altura da árvore, custando $O(\log_2 n)$ a cada uma das $n-1$ extrações executadas. Como consequência, o tempo total de extração domina a complexidade final da equação, resultando na seguinte relação:
+    A segunda etapa percorre a altura da árvore para $n-1$ extrações, custando $O(\log_2 n)$ cada. Assim, a complexidade total resulta em:
 
     $$
         T(n) = O(n) + O(n \log_2 n) = O(n \log_2 n)
     $$
 
-    Dessa forma, diferentemente do Quick Sort, o Heap Sort é blindado contra o pior caso, garantindo a complexidade de $O(n \log_2 n)$ independentemente da distribuição inicial ou do grau de desordem dos dados. Ademais, por ser um algoritmo rigorosamente \textit{in-place}, sua complexidade espacial é de $O(1)$, exigindo apenas o espaço de uma variável temporária para a realização das trocas.
+    Isso garante ao Heap Sort um desempenho de $O(n \log_2 n)$ em qualquer cenário, blindando-o contra piores casos. Além disso, é um algoritmo estritamente \textit{in-place}, com complexidade espacial de $O(1)$.
 
-    No entanto, é fundamental destacar o comportamento arquitetural deste algoritmo frente à hierarquia de memória moderna. Apesar de sua elegância teórica, o Heap Sort possui uma péssima localidade espacial de referência. Durante a fase de restauração do heap, a navegação em direção aos filhos nos índices $2i + 1$ e $2i + 2$ gera saltos enormes e matematicamente fragmentados na memória. Quando o tamanho do vetor supera a capacidade da memória cache (níveis L2 ou L3) do processador, o algoritmo provoca uma alta taxa de \textit{Cache Misses}, obrigando a CPU a paralisar seus ciclos de clock enquanto aguarda a lenta busca dos dados na memória RAM, o que degrada substancialmente seu desempenho prático em relação a concorrentes de acesso sequencial.
-
-    Assim, foi possível elaborar a seguinte tabela comparativa:
+    Apesar da estabilidade matemática, o Heap Sort sofre em hardwares modernos devido à sua péssima localidade espacial de referência. A navegação não-sequencial pelos índices da árvore ($i$ para $2i+1$ e $2i+2$) esgota rapidamente a capacidade da memória Cache (L2/L3). Em vetores massivos, isso gera uma alta taxa de \textit{Cache Misses}, forçando a CPU a paralisar seus ciclos para buscar dados na memória RAM, o que degrada o seu desempenho prático.
 
     \begin{table}[H]
         \centering
@@ -198,29 +194,21 @@ O algoritmo de ordenação Heap Sort foi inventado em 1964 pelo cientista da com
         Pior caso       & $O(n\log_2 n)$ & $O(1)$ \\
         \bottomrule
         \end{tabular}
-        \caption{Complexidade de tempo e espaço do heap sort.}
+        \caption{Complexidade de tempo e espaço do Heap Sort.}
     \end{table}
 
 \subsection{Radix Sort}
-    O Radix Sort (Ordenação por Raiz) é um dos algoritmos de ordenação mais antigos da história da computação, com raízes que remontam a 1887. Ele foi inicialmente desenvolvido pelo engenheiro estatístico Herman Hollerith para ser utilizado fisicamente nas máquinas de tabulação de cartões perfurados durante o censo dos Estados Unidos de 1890. Ao contrário dos algoritmos tradicionais focados em comparações diretas de grandeza, o Radix Sort quebra o limite inferior computacional estrito de $\Omega(n \log_2 n)$, operando puramente como um algoritmo não-comparativo.
+    O Radix Sort é um algoritmo não-comparativo que supera o limite estrutural de $\Omega(n \log_2 n)$ operando sobre os dígitos individuais dos elementos. Em sua variante \textit{Least Significant Digit} (LSD), o processamento ocorre da direita para a esquerda (das unidades para as casas maiores). Para isso, o método exige obrigatoriamente um algoritmo auxiliar estável, tipicamente o Counting Sort.
 
-    O seu mecanismo de funcionamento fundamenta-se na decomposição e análise estrutural dos elementos dígito a dígito. A variante mais clássica e abordada neste contexto é a versão \textit{Least Significant Digit} (LSD), que processa os números da direita para a esquerda, iniciando pela casa das unidades, progredindo para as dezenas, centenas, e assim sucessivamente. Para que essa progressão sequencial funcione e o vetor finalize perfeitamente ordenado, o Radix Sort exige, de maneira irrenunciável, o uso de um algoritmo de ordenação auxiliar interno que seja \textbf{estável} — isto é, que preserve incondicionalmente a ordem relativa de chaves originariamente idênticas. Tradicionalmente, o Counting Sort é o algoritmo selecionado para desempenhar essa função estrutural.
-
-    Nesse sentido, a aplicação se inicia varrendo o vetor de dados para identificar o elemento de maior valor, com o propósito de determinar a quantidade máxima de dígitos ou bits ($d$) inerente àquele conjunto. Em seguida, um laço de repetição invoca o algoritmo de Counting Sort exatas $d$ vezes. A cada interação do laço, os elementos são agrupados e reagrupados em partições virtuais correspondentes ao valor do dígito que está sendo focado no momento (frequentemente de 0 a 9, caso seja base decimal). 
-
-    Para a análise de complexidade de tempo, considera-se $n$ como o tamanho total do vetor, $d$ como a quantidade máxima de dígitos do maior elemento e $k$ como a base numérica adotada no sistema. Observa-se que cada rodada do Counting Sort exige um tempo proporcional de $O(n + k)$ para realizar a distribuição e reordenação. Como esse processo mecânico é repetido rigorosamente $d$ vezes, a complexidade final é dada por:
+    A aplicação identifica o maior elemento para determinar o número máximo de dígitos ($d$). Em seguida, o Counting Sort é invocado $d$ vezes para agrupar e reordenar os elementos em cada casa decimal. Sendo $n$ o tamanho do vetor e $k$ a base numérica, cada rodada custa $O(n + k)$, resultando na complexidade de tempo:
 
     $$
         T(n) = O(d \cdot (n + k))
     $$
 
-    Quando a magnitude dos dados inseridos é limitada por padrões arquiteturais e a quantidade de dígitos ($d$) é assumida como uma constante (fenômeno comum ao se ordenar inteiros nativos de 32 bits), o escopo da variável $n$ domina majoritariamente a equação matemática, permitindo que o comportamento assintótico se simplifique para um modelo de tempo temporal estritamente linear, denotado por $O(n)$.
+    Para tipos de dados nativos onde $d$ e $k$ são tratados como constantes, o comportamento assintótico simplifica-se para um modelo linear de $O(n)$.
 
-    Entretanto, a elevada eficiência temporal do Radix Sort é penalizada através dos severos requisitos de hardware que ele impõe. O algoritmo não pertence à classe \textit{in-place}. O uso intrínseco do Counting Sort demanda a inicialização de vetores de frequência com tamanho $k$ e, de forma muito mais sensível, de um vetor auxiliar com alocação idêntica ao do vetor original ($n$) para possibilitar o remanejamento estável dos elementos na memória.
-
-    Dessa forma, em casos de processamento massivo envolvendo vetores de magnitude bilionária, a complexidade espacial de $O(n + k)$ consolida-se como uma barreira física primária. A alocação excessiva e concomitante de recursos pode exaurir a capacidade física da memória RAM do computador, induzindo o sistema operacional a iniciar processos de paginação diretamente no disco de armazenamento secundário (HD ou SSD), o que eleva a latência e dilapida a vantagem da complexidade algorítmica. Para além disso, vale destacar que o método convencional apresenta disfunções sistêmicas quando submetido a números negativos, necessitando de rotinas adicionais de \textit{offsetting} (deslocamento numérico unificado) para evitar violações de acesso ou interrupções.
-
-    Assim, foi possível elaborar a seguinte tabela comparativa:
+    Entretanto, essa eficiência temporal cobra um alto preço em hardware. O Radix Sort não é \textit{in-place}, exigindo a alocação de vetores auxiliares com complexidade espacial de $O(n + k)$. Em conjuntos de dados massivos, essa alocação pode exaurir rapidamente a memória RAM do sistema, forçando a paginação no disco de armazenamento (HD/SSD) e elevando a latência de forma drástica. Adicionalmente, o tratamento de números negativos exige rotinas extras de \textit{offsetting} (deslocamento numérico unificado) para evitar falhas de acesso, adicionando sobrecarga ao algoritmo inicial.
 
     \begin{table}[H]
         \centering
@@ -234,7 +222,7 @@ O algoritmo de ordenação Heap Sort foi inventado em 1964 pelo cientista da com
         Pior caso       & $O(d \cdot (n+k))$ & $O(n + k)$ \\
         \bottomrule
         \end{tabular}
-        \caption{Complexidade de tempo e espaço do radix sort.}
+        \caption{Complexidade de tempo e espaço do Radix Sort.}
     \end{table}
 
 \newpage
@@ -829,9 +817,67 @@ Descrever:
     Nesse sentido, evidencia-se tabém que para vetores menores aos analisados, de ordem de grandeza 10.000, a profundiade máxima da recursão aintgiu valores muito maiores do que a ordenação de vetores aleátorios na casa de 100 milhões de tamanho - por exemplo, um vetor aleatório de tamanho 1 bilhão atingiu profundiade máxima de 55, enquanto um vetor intercalado de 100 mil, atingiu 507.
     Esses comportamentos destacam que a estratégia da mediana de três, embora eficiente em casos usuais, permanece suscetível a entradas adversárias capazes de produzir partições fortemente desbalanceadas.
 
+    \subsection{Heap Sort}
+    Para ilustrar esse comportamento assintótico teórico de $O(n\log_2 n)$, isolado dos ruídos causados pela infraestrutura física da máquina, elaborou-se o gráfico a seguir. Ele cruza o crescimento do tamanho do vetor exclusivamente com o número de operações matemáticas (comparações e trocas):
 
-\newpage
+    \begin{figure}[H]
+        \centering
+        % Lembre-se de colocar aqui o nome do gráfico focado nas COMPARAÇÕES gerado no Python
+        \includegraphics[width=0.65\linewidth]{imagens/grafico_tempo_heap.png}
+        \caption{Curva assintótica evidenciando a complexidade constante de $O(n\log_2 n)$ do Heap Sort baseada no número de comparações lógicas.}
+        \label{fig:HeapAssintotico}
+    \end{figure}
 
+    Apesar de sua elegância e previsibilidade matemática, o Heap Sort apresenta um severo gargalo arquitetural em hardwares modernos devido à sua \textbf{baixa localidade espacial de referência}. A navegação entre nós pais (índice $i$) e filhos (índices $2i + 1$ e $2i + 2$) gera saltos de memória distantes e não sequenciais.
+
+    Quando o vetor extrapola a capacidade de armazenamento da memória Cache (níveis L2 ou L3) do processador, esses saltos causam uma incidência massiva de \textit{Cache Misses}. A CPU é forçada a paralisar seus ciclos enquanto aguarda a lenta busca de dados na memória RAM, o que degrada substancialmente seu desempenho prático. Em contrapartida, algoritmos como o Quick Sort operam de forma sequencial ($i++$ e $j--$), maximizando os acertos na Cache. Esse estresse físico na hierarquia de memória é evidenciado no comparativo de execução a seguir:
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.65\linewidth]{imagens/grafico_6_heap_vs_quick.png}
+        \caption{Comparativo de tempo de execução entre Heap Sort e Quick Sort evidenciando a degradação temporal do Heap Sort decorrente de Cache Misses para vetores massivos.}
+        \label{fig:HeapVsQuickCache}
+    \end{figure}
+
+    \subsection{Radix Sort}Com o intuito de validar a implementação e o comportamento do Radix Sort, a análise de resultados focou em sua característica de ordenação não-comparativa e em sua intensa demanda por recursos de memória. Ao contrário do Quick Sort e do Heap Sort, que estão limitados matematicamente pela barreira inferior de $\Omega(n \log_2 n)$, o Radix Sort ordena os dados processando dígitos individuais através de um algoritmo estável auxiliar (neste caso, a abordagem \textit{Least Significant Digit} - LSD, utilizando o Counting Sort).Sob essa ótica, o algoritmo atinge uma complexidade temporal linear teórica de $O(d \cdot (n+k))$. Como os testes experimentais foram realizados com números inteiros nativos de limites conhecidos, o número máximo de dígitos $d$ e a base de contagem $k$ comportam-se como constantes, permitindo que a complexidade na prática seja avaliada como $O(n)$. No entanto, essa extrema velocidade de processamento cobra um preço arquitetural substancial: o algoritmo não é \textit{in-place}. Ele necessita de uma complexidade espacial de $O(n)$, exigindo a alocação de vetores auxiliares de tamanho idêntico ao conjunto de dados original.
+
+    Para demonstrar a rapidz e a sua complexidade espacial de $O(n)$ fezemos uma comparação direta com o quick sort que tem compleidade $O(n\log_2n)$:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.65\linewidth]{imagens/grafico_7_quick_vs_radix.png}
+        \caption{Comparativo de tempo de execução entre Quick Sort e Radix Sort evidenciando a superioridade do modelo não-comparativo em vetores massivos.}
+        \label{fig:QuickVsRadix}
+    \end{figure}
+
+    Através da análise dos dados experimentais, é possível observar uma progressão clara de eficiência. Para vetores de menor magnitude, nota-se que o Quick Sort consegue se manter competitivo. Esse fenômeno ocorre devido ao \textit{overhead} inicial (custo de preparação) imposto pelo Sistema Operacional para encontrar e alocar na memória RAM os blocos contíguos massivos necessários para os vetores auxiliares do Radix Sort, além das múltiplas varreduras de contagem.
+
+    Contudo, à medida que a ordem de grandeza do vetor $N$ avança substancialmente ao longo do eixo, a inclinação linear da curva do Radix Sort revela a sua verdadeira superioridade matemática. Enquanto a curva do Quick Sort apresenta uma leve curvatura ascendente inerente ao fator logarítmico da sua complexidade $O(n \log_2 n)$, a curva do Radix Sort mantém-se linear e consideravelmente mais baixa, finalizando a ordenação do mesmo volume de dados em um intervalo de tempo notavelmente menor.
+
+    É imperativo ressaltar, entretanto, que essa soberania temporal exibida no gráfico depende exclusivamente de um ambiente de hardware favorável. Caso a magnitude do vetor extrapolasse a capacidade física total da memória RAM da máquina de testes, o Sistema Operacional seria forçado a iniciar a paginação em disco secundário. Nessa eventualidade, a curva de tempo do Radix Sort sofreria uma quebra dramática, similar à exaustão de Cache observada no Heap Sort, degradando o seu tempo de execução para patamares inaceitáveis. Como o sistema possuía recursos estritos suficientes para sustentar as cópias, o comportamento $O(n)$ foi validado.
+
+    \subsection{Validação da Heurística Final (Oráculo)}
+    Com o objetivo de extrair o desempenho máximo do sistema mitigando as fraquezas individuais de cada algoritmo, implementou-se um meta-algoritmo (denominado ``Oráculo'') baseado em uma heurística de decisão em tempo de execução. O modelo avalia parâmetros estruturais do vetor, como tamanho ($N$), grau de desordem, valor mínimo e amplitude (\textit{range}), para delegar a ordenação ao algoritmo matematicamente mais favorável para aquele contexto específico. 
+
+    Para validar a eficácia dessa estratégia, os dados experimentais coletados sob a atuação da heurística foram confrontados diretamente com os tempos e operações das execuções isoladas de cada algoritmo.
+
+    \subsubsection*{1. Vetores Pequenos e Quase Ordenados (Insertion Sort)}
+    A primeira regra da heurística delega vetores com $N \le 1000$ e desordem $\le 5.0$ ao Insertion Sort. Os testes experimentais confirmaram a precisão dessa escolha. Para vetores de tamanho $N = 1000$ com distribuição quase ordenada, tanto o Quick Sort quanto o Radix Sort atingiram tempos de execução na ordem de $0.000s$, equivalentes ao Insertion Sort ($0.001s$). 
+
+    No entanto, a justificativa para a seleção do Insertion Sort revela-se na análise espacial e arquitetural. Enquanto o Radix Sort exigiu a alocação de $8.000$ bytes de memória extra e o Quick Sort realizou $15$ chamadas recursivas fragmentando a pilha de execução, o Insertion Sort operou com exatos $0$ bytes de alocação extra e $0$ chamadas recursivas, validando-se como a estrutura microarquitetural mais leve e eficiente para pequenos conjuntos de dados.
+
+    \subsubsection*{2. Amplitude Proporcional (Radix Sort)}
+    A regra central de ganho de desempenho da heurística ativa o Radix Sort quando os valores são não-negativos e a amplitude dos dados é menor ou igual a $10 \times N$. Essa decisão foi posta à prova submetendo o Oráculo a vetores aleatórios massivos.
+
+    Para um vetor de $N = 5.000.000$, o Quick Sort (fallback natural do sistema) necessitou de $1,257$ segundos e mais de $255$ milhões de operações matemáticas globais para concluir a ordenação. Ao identificar a proporção favorável do \textit{range}, a heurística ativou o Radix Sort, o qual reduziu as operações de forma abrupta para $75$ milhões, finalizando a ordenação em uma média de $0,550$ segundos. Esse comportamento provou, na prática, o salto de eficiência proporcionado pela transição oportuna da barreira logarítmica $O(n \log_2 n)$ para o comportamento linear $O(n)$.
+
+    \subsubsection*{3. Tratamento de Valores Negativos (Heap Sort)}
+    A inclusão da regra que direciona vetores com valores negativos (e $N \ge 10000$) para o Heap Sort foi estabelecida como uma precaução de projeto. Conforme mapeado no escopo do trabalho, a implementação clássica do Radix Sort sofre penalidades graves ou quebras de acesso ao tentar indexar \textit{buckets} com chaves negativas. Como as distribuições testadas não possuíam números negativos nativos, o comportamento desta regra baseia-se na segurança matemática do Heap Sort. Ele garante estabilidade absoluta de tempo $O(n \log_2 n)$ e memória extra $O(1)$, evitando que o sistema necessite aplicar varreduras de \textit{offsetting} (deslocamento) sobre todo o vetor, o que prejudicaria o desempenho.
+
+    \subsubsection*{4. O Caso Geral (Quick Sort)}
+    Para as distribuições que falham nas condições anteriores — como vetores muito grandes, com alta desordem e grande espaçamento de dados — a heurística aciona o Quick Sort como seu caso geral. A solidez dessa regra foi confirmada ao testar um vetor de distribuição decrescente de tamanho $N = 2.000.000$.
+
+    Neste cenário adverso, o Radix Sort obteve um tempo de execução de $0,424$ segundos. Em contrapartida, o Quick Sort finalizou a mesma carga de trabalho em apenas $0,233$ segundos. É fundamental destacar que o Radix realizou menos operações brutas ($42$ milhões contra $52$ milhões do Quick). Contudo, a necessidade do Radix de alocar $28$ Megabytes de memória auxiliar resultou em \textit{overhead} de Sistema Operacional, enquanto o particionamento sequencial \textit{in-place} do Quick Sort manteve a alta localidade de referência na memória Cache do processador, garantindo a vitória temporal e provando ser o algoritmo generalista superior.
+    \newpage
 
 \section{Reflexão sobre Uso de IA}
 Nesta seção é discutido o uso de ferramentas de inteligência artificial na elaboração do projeto, descrevendo quais ferramentas de IA foram utilizadas, em quais etapas auxiliaram, erros encontrados nas respostas geradas e correções realizadas pelo grupo.
