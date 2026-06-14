@@ -268,7 +268,7 @@ A lógica empregada pode ser resumida da seguinte forma:
 
 A regra associada à presença de valores negativos foi incluída por razões teóricas relacionadas à aplicabilidade do Radix Sort.
 
-Os conjuntos de dados utilizados durante os experimentos continham apenas valores não negativos, impossibilitando a validação experimental dessa decisão. Dessa forma, a utilização do Heap Sort para vetores negativos de grande porte foi baseada em propriedades teóricas dos algoritmos analisados.
+Os conjuntos de dados utilizados durante os experimentos continham apenas valores não negativos, impossibilitando a validação experimental dessa decisão. Dessa forma, a utilização do Heap Sort para vetores negativos de grande porte foi baseada em propriedades teóricas dos algoritmos analisados e deve ser entendida como uma decisão conservadora da heurística.
 
 \section{Validação das Heurísticas}
 
@@ -333,11 +333,11 @@ Experimentos realizados com vetores aleatórios de 10000 elementos confirmaram q
 
 Considerou-se inicialmente que vetores com amplitudes extremamente elevadas deveriam evitar o uso do Radix Sort.
 
-Os resultados mostraram que, mesmo em cenários discrepantes, o algoritmo continuou apresentando desempenho competitivo.
+Os resultados mostraram que, mesmo em cenários discrepantes, o Radix Sort continuou apresentando desempenho competitivo. Entretanto, observou-se que o aumento da amplitude dos dados pode tornar o Quick Sort uma alternativa interessante devido ao menor consumo de memória auxiliar.
 
-Contudo, observou-se que o Quick Sort apresentou melhor relação entre desempenho e utilização de memória em diversos desses cenários.
+Dessa forma, conclui-se que a amplitude dos dados deve ser considerada pela heurística, porém não foi observada uma degradação suficientemente significativa que justificasse a exclusão completa do Radix Sort nesses cenários.
 
-\textbf{Conclusão: hipótese parcialmente rejeitada.}
+\textbf{Conclusão: hipótese parcialmente aceita.}
 
 \subsection{Hipótese 6: Vetores Muito Grandes Favorecem o Heap Sort}
 
