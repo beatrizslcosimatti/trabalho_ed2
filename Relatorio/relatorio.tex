@@ -695,18 +695,23 @@ Descrever:
         \centering
         \begin{tabular}{c|c|c|c|c}
             \hline
-            Tamanho (n) & Cenário de entrada & Tempo de execução & Comparações & Trocas\\
+            Tamanho (n) & Cenário de entrada & Tempo de execução (s) & Comparações & Trocas\\
             \hline
-            1000 & Já Ordenado (Melhor caso) & a & a & 0\\
-            1000 & Aleatório & a & a & a\\
-            1000 & Invertido (Pior caso) & a & a & a\\            
+            1000 & Já Ordenado (Melhor caso) & 0.000 & 999 & 0\\
+            1000 & Aleatório & 0.003 & 498870 & 240479\\
+            1000 & Invertido (Pior caso) & 0.002 & 499500 & 499500\\            
         \end{tabular}
         \caption{\label{tab:bubble}Tabelas e Métricas coletadas - BubbleSort.}
     \end{table}
 
     A fim de visualizar melhor a complexidade temporal do Bubble Sort nos três casos distintos (melhor caso, caso médio e pior caso), foram construídos gráficos em função do tamanho N do evtor e do tempo de execução. 
 
-    GRAFICO MELHOR CASO
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.65\linewidth]{imagens/bubble_melhor_caso.png}
+        \caption{Desempenho Bubble Sort: Melhor caso}
+        \label{fig:melhorCasoBubble}
+    \end{figure}
 
     \begin{figure}[H]
         \centering
@@ -715,7 +720,12 @@ Descrever:
         \label{fig:casoMedioBubble}
     \end{figure}
 
-    GRAFICO PIOR CASO
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.65\linewidth]{imagens/bubble_melhor_caso.png}
+        \caption{Desempenho Bubble Sort: Pior caso}
+        \label{fig:piorCasoBubble}
+    \end{figure}
 
     Analisando os três gráficos gerados, observa-se que o algoritmo se comporta da maneira esperada para as entradas recebidas, possuindo uma complexidade temporal quadrática $O(n^2)$ no caso médio (entradas aleatórias) e pior caso, e complexidade temporal $O(n)$ no melhor caso (vetor ordenado).
     No gráfico da Figura \ref{fig:casoMedioBubble}, que exibe o comportamento no caso médio, é possível observar um pico inesperado no tempo de execução para o vetor de tamanho 225.000. 
@@ -740,9 +750,9 @@ Descrever:
             \hline
             Tamanho (n) & Cenário de entrada & Tempo de execução & Comparações & Trocas\\
             \hline
-            1000 & Já Ordenado (Melhor caso) & a & a & 0\\
-            1000 & Aleatório & a & a & a\\
-            1000 & Invertido (Pior caso) & a & a & a\\            
+            1000 & Já Ordenado (Melhor caso) & 0.000 & 999 & 0\\
+            1000 & Aleatório & 0.000 & 254782 & 253791\\
+            1000 & Invertido (Pior caso) & 0.002 & 499500 & 499500\\            
         \end{tabular}
         \caption{\label{tab:insertion}Tabelas e Métricas coletadas - Insertion Sort.}
     \end{table}

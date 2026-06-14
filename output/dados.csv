@@ -6,3 +6,12 @@ radix,100,quase_ordenado,0.000000,99,0,600,520, 0, 0, 927
 radix,500,quase_ordenado,0.000000,499,0,3000,2120, 0, 0, 4527
 insertion,1000,quase_ordenado,0.000000,1048,49,0,0, 0, 0, 7190
 radix,100000,quase_ordenado,0.004000,99999,0,1200000,400240, 0, 0, 1800054
+bubble,1000,quase_ordenado,0.000000,2994,49,0,0, 0, 0, 9195
+bubble,1000,aleatorio,0.003000,498870,240479,0,0, 0, 0, 2463348
+bubble,1000,quase_ordenado,0.000000,999,0,0,0, 0, 0, 3004
+bubble,1000,quase_ordenado,0.000000,6972,999,0,0, 0, 0, 24949
+bubble,1000,decrescente,0.002000,499500,499500,0,0, 0, 0, 3501497
+insertion,1000,decrescente,0.002000,499500,499500,0,0, 0, 0, 2002996
+insertion,1000,quase_ordenado,0.000000,999,0,0,0, 0, 0, 6994
+insertion,1000,quase_ordenado,0.000000,1048,49,0,0, 0, 0, 7190
+insertion,1000,aleatorio,0.000000,254782,253791,0,0, 0, 0, 1022142
