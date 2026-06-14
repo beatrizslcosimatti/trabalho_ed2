@@ -5,7 +5,6 @@
 #include "algoritmos.h"
 #include "caracterizacao.h"
 
-//Pode ser problematico para o Heap, caso o
 void vetor_aletorio(int*arr, int tamanho, int tamanho_elementos){
     for(int i = 0;i<tamanho;i++){
         arr[i]=rand()%tamanho_elementos;

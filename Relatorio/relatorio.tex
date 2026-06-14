@@ -239,13 +239,260 @@ O algoritmo de ordenação Heap Sort foi inventado em 1964 pelo cientista da com
 
 \newpage
 
-
-
 \section{Arquitetura do Sistema}
 
-O sistema adaptativo desenvolvido tem como objetivo selecionar automaticamente o algoritmo de ordenação mais adequado para cada vetor de entrada. Para isso, antes da ordenação, são coletadas diversas métricas que descrevem as características dos dados. A partir dessas informações, um conjunto de heurísticas decide qual algoritmo apresenta maior potencial de desempenho para a entrada analisada.
+\subsection{Execução da Aplicação}
+
+A aplicação foi desenvolvida para ser executada por meio da linha de comando, permitindo ao usuário configurar diferentes parâmetros relacionados à geração dos dados de entrada e ao algoritmo de ordenação utilizado. 
+A interface foi projetada de forma a facilitar a realização de experimentos em larga escala, possibilitando a automatização dos testes e a coleta sistemática das métricas de desempenho.
+
+A sintaxe geral de execução do programa é dada por:
+
+\begin{verbatim}
+./programa [opções]
+\end{verbatim}
+
+Em que as opções disponíveis permitem selecionar o algoritmo de ordenação, definir a origem dos dados de entrada e especificar características da distribuição dos valores.
+
+\subsubsection{Seleção do Algoritmo}
+
+O algoritmo de ordenação pode ser escolhido por meio da flag \texttt{--algoritmo}. 
+Atualmente, a aplicação suporta os algoritmos Heap Sort, Quick Sort, Insertion Sort, Bubble Sort e Radix Sort.
+
+Por exemplo, para executar o Quick Sort sobre um vetor gerado dinamicamente com 100.000 elementos:
+
+\begin{verbatim}
+./programa --algoritmo quick --tamanho 100000
+\end{verbatim}
+
+Também é possível utilizar o modo automático:
+
+\begin{verbatim}
+./programa --algoritmo auto --tamanho 100000
+\end{verbatim}
+
+Nesse caso, o sistema realiza uma caracterização prévia do vetor e seleciona automaticamente o algoritmo considerado mais adequado para aquela entrada.
+
+\subsubsection{Geração Dinâmica de Vetores}
+
+A geração dinâmica é realizada através da flag \texttt{--tamanho}, que define a quantidade de elementos do vetor.
+
+\begin{verbatim}
+./programa --algoritmo quick --tamanho 1000000
+\end{verbatim}
+
+Além do tamanho, o usuário pode especificar a distribuição dos dados utilizando a flag \texttt{--distribuicao}.
+
+Por exemplo:
+
+\begin{verbatim}
+./programa --algoritmo quick --tamanho 1000000 --distribuicao aleatorio
+\end{verbatim}
+
+As distribuições atualmente disponíveis são:
+
+\begin{itemize}
+    \item \texttt{aleatorio}
+    \item \texttt{quase\_ordenado}
+    \item \texttt{crescente}
+    \item \texttt{decrescente}
+    \item \texttt{discrepante}
+    \item \texttt{organ\_pipe}
+    \item \texttt{intercalado}
+\end{itemize}
+
+Por exemplo, para gerar um vetor utilizando a distribuição crescente:
+
+\begin{verbatim}
+./programa --algoritmo quick --tamanho 1000000 --distribuicao crescente
+\end{verbatim}
+
+\subsubsection{Controle do Grau de Desordem}
+
+Para vetores quase ordenados, o usuário pode especificar o percentual de elementos que sofrerão trocas aleatórias através da flag \texttt{--desordem}.
+
+Por exemplo, para gerar um vetor com apenas 5\% de desordem:
+
+\begin{verbatim}
+./programa --algoritmo quick --tamanho 1000000 --distribuicao quase_ordenado --desordem 5
+\end{verbatim}
+
+Da mesma forma, pode-se aumentar o grau de desordem:
+
+\subsubsection{Leitura de Dados a Partir de Arquivos}
+
+A aplicação também permite utilizar vetores previamente armazenados em arquivos texto. 
+Para isso, utiliza-se a flag \texttt{--input} seguida do caminho do arquivo.
+
+\begin{verbatim}
+./programa --algoritmo heap --input dados.txt
+\end{verbatim}
+
+Assim, o programa realiza automaticamente a leitura dos valores contidos no arquivo, determina o tamanho da entrada e executa o algoritmo selecionado.
+
+\subsubsection{Inserção Manual de Dados}
+
+Para testes rápidos e depuração, a aplicação permite a inserção direta dos elementos do vetor pela linha de comando utilizando a flag \texttt{--array}.
+
+Por exemplo:
+
+\begin{verbatim}
+./programa --algoritmo quick --array 8 3 1 7 5 2 9 4
+\end{verbatim}
+
+Nesse caso, o vetor utilizado pelo algoritmo será:
+
+\[
+[8 \;\; 3 \;\; 1 \;\; 7 \;\; 5 \;\; 2 \;\; 9 \;\; 4]
+\]
+
+\subsubsection{Saída do Programa}
+
+Ao final da execução, a aplicação apresenta no terminal uma tabela contendo as principais métricas coletadas durante a ordenação, incluindo:
+Além da exibição em tela, todos os resultados são armazenados automaticamente em um arquivo CSV localizado no diretório \texttt{output}, permitindo posterior análise estatística e construção de gráficos.
+
+\subsection{Distribuições dos Vetores Utilizados}
+
+Com o objetivo de avaliar o comportamento dos algoritmos de ordenação sob diferentes condições de entrada, foram implementadas diversas estratégias de geração de vetores. 
+Cada distribuição busca representar cenários específicos, permitindo analisar tanto o desempenho e a eficiência dos algoritmos diante de diferentes padrões de organização dos dados.
+
+\subsubsection{Vetor Aleatório}
+
+Nesta distribuição, cada posição do vetor recebe um valor pseudoaleatório gerado independentemente das demais posições. 
+Os valores são obtidos por meio de uma distribuição uniforme em um intervalo previamente definido.
+
+Para um vetor de tamanho (n), um exemplo de instância gerada é:
+
+\[
+A =
+[42 \;\; 17 \;\; 91 \;\; 3 \;\; 58 \;\; 24 \;\; \cdots]
+\]
+
+Essa distribuição representa o caso mais comum em análises experimentais e é frequentemente utilizada como referência para comparação entre algoritmos de ordenação.
+
+\subsubsection{Vetor Quase Ordenado}
+
+A distribuição quase ordenada é construída inicialmente em ordem crescente. Em seguida, uma porcentagem previamente definida dos elementos tem suas posições trocadas aleatoriamente.
+
+Para um vetor de tamanho (n), um exemplo é:
+
+\[
+A =
+[1 \;\; 2 \;\; 3 \;\; 4 \;\; 8 \;\; 6 \;\; 7 \;\; 5 \;\; 9 \;\; 10 \;\; \cdots \;\; n]
+\]
+
+Essa distribuição permite avaliar a capacidade dos algoritmos de explorar a existência de ordenação prévia nos dados.
+
+\subsubsection{Vetor Discrepante}
+
+A distribuição discrepante é composta majoritariamente por valores pertencentes a um intervalo reduzido. Posteriormente, uma pequena fração dos elementos é substituída por valores extremamente elevados, denominados \textit{outliers}.
+
+Para um vetor de tamanho (n), um exemplo é:
+
+\[
+A =
+[15 \;\; 23 \;\; 8 \;\; 41 \;\; 10^9 \;\; 12 \;\; 4 \;\; 37 \;\; \cdots]
+\]
+
+Essa configuração permite analisar o impacto da presença de valores discrepantes no desempenho dos algoritmos de ordenação.
+
+\subsubsection{Vetor Crescente}
+
+Nesta distribuição, os elementos são armazenados em ordem estritamente crescente.
+
+Para um vetor de tamanho (n), a sequência gerada é dada por:
+
+\[
+A =
+[1 \;\; 2 \;\; 3 \;\; \cdots \;\; n-2 \;\; n-1 \;\; n]
+\]
+
+Trata-se de um caso clássico utilizado na análise de algoritmos de ordenação, uma vez que determinadas estratégias de seleção podem apresentar comportamentos significativamente distintos quando os dados já se encontram ordenados.
+
+\subsubsection{Vetor Decrescente}
+
+Nesta distribuição, os elementos são armazenados em ordem estritamente decrescente.
+
+Para um vetor de tamanho (n), a sequência gerada é dada por:
+
+\[
+A =
+[n \;\; n-1 \;\; n-2 \;\; \cdots \;\; 3 \;\; 2 \;\; 1]
+\]
+
+Assim como o vetor crescente, essa distribuição é amplamente utilizada na literatura para avaliar a sensibilidade dos algoritmos à disposição inicial dos dados.
+
+\subsubsection{Distribuição Organ Pipe}
+
+A distribuição \textit{organ pipe} apresenta valores crescentes até uma posição central e, a partir desse ponto, valores decrescentes, formando uma estrutura semelhante aos tubos de um órgão musical, o que origina o seu nome.
+
+De forma geral, para um vetor de tamanho ímpar (n), a sequência possui a forma:
+
+\[
+A =
+\left[
+1 \;\;
+2 \;\;
+3 \;\;
+\cdots \;\;
+\frac{n+1}{2}
+\;\;
+\cdots \;\;
+3 \;\;
+2 \;\;
+1
+\right]
+\]
+
+Por exemplo, para (n=9):
+
+\[
+A =
+[1 \;\; 2 \;\; 3 \;\; 4 \;\; 5 \;\; 4 \;\; 3 \;\; 2 \;\; 1]
+\]
+
+\subsubsection{Distribuição Intercalada}
+
+A distribuição intercalada alterna elementos de pequeno e grande valor ao longo de todo o vetor.
+
+De forma geral, para um vetor de tamanho (n), a sequência é construída segundo o padrão:
+
+\[
+A =
+[1 \;\; n \;\; 2 \;\; n-1 \;\; 3 \;\; n-2 \;\; \cdots]
+\]
+
+Por exemplo, para (n=10):
+
+\[
+A =
+[1 \;\; 10 \;\; 2 \;\; 9 \;\; 3 \;\; 8 \;\; 4 \;\; 7 \;\; 5 \;\; 6]
+\]
+
+Observa-se que as distribuições \textit{organ pipe} e intercalada foram incluídas especificamente para investigar possíveis degradações de desempenho do quick sort utilizando a estratégia da mediana de três para seleção do pivô, que será especificado na devida sessão de resultados.
+
+\subsection{Dados de Desempenho Coletados}
+
+Diversos dados foram coletados durante as execuções e testes dos algoritmos, com o intuito de estudar sistematicamente o comportamento de cada método no cenários analisados. 
+Nesse sentido, os dados de desempenho coletados foram:
+
+\begin{itemize}
+    \item \textbf{Tempo de execução:} determinação do tempo de execução da ordenação em segundos;
+    \item \textbf{Número de comparações:} número total de comparações entre elementos do vetor durante a execução;
+    \item \textbf{Número de trocas:} mede a quantidade de trocas de valores entre dois elementos do vetor, nos códigos implementados, a função de troca foi modularizada e chamada por todos os algoritmos conforme a necessiadade;
+    \item \textbf{Número de operações:} quantifica a quantidade de operações totais realizada pelo algoritmo durante a execução - como atribuição de valores, operações matemáticas, comparações e outros-;
+    \item \textbf{Número de cópias:} determina a quantidade de vezes que cópias de elementos e vetores são realizadas;
+    \item \textbf{Chamadas recursivas:} quantifica o total de chamadas recursivas necessárias para a ordenação;
+    \item \textbf{Profundiade Máxima da Recursão:} mede a altura máxima da árvore de recursão percorrida pelo algoritmo, ou de forma equivalente, O maior número de chamadas da função recursiva simultaneamente ativas na pilha de execução durante toda a ordenação;
+    \item \textbf{Memória Extra Utilizada:} determina a quantidade de memória auxiliar utilizada para a ordenação através de uma estimativa envolvendo as variáveis auxiliares criadas e o tamanho delas em bytes.
+\end{itemize}
+
+Observa-se que nem todos os dados foram coletados para todos os algoritmos, uma vez que eles diferem da arquitetura de implementação - iterativo ou recursivo - e de particularidades mais intrínsecas. 
+Dessa forma, algumas métricas podem não condizer com alguns algorítmos. 
 
 \subsection{Métricas Coletadas}
+
+O sistema adaptativo desenvolvido tem como objetivo selecionar automaticamente o algoritmo de ordenação mais adequado para cada vetor de entrada. Para isso, antes da ordenação, são coletadas diversas métricas que descrevem as características dos dados. A partir dessas informações, um conjunto de heurísticas decide qual algoritmo apresenta maior potencial de desempenho para a entrada analisada.
 
 \subsubsection{Grau de Desordem}
 
@@ -295,7 +542,6 @@ Embora todas as métricas tenham sido implementadas e avaliadas experimentalment
 
 \begin{table}[H]
 \centering
-\caption{Métricas implementadas e utilização na heurística final}
 \begin{tabular}{lc}
 \toprule
 \textbf{Métrica} & \textbf{Utilizada na heurística} \\
@@ -307,6 +553,7 @@ Desvio padrão & Não \\
 Valor mínimo & Sim \\
 \bottomrule
 \end{tabular}
+\caption{Métricas implementadas e utilização na heurística final}
 \end{table}
 
 A quantidade de elementos repetidos e o desvio padrão foram mantidos apenas para fins de caracterização dos conjuntos de dados. Durante os experimentos realizados, essas métricas não apresentaram influência significativa na escolha do algoritmo mais eficiente.
@@ -340,6 +587,8 @@ A lógica empregada pode ser resumida da seguinte forma:
 A regra associada à presença de valores negativos foi incluída por razões teóricas relacionadas à aplicabilidade do Radix Sort.
 
 Os conjuntos de dados utilizados durante os experimentos continham apenas valores não negativos, impossibilitando a validação experimental dessa decisão. Dessa forma, a utilização do Heap Sort para vetores negativos de grande porte foi baseada em propriedades teóricas dos algoritmos analisados e deve ser entendida como uma decisão conservadora da heurística.
+
+\newpage
 
 \section{Validação das Heurísticas}
 
@@ -444,6 +693,51 @@ Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Exp
 • limitações observadas;
 • impacto das características da entrada.
 • impactos das entradas adversariais
+
+    \subsection{Bubble Sort}
+    Ao implementar o Bubble Sort, foi utilizada uma flag booleana (houveTroca) para identificar se o vetor está ordenado após percorre-lo.
+    Assim, essa estratégia corroborou a eficiência do algoritmo diante de entradas já ordenadas.
+    Diante de diversas entradas com diferentes características, foi possível organizar as informações na Tabela \ref{tab:bubble}.
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{c|c|c|c|c}
+            \hline
+            Tamanho (n) & Cenário de entrada & Tempo de execução & Comparações & Trocas\\
+            \hline
+            1000 & Já Ordenado (Melhor caso) & a & a & 0\\
+            1000 & Aleatório & a & a & a\\
+            1000 & Invertido (Pior caso) & a & a & a\\            
+        \end{tabular}
+        \caption{\label{tab:bubble}Tabelas e Métricas coletadas - BubbleSort.}
+    \end{table}
+
+    A fim de visualizar melhor a complexidade temporal do Bubble Sort nos três casos distintos (melhor caso, caso médio e pior caso), foram construídos gráficos em função do tamanho N do evtor e do tempo de execução. 
+
+    GRAFICO MELHOR CASO
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.65\linewidth]{../output/graficos_separados/grafico_tempo_bubble.png}
+        \caption{Desempenho Bubble Sort: Caso médio}
+        \label{fig:casoMedioBubble}
+    \end{figure}
+
+    GRAFICO PIOR CASO
+
+    Analisando os três gráficos gerados, observa-se que o algoritmo se comporta da maneira esperada para as entradas recebidas, possuindo uma complexidade temporal quadrática $O(n^2)$ no caso médio (entradas aleatórias) e pior caso, e complexidade temporal $O(n)$ no melhor caso (vetor ordenado).
+    No gráfico da Figura NUMERO, que exibe o comportamento no caso médio, é possível observar um pico inesperado no tempo de execução para o vetor de tamanho 225.000. 
+    Como o número de comparações e trocas matemáticas manteve o crescimento estritamente quadrático correspondente à teoria assintótica, conclui-se que essa variação não possui relação com a lógica interna do Bubble Sort, e sim de uma interferência ambiental externa relacionada ao gerenciamento de processos do Sistema Operacional.
+    Processos que rodam em segundo plano disputam o uso do processador, diminuindo temporariamente o tempo de execução dedicado ao programa.
+
+
+    A respeito do impacto das características da entrada, nota-se que o comportamento do Bubble Sort é fortemente governado pelo estado inicial do vetor. 
+    O algoritmo responde de forma excelente a vetores já ordenados devido à otimização por flag implementada, reduzindo o custo computacional de quadrático para linear. 
+    Contudo, em cenários onde a desordem é moderada ou total (aleatório), o algoritmo perde eficiência rapidamente, pois o número de passadas necessárias para arrastar os elementos até suas posições corretas cresce massivamente.
+
+    Nesse tipo de algoritmo, a entrada adversarial para o Bubble Sort ocorre quando o vetor está perfeitamente invertido (ordem decrescente). 
+    Neste cenário, o elemento que deveria estar na última posição está na primeira, forçando o algoritmo a realizar o limite máximo teórico de comparações e trocas através da fórmula $\frac{n (n-1)}{2}$.
+    Para grandes volumes de dados ($n > 10.000$), essa quantidade de operações sobrecarrega o processador, tornando o algoritmo lento demais para ser utilizado.
     
     \subsection{Quick Sort}
     Com o intuito de validar a algoritmo quick sort implementado neste projeto, analisou-se as curvas do número de comparações entre elementos do vetor e númerode trocas necessárias para atingir a ordenação - para valores com diferentes ordens de grandeza - quais foram estudadas teoricamente e possuem comportamento esperado definido. 
