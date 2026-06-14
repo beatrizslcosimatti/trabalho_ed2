@@ -844,7 +844,30 @@ Descrever:
     Contudo, à medida que a ordem de grandeza do vetor $N$ avança substancialmente ao longo do eixo, a inclinação linear da curva do Radix Sort revela a sua verdadeira superioridade matemática. Enquanto a curva do Quick Sort apresenta uma leve curvatura ascendente inerente ao fator logarítmico da sua complexidade $O(n \log_2 n)$, a curva do Radix Sort mantém-se linear e consideravelmente mais baixa, finalizando a ordenação do mesmo volume de dados em um intervalo de tempo notavelmente menor.
 
     É imperativo ressaltar, entretanto, que essa soberania temporal exibida no gráfico depende exclusivamente de um ambiente de hardware favorável. Caso a magnitude do vetor extrapolasse a capacidade física total da memória RAM da máquina de testes, o Sistema Operacional seria forçado a iniciar a paginação em disco secundário. Nessa eventualidade, a curva de tempo do Radix Sort sofreria uma quebra dramática, similar à exaustão de Cache observada no Heap Sort, degradando o seu tempo de execução para patamares inaceitáveis. Como o sistema possuía recursos estritos suficientes para sustentar as cópias, o comportamento $O(n)$ foi validado.
-\newpage
+
+    \subsection{Validação da Heurística Final (Oráculo)}
+    Com o objetivo de extrair o desempenho máximo do sistema mitigando as fraquezas individuais de cada algoritmo, implementou-se um meta-algoritmo (denominado ``Oráculo'') baseado em uma heurística de decisão em tempo de execução. O modelo avalia parâmetros estruturais do vetor, como tamanho ($N$), grau de desordem, valor mínimo e amplitude (\textit{range}), para delegar a ordenação ao algoritmo matematicamente mais favorável para aquele contexto específico. 
+
+    Para validar a eficácia dessa estratégia, os dados experimentais coletados sob a atuação da heurística foram confrontados diretamente com os tempos e operações das execuções isoladas de cada algoritmo.
+
+    \subsubsection*{1. Vetores Pequenos e Quase Ordenados (Insertion Sort)}
+    A primeira regra da heurística delega vetores com $N \le 1000$ e desordem $\le 5.0$ ao Insertion Sort. Os testes experimentais confirmaram a precisão dessa escolha. Para vetores de tamanho $N = 1000$ com distribuição quase ordenada, tanto o Quick Sort quanto o Radix Sort atingiram tempos de execução na ordem de $0.000s$, equivalentes ao Insertion Sort ($0.001s$). 
+
+    No entanto, a justificativa para a seleção do Insertion Sort revela-se na análise espacial e arquitetural. Enquanto o Radix Sort exigiu a alocação de $8.000$ bytes de memória extra e o Quick Sort realizou $15$ chamadas recursivas fragmentando a pilha de execução, o Insertion Sort operou com exatos $0$ bytes de alocação extra e $0$ chamadas recursivas, validando-se como a estrutura microarquitetural mais leve e eficiente para pequenos conjuntos de dados.
+
+    \subsubsection*{2. Amplitude Proporcional (Radix Sort)}
+    A regra central de ganho de desempenho da heurística ativa o Radix Sort quando os valores são não-negativos e a amplitude dos dados é menor ou igual a $10 \times N$. Essa decisão foi posta à prova submetendo o Oráculo a vetores aleatórios massivos.
+
+    Para um vetor de $N = 5.000.000$, o Quick Sort (fallback natural do sistema) necessitou de $1,257$ segundos e mais de $255$ milhões de operações matemáticas globais para concluir a ordenação. Ao identificar a proporção favorável do \textit{range}, a heurística ativou o Radix Sort, o qual reduziu as operações de forma abrupta para $75$ milhões, finalizando a ordenação em uma média de $0,550$ segundos. Esse comportamento provou, na prática, o salto de eficiência proporcionado pela transição oportuna da barreira logarítmica $O(n \log_2 n)$ para o comportamento linear $O(n)$.
+
+    \subsubsection*{3. Tratamento de Valores Negativos (Heap Sort)}
+    A inclusão da regra que direciona vetores com valores negativos (e $N \ge 10000$) para o Heap Sort foi estabelecida como uma precaução de projeto. Conforme mapeado no escopo do trabalho, a implementação clássica do Radix Sort sofre penalidades graves ou quebras de acesso ao tentar indexar \textit{buckets} com chaves negativas. Como as distribuições testadas não possuíam números negativos nativos, o comportamento desta regra baseia-se na segurança matemática do Heap Sort. Ele garante estabilidade absoluta de tempo $O(n \log_2 n)$ e memória extra $O(1)$, evitando que o sistema necessite aplicar varreduras de \textit{offsetting} (deslocamento) sobre todo o vetor, o que prejudicaria o desempenho.
+
+    \subsubsection*{4. O Caso Geral (Quick Sort)}
+    Para as distribuições que falham nas condições anteriores — como vetores muito grandes, com alta desordem e grande espaçamento de dados — a heurística aciona o Quick Sort como seu caso geral. A solidez dessa regra foi confirmada ao testar um vetor de distribuição decrescente de tamanho $N = 2.000.000$.
+
+    Neste cenário adverso, o Radix Sort obteve um tempo de execução de $0,424$ segundos. Em contrapartida, o Quick Sort finalizou a mesma carga de trabalho em apenas $0,233$ segundos. É fundamental destacar que o Radix realizou menos operações brutas ($42$ milhões contra $52$ milhões do Quick). Contudo, a necessidade do Radix de alocar $28$ Megabytes de memória auxiliar resultou em \textit{overhead} de Sistema Operacional, enquanto o particionamento sequencial \textit{in-place} do Quick Sort manteve a alta localidade de referência na memória Cache do processador, garantindo a vitória temporal e provando ser o algoritmo generalista superior.
+    \newpage
 
 \section{Reflexão sobre Uso de IA}
 Nesta seção é discutido o uso de ferramentas de inteligência artificial na elaboração do projeto, descrevendo quais ferramentas de IA foram utilizadas, em quais etapas auxiliaram, erros encontrados nas respostas geradas e correções realizadas pelo grupo.
