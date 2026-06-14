@@ -211,9 +211,6 @@ int main(int argc, char** argv){
                 return 1; 
             }
         }
-
-
-        //adicionando aqui p/ testar
         else if (strcmp(argv[i], "--desordem") == 0 && i + 1 < argc) {
             percentual_desordem = atof(argv[i + 1]);
             i++;
@@ -240,7 +237,32 @@ int main(int argc, char** argv){
 
         return 1;
 
-    } else if (tamanho > 0) 
+    } 
+    else if (arquivo_input != NULL)
+    {
+        printf("Modo: Lendo dados do arquivo '%s'...\n",
+               arquivo_input);
+
+        arr = ler_vetor_arquivo(arquivo_input, &n);
+
+        if (arr == NULL)
+        {
+            return 1;
+        }
+
+        printf("Arquivo carregado com sucesso.\n");
+        printf("Quantidade de elementos: %d\n", n);
+
+        printf("Primeiros 10 elementos:\n");
+
+        for (int i = 0; i < 10 && i < n; i++)
+        {
+            printf("%d ", arr[i]);
+        }
+
+        printf("\n");
+    }
+    else if (tamanho > 0) 
     {
         printf("Modo: Gerando %d dados dinamicamente para o algoritmo %s...\n", tamanho, algoritmo);
         n = tamanho;
