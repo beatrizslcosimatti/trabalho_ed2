@@ -371,14 +371,14 @@ int main(int argc, char** argv){
 
         printf("+==============================================================================+\n");
         printf("|                            RESULTADOS DA EXECUCAO                            |\n");
-        printf("+----------------------+-------------------------------------------------------+\n");
+        printf("+---------------------------+--------------------------------------------------+\n");
         printf("| %-20s | %-53s |\n", "Algoritmo", algoritmo);
         printf("| %-20s | %-53d |\n", "Tamanho do vetor", n);
         printf("| %-20s | %-53s |\n", "Distribuicao", tipo_distribuicao);
-        printf("| %-20s | %-53.9f |\n", "Tempo de execucao", tempo_execucao);
+        printf("| %-20s | %-53f |\n", "Tempo (s)", tempo_execucao);
         printf("| %-20s | %-53llu |\n", "Comparacoes", m.comparacoes);
         printf("| %-20s | %-53llu |\n", "Trocas", m.trocas);
-        printf("| %-20s | %-53llu |\n", "Memoria extra", m.memoria_extra_bytes);
+        printf("| %-20s | %-53llu |\n", "Memoria (bytes)", m.memoria_extra_bytes);
         printf("| %-20s | %-53llu |\n", "Chamadas recursivas", m.chamadas_recursivas);
         printf("| %-20s | %-53llu |\n", "Profundidade maxima", m.profundidade_maxima);
         printf("| %-20s | %-53llu |\n", "Copias", m.copias);
