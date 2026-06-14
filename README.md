@@ -1,8 +1,6 @@
 # trabalho_ed2
 Trabalho de Estrutura de Dados
 
-Careca Safado
-
 ## 🚀 Como Executar (Exemplos de Uso)
 
 Aqui estão exemplos de como adicionar informações pelo terminal

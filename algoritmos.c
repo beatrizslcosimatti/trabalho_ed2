@@ -24,24 +24,32 @@ void bubble_sort(int *vetor, int n, Metricas *m){
     //inicialização das métricas
     m->comparacoes = 0; //qtd de comparações entre os valores do vetor
     m->trocas = 0; //qtd de trocas realizadas
+    //m->operacoes = 0;
 
     //inicia a contagem do tempo de execução
     clock_t inicio = clock();
+    m->operacoes++;
 
+    m->operacoes++; //int i=0
     for (int i = 0; i < n-1; i++){
         int houveTroca = 0;
+        m->operacoes+=3;
 
+        m->operacoes++; //int j=0        
         for(int j = 0; j < n-i-1; j++){
+            m->operacoes+=2;
             m->comparacoes++; //incrementa contador de comparações 
 
+            m->operacoes++; //comparação do if
             if(vetor[j] > vetor[j+1]){
-
                 //troca entre os valores
                 troca(&vetor[j], &vetor[j+1], m);
                 houveTroca = 1;
+                m->operacoes++;
             }
         }
 
+        m->operacoes++; //comparação do if
         if (houveTroca == 0){ //se não houve troca, já está ordenado
             break;
         }
@@ -61,21 +69,31 @@ void insertion_sort(int *vetor, int n, Metricas *m){
     //inicialização das métricas
     m->comparacoes = 0; //qtd de comparações entre os valores do vetor
     m->trocas = 0; //qtd de trocas realizadas
+    //m->operacoes = 0;
 
     //inicia a contagem do tempo de execução
     clock_t inicio = clock();
 
+    m->operacoes++;
     for (int i = 1; i < n; i++) {
+        m->operacoes+=2;
+
         int chave = vetor[i]; 
         int j = i - 1;
+        m->operacoes+=2;
 
         while (j >= 0) {
+            m->operacoes++;
+
             m->comparacoes++; //incrementa contador de comparações 
 
+            m->operacoes++; //comparação do if
             if (vetor[j] > chave) {
                 vetor[j + 1] = vetor[j]; //desloca o elemento para a direita
                 m->trocas++; //incrementa contador de trocas
                 j--;
+
+                m->operacoes+=2;
             } else {
                 break; 
             }
@@ -83,6 +101,7 @@ void insertion_sort(int *vetor, int n, Metricas *m){
         
         //coloca a chave na posição correta
         vetor[j + 1] = chave;
+        m->operacoes++;
     }
 
     //finaliza a contagem do tempo de execução
