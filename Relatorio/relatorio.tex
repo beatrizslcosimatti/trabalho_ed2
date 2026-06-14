@@ -9,8 +9,8 @@
 \usepackage{booktabs}
 \usepackage{float}
 \usepackage{graphicx}
-\usepackage{float}
 \usepackage{amsmath}
+\usepackage[hidelinks]{hyperref}
 
 \pagestyle{fancy}       % Ativa o estilo fancyhdr
 \fancyhf{}              % Limpa todos os cabeçalhos e rodapés padrão
@@ -22,7 +22,7 @@
 
 \begin{document}
 
-% CAPA
+% capa
 \begin{titlepage}
     \centering
     \vspace*{2cm}
@@ -45,7 +45,7 @@
     {\large
         Disciplina: Estrutura de Dados II\\
         SCC0606\\
-        Professor: Careca safado
+        Professor: Renato M. Silva
     }
     \vfill
     {\large
@@ -58,13 +58,28 @@
 
     O objetivo do trabalho desenvolvido foi estudar e implementar diferentes algoritmos de ordenação na linguagem C.
     Como cada algoritmo se comporta de uma maneira específica dependendo do tamanho do vetor ou de como os números estão organizados, o objetivo final do projeto é a criação de um Sistema Adaptativo.
-    Esse sistema funciona como um analisador que avalia o vetor de entrada e, através de heurísticas, escolhe automaticamente o melhor algoritmo para realizar a ordenação.
+    Esse sistema atua como um analisador que, antes de iniciar a ordenação, extrai métricas do vetor de entrada. 
+    A partir dessas informações e por meio de uma heurística de decisão, o sistema seleciona e executa de forma automatizada o algoritmo com maior potencial de eficiência para o cenário em questão, minimizando o tempo de execução e o uso de recursos computacionais.
 
     Para fundamentar as tomadas de decisão desse sistema, o projeto foi estruturado de maneira modular, englobando a implementação de cinco algoritmos: Bubble Sort, Insertion Sort, Quick Sort, Heap Sort e Radix Sort.
 
-    ACHO Q COLOCA O LINK DO VIDEO AQ
+    \begin{itemize}
+        \item \textbf{Bubble Sort:} Algoritmo iterativo baseado em trocas adjacentes, mantido no ecossistema de testes principalmente para fins de controle e contraste de desempenho assintótico.
+        \item \textbf{Insertion Sort:} Método iterativo por inserção que, apesar de possuir complexidade quadrática no caso médio, foi escolhido por sua eficiência linear $O(n)$ em vetores pequenos e predominantemente já ordenados.
+        \item \textbf{Quick Sort:} Algoritmo baseado no paradigma de divisão e conquista. 
+        Teve sua implementação aprimorada com o particionamento de Hoare e a estratégia de pivô por Mediana de Três.
+        \item \textbf{Heap Sort:} Algoritmo baseado em estrutura de dados árvore. 
+        Foi integrado ao sistema devido à sua garantia teórica de tempo $O(n \log n)$ em qualquer cenário e por ser estritamente \textit{in-place} ($O(1)$ de espaço), servindo como uma alternativa para grandes volumes de dados que possam degradar o Quick Sort.
+        \item \textbf{Radix Sort (LSD):} Algoritmo de ordenação não-comparativa com tempo linear $O(n)$. 
+        Sua escolha justifica-se pela altíssima eficiência em cenários de dados massivos não-negativos, desde que a amplitude dos valores (\textit{range}) seja proporcional ao tamanho do vetor.
+    \end{itemize}
 
-\newpage
+    A validação empírica dessas escolhas, bem como o mapeamento dos limites operacionais de cada algoritmo sob distribuições variadas, serão detalhados ao longo deste relatório.
+
+    Também foi feito um vídeo para apresentar o projeto, que pode ser visualizado no seguinte link:
+    \begin{center}
+    \url{www.nossoVideoDivo.com}
+    \end{center}
 
 \section{Algoritmos Base}
 
@@ -225,7 +240,6 @@
         \caption{Complexidade de tempo e espaço do Radix Sort.}
     \end{table}
 
-\newpage
 
 \section{Arquitetura do Sistema}
 
@@ -587,7 +601,6 @@ A regra associada à presença de valores negativos foi incluída por razões te
 
 Os conjuntos de dados utilizados durante os experimentos continham apenas valores não negativos, impossibilitando a validação experimental dessa decisão. Dessa forma, a utilização do Heap Sort para vetores negativos de grande porte foi baseada em propriedades teóricas dos algoritmos analisados e deve ser entendida como uma decisão conservadora da heurística.
 
-\newpage
 
 \section{Validação das Heurísticas}
 
@@ -671,9 +684,6 @@ Consequentemente, não foi identificada uma situação experimental em que sua u
 \textbf{Conclusão: hipótese rejeitada.}
 
 
-
-\newpage
-
 \section{Metodologia Experimental}
 Descrever:
 • ambiente utilizado;
@@ -681,7 +691,6 @@ Descrever:
 • tamanhos testados;
 • critérios de avaliação
 
-\newpage
 
 \section{Resultados}
     \subsection{Bubble Sort}
@@ -706,21 +715,21 @@ Descrever:
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.65\linewidth]{imagens/bubble_melhor_caso.png}
+        \includegraphics[width=0.6\linewidth]{imagens/bubble_melhor_caso.png}
         \caption{Desempenho Bubble Sort: Melhor caso}
         \label{fig:melhorCasoBubble}
     \end{figure}
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.65\linewidth]{../output/graficos_separados/grafico_tempo_bubble.png}
+        \includegraphics[width=0.6\linewidth]{../output/graficos_separados/grafico_tempo_bubble.png}
         \caption{Desempenho Bubble Sort: Caso médio}
         \label{fig:casoMedioBubble}
     \end{figure}
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.65\linewidth]{imagens/bubble_melhor_caso.png}
+        \includegraphics[width=0.6\linewidth]{imagens/bubble_melhor_caso.png}
         \caption{Desempenho Bubble Sort: Pior caso}
         \label{fig:piorCasoBubble}
     \end{figure}
@@ -887,7 +896,7 @@ Descrever:
     Para as distribuições que falham nas condições anteriores — como vetores muito grandes, com alta desordem e grande espaçamento de dados — a heurística aciona o Quick Sort como seu caso geral. A solidez dessa regra foi confirmada ao testar um vetor de distribuição decrescente de tamanho $N = 2.000.000$.
 
     Neste cenário adverso, o Radix Sort obteve um tempo de execução de $0,424$ segundos. Em contrapartida, o Quick Sort finalizou a mesma carga de trabalho em apenas $0,233$ segundos. É fundamental destacar que o Radix realizou menos operações brutas ($42$ milhões contra $52$ milhões do Quick). Contudo, a necessidade do Radix de alocar $28$ Megabytes de memória auxiliar resultou em \textit{overhead} de Sistema Operacional, enquanto o particionamento sequencial \textit{in-place} do Quick Sort manteve a alta localidade de referência na memória Cache do processador, garantindo a vitória temporal e provando ser o algoritmo generalista superior.
-    \newpage
+
 
 \section{Reflexão sobre Uso de IA}
 Nesta seção é discutido o uso de ferramentas de inteligência artificial na elaboração do projeto, descrevendo quais ferramentas de IA foram utilizadas, em quais etapas auxiliaram, erros encontrados nas respostas geradas e correções realizadas pelo grupo.
@@ -932,12 +941,9 @@ As sugestões fornecidas pela IA frequentemente serviram como ponto de partida p
 Dessa forma, a experiência mostrou que o uso responsável de ferramentas de IA exige supervisão constante e verificação dos resultados obtidos. No contexto deste trabalho, a contribuição mais relevante da IA não foi fornecer respostas prontas, mas acelerar o processo de discussão, refinamento e organização de ideias.
 
 
-\newpage
-
 \section{Conclusão}
 Resumo dos principais achados.
 
-\newpage
 
 \section{Referências Bibliográficas}
 
