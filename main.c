@@ -253,13 +253,6 @@ int main(int argc, char** argv){
         printf("Arquivo carregado com sucesso.\n");
         printf("Quantidade de elementos: %d\n", n);
 
-        printf("Primeiros 10 elementos:\n");
-
-        for (int i = 0; i < 10 && i < n; i++)
-        {
-            printf("%d ", arr[i]);
-        }
-
         printf("\n");
     }
     else if (tamanho > 0) 
