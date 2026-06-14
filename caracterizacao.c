@@ -114,17 +114,18 @@ const char* decidir_algoritmo(
 ) {
     (void)repetidos;
     (void)desvio;
-    (void)min;
-
-    if (n <= 50) {
-        return "insertion";
-    }
 
     if (n <= 1000 && desordem <= 5.0) {
         return "insertion";
     }
 
-    if (n >= 10000 && range <= 1000000) {
+    // Se tiver negativo, evita Radix
+    if (min < 0 && n >= 10000) {
+        return "heap";
+    }
+
+    // Radix só para não-negativos e range proporcional ao tamanho
+    if (min >= 0 && range <= 10 * n) {
         return "radix";
     }
 

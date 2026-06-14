@@ -10,6 +10,7 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{amsmath}
 
 \pagestyle{fancy}       % Ativa o estilo fancyhdr
 \fancyhf{}              % Limpa todos os cabeçalhos e rodapés padrão
@@ -169,11 +170,190 @@
 
 \newpage
 
+
+
 \section{Arquitetura do Sistema}
-Descrição:
-• das métricas coletadas;
-• das heurísticas;
-• das decisões implementadas -> parte da bia
+
+O sistema adaptativo desenvolvido tem como objetivo selecionar automaticamente o algoritmo de ordenação mais adequado para cada vetor de entrada. Para isso, antes da ordenação, são coletadas diversas métricas que descrevem as características dos dados. A partir dessas informações, um conjunto de heurísticas decide qual algoritmo apresenta maior potencial de desempenho para a entrada analisada.
+
+\subsection{Métricas Coletadas}
+
+\subsubsection{Grau de Desordem}
+
+O grau de desordem mede o percentual de inversões adjacentes existentes no vetor. Uma inversão adjacente ocorre quando um elemento é maior que seu sucessor imediato.
+
+A métrica é calculada por:
+
+\[
+Desordem = \frac{\text{Quantidade de Inversões Adjacentes}}{n-1}\times 100
+\]
+
+Essa métrica foi utilizada para identificar vetores quase ordenados, situação na qual o Insertion Sort apresenta desempenho próximo de \(O(n)\).
+
+\subsubsection{Quantidade de Elementos Repetidos}
+
+Esta métrica contabiliza quantos elementos do vetor são cópias extras de valores já existentes.
+
+Seu objetivo inicial era investigar se a presença de muitos valores repetidos poderia influenciar a escolha do algoritmo de ordenação.
+
+\subsubsection{Amplitude dos Valores (Range)}
+
+A amplitude dos valores corresponde à diferença entre o maior e o menor elemento do vetor:
+
+\[
+Range = Max - Min
+\]
+
+Essa métrica foi utilizada para avaliar a adequação do vetor à aplicação do Radix Sort.
+
+\subsubsection{Desvio Padrão}
+
+O desvio padrão mede o grau de dispersão dos elementos em relação à média do conjunto de dados.
+
+\[
+\sigma = \sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n}}
+\]
+
+Inicialmente investigou-se a possibilidade de utilizar essa métrica como parâmetro para seleção do algoritmo.
+
+\subsubsection{Valores Máximo e Mínimo}
+
+Além de serem utilizados para o cálculo da amplitude dos dados, os valores máximo e mínimo permitem identificar a presença de números negativos, informação importante para a escolha do algoritmo de ordenação.
+
+\subsection{Seleção das Métricas}
+
+Embora todas as métricas tenham sido implementadas e avaliadas experimentalmente, apenas aquelas que demonstraram influência consistente no desempenho dos algoritmos foram incorporadas à heurística final do sistema.
+
+\begin{table}[H]
+\centering
+\caption{Métricas implementadas e utilização na heurística final}
+\begin{tabular}{lc}
+\toprule
+\textbf{Métrica} & \textbf{Utilizada na heurística} \\
+\midrule
+Grau de desordem & Sim \\
+Quantidade de repetidos & Não \\
+Amplitude (Range) & Sim \\
+Desvio padrão & Não \\
+Valor mínimo & Sim \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A quantidade de elementos repetidos e o desvio padrão foram mantidos apenas para fins de caracterização dos conjuntos de dados. Durante os experimentos realizados, essas métricas não apresentaram influência significativa na escolha do algoritmo mais eficiente.
+
+\subsection{Heurística Final}
+
+Após a realização dos experimentos, a seguinte estratégia foi adotada:
+
+\begin{verbatim}
+if (n <= 1000 && desordem <= 5.0)
+    return "insertion";
+
+if (min < 0 && n >= 10000)
+    return "heap";
+
+if (min >= 0 && range <= 10*n)
+    return "radix";
+
+return "quick";
+\end{verbatim}
+
+A lógica empregada pode ser resumida da seguinte forma:
+
+\begin{itemize}
+    \item Vetores pequenos e quase ordenados são processados pelo Insertion Sort.
+    \item Vetores contendo valores negativos podem ser direcionados ao Heap Sort.
+    \item Vetores cuja amplitude seja proporcional ao tamanho são direcionados ao Radix Sort.
+    \item Os demais casos são tratados pelo Quick Sort.
+\end{itemize}
+
+A regra associada à presença de valores negativos foi incluída por razões teóricas relacionadas à aplicabilidade do Radix Sort.
+
+Os conjuntos de dados utilizados durante os experimentos continham apenas valores não negativos, impossibilitando a validação experimental dessa decisão. Dessa forma, a utilização do Heap Sort para vetores negativos de grande porte foi baseada em propriedades teóricas dos algoritmos analisados e deve ser entendida como uma decisão conservadora da heurística.
+
+\section{Validação das Heurísticas}
+
+A definição da heurística final foi baseada em uma série de hipóteses experimentais avaliadas durante o desenvolvimento do projeto.
+
+\subsection{Hipótese 1: Vetores Pequenos Favorecem o Insertion Sort}
+
+Inicialmente assumiu-se que vetores com menos de 50 elementos deveriam ser processados pelo Insertion Sort.
+
+Para validar essa hipótese, foram executados experimentos utilizando vetores aleatórios de tamanho 50 e comparando os resultados obtidos por todos os algoritmos implementados.
+
+Os resultados mostraram que o Quick Sort apresentou desempenho superior ao Insertion Sort mesmo para esse tamanho de entrada.
+
+Dessa forma, a regra:
+
+\begin{verbatim}
+if (n <= 50)
+    return "insertion";
+\end{verbatim}
+
+foi removida da heurística final.
+
+\textbf{Conclusão: hipótese rejeitada.}
+
+\subsection{Hipótese 2: Vetores Quase Ordenados Favorecem o Insertion Sort}
+
+Foram realizados experimentos com vetores quase ordenados contendo níveis crescentes de desordem.
+
+Observou-se que o Insertion Sort apresentou desempenho significativamente superior para vetores com grau de desordem reduzido, mantendo comportamento próximo ao caso linear esperado pela teoria.
+
+A heurística baseada em:
+
+\begin{verbatim}
+n <= 1000 && desordem <= 5
+\end{verbatim}
+
+mostrou-se consistente durante todos os experimentos realizados.
+
+\textbf{Conclusão: hipótese confirmada.}
+
+É importante destacar que vetores ordenados ou quase invertidos normalmente representam entradas problemáticas para implementações simples do Quick Sort que utilizam o primeiro ou o último elemento como pivô. Entretanto, a implementação desenvolvida neste trabalho utiliza a estratégia da mediana de três para seleção do pivô, considerando os elementos inicial, central e final do subvetor.
+
+Essa abordagem reduz significativamente a probabilidade de partições extremamente desbalanceadas em vetores parcialmente ordenados ou invertidos. Como consequência, observou-se experimentalmente que o Quick Sort manteve desempenho compatível com o comportamento esperado de \(O(n \log n)\) nesses cenários.
+
+\subsection{Hipótese 3: O Radix Sort Necessita de um Tamanho Mínimo}
+
+Inicialmente foi considerada a utilização de um limite inferior para ativação do Radix Sort.
+
+Entretanto, testes realizados com vetores de aproximadamente 5000 elementos mostraram que o algoritmo já apresentava desempenho superior ao Quick Sort.
+
+Dessa forma, o limite mínimo inicialmente considerado foi removido.
+
+\textbf{Conclusão: hipótese rejeitada.}
+
+\subsection{Hipótese 4: Vetores Grandes Favorecem o Radix Sort}
+
+Experimentos realizados com vetores aleatórios de 10000 elementos confirmaram que o Radix Sort apresenta desempenho superior quando a amplitude dos valores é compatível com o tamanho do vetor.
+
+\textbf{Conclusão: hipótese confirmada.}
+
+\subsection{Hipótese 5: Vetores Discrepantes Devem Evitar o Radix Sort}
+
+Considerou-se inicialmente que vetores com amplitudes extremamente elevadas deveriam evitar o uso do Radix Sort.
+
+Os resultados mostraram que, mesmo em cenários discrepantes, o Radix Sort continuou apresentando desempenho competitivo. Entretanto, observou-se que o aumento da amplitude dos dados pode tornar o Quick Sort uma alternativa interessante devido ao menor consumo de memória auxiliar.
+
+Dessa forma, conclui-se que a amplitude dos dados deve ser considerada pela heurística, porém não foi observada uma degradação suficientemente significativa que justificasse a exclusão completa do Radix Sort nesses cenários.
+
+\textbf{Conclusão: hipótese parcialmente aceita.}
+
+\subsection{Hipótese 6: Vetores Muito Grandes Favorecem o Heap Sort}
+
+Também foi investigada a possibilidade de utilizar o Heap Sort para vetores extremamente grandes.
+
+Foram realizados experimentos com vetores contendo até 500000 elementos.
+
+Os resultados mostraram que o Heap Sort permaneceu consistentemente inferior ao Quick Sort e ao Radix Sort em termos de tempo de execução e número total de operações.
+
+Consequentemente, não foi identificada uma situação experimental em que sua utilização apresentasse vantagens claras.
+
+\textbf{Conclusão: hipótese rejeitada.}
+
+
 
 \newpage
 

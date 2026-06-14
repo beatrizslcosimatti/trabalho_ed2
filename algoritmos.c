@@ -24,21 +24,30 @@ void bubble_sort(int *vetor, int n, Metricas *m){
     //inicialização das métricas
     m->comparacoes = 0; //qtd de comparações entre os valores do vetor
     m->trocas = 0; //qtd de trocas realizadas
+    //m->operacoes = 0;
 
+    m->operacoes++;
+
+    m->operacoes++; //int i=0
     for (int i = 0; i < n-1; i++){
         int houveTroca = 0;
+        m->operacoes+=3;
 
+        m->operacoes++; //int j=0        
         for(int j = 0; j < n-i-1; j++){
+            m->operacoes+=2;
             m->comparacoes++; //incrementa contador de comparações 
 
+            m->operacoes++; //comparação do if
             if(vetor[j] > vetor[j+1]){
-
                 //troca entre os valores
                 troca(&vetor[j], &vetor[j+1], m);
                 houveTroca = 1;
+                m->operacoes++;
             }
         }
 
+        m->operacoes++; //comparação do if
         if (houveTroca == 0){ //se não houve troca, já está ordenado
             break;
         }
@@ -54,18 +63,29 @@ void insertion_sort(int *vetor, int n, Metricas *m){
     //inicialização das métricas
     m->comparacoes = 0; //quantidade de comparações entre os valores do vetor
     m->trocas = 0; //quantidade de trocas realizadas
+    //m->operacoes = 0;
 
+
+    m->operacoes++;
     for (int i = 1; i < n; i++) {
+        m->operacoes+=2;
+
         int chave = vetor[i]; 
         int j = i - 1;
+        m->operacoes+=2;
 
         while (j >= 0) {
+            m->operacoes++;
+
             m->comparacoes++; //incrementa contador de comparações 
 
+            m->operacoes++; //comparação do if
             if (vetor[j] > chave) {
                 vetor[j + 1] = vetor[j]; //desloca o elemento para a direita
                 m->trocas++; //incrementa contador de trocas
                 j--;
+
+                m->operacoes+=2;
             } else {
                 break; 
             }
@@ -73,6 +93,7 @@ void insertion_sort(int *vetor, int n, Metricas *m){
         
         //coloca a chave na posição correta
         vetor[j + 1] = chave;
+        m->operacoes++;
     }
 }
 
@@ -140,37 +161,35 @@ void heap_sort(int* arr, int n, Metricas* m) {
 
 int medianaDeTres(int *vetor, int inicio, int fim, Metricas *m)
 {
-    // armazena o índice do elemento central na variável meio
-    int meio = inicio + (fim - inicio)/2;
+    int meio = inicio + (fim - inicio) / 2; // calcula o índice central do vetor
 
-    int a = vetor[inicio];
-    int b = vetor[meio];
-    int c = vetor[fim];
-
-    // comparações para ordenar os elementos a, b e c
-
-    if (a > b)
+    m->comparacoes++;
+    m->operacoes++; // operação de comparação
+    if (vetor[inicio] > vetor[meio])
     {
-        int temp = a;
-        a = b;
-        b = temp;
+        // troca entre os valores: 
+        troca(&vetor[inicio], &vetor[meio], m);
     }
 
-    if (a > c)
+    m->comparacoes++; 
+    m->operacoes++; // operação de comparação
+    if (vetor[inicio] > vetor[fim])
     {
-        int temp = a;
-        a = c;
-        c = temp;
+        // troca entre os valores: 
+        troca(&vetor[inicio], &vetor[fim], m);
     }
 
-    if (b > c)
+    m->comparacoes++;
+    m->operacoes++; // operação de comparação
+    if (vetor[meio] > vetor[fim])
     {
-        int temp = b;
-        b = c;
-        c = temp;
+        // troca entre os valores: 
+        troca(&vetor[meio], &vetor[fim], m);
     }
 
-    return b; //retorna a mediana
+    // após a ordenação: vetor[inicio] <= vetor[meio] <= vetor[fim]
+
+    return vetor[meio];
 }
 
 // PARTICIONAMENTO DE HOARE
@@ -179,9 +198,7 @@ int particionamento(int *vetor, int inicio, int fim, Metricas *m)
 {
     int pivo = medianaDeTres(vetor, inicio, fim, m);
 
-    // i -> índice inicial da partição
     int i = inicio - 1;
-    // j -> índice final da partição
     int j = fim + 1;
 
     while (1)
@@ -202,9 +219,9 @@ int particionamento(int *vetor, int inicio, int fim, Metricas *m)
         }
         while (vetor[j] > pivo);
 
-        // caso em que os ponteiros se cruzam, interrupção do loop
+        // m->comparacoes++; - comparação entre elementos fora da ordenação
         if (i >= j)
-            return j; 
+            return j;
 
         troca(&vetor[i], &vetor[j], m);
     }
@@ -215,14 +232,16 @@ void quick_sort_rec(int *vetor, int inicio, int fim, Metricas *m, int profundida
     profundidade_atual++;
     m->chamadas_recursivas++;
 
+    // m->comparacoes++; - comparação entre elementos fora da ordenação 
     if (profundidade_atual > m->profundidade_maxima)
     {
         m->profundidade_maxima = profundidade_atual;
     }
     
+    // m->comparacoes++; - comparação entre elementos fora da ordenação 
     if (inicio < fim)
     {
-        int p = particionamento(vetor, inicio, fim, m); // retorna o índice do pivô
+        int p = particionamento(vetor, inicio, fim, m);
 
         quick_sort_rec(vetor, inicio, p, m, profundidade_atual);
         quick_sort_rec(vetor, p + 1, fim, m, profundidade_atual);
@@ -232,6 +251,7 @@ void quick_sort_rec(int *vetor, int inicio, int fim, Metricas *m, int profundida
 void quick_sort (int *vetor, int n, Metricas *m)
 {
     //inicialização das métricas
+    m->tempoExecucao = 0;
     m->trocas = 0;
     m->chamadas_recursivas = 0;
     m->comparacoes = 0;
@@ -240,7 +260,16 @@ void quick_sort (int *vetor, int n, Metricas *m)
     m->profundidade_maxima = 0;
     int profundidade_atual = 0;
 
+    // inicia a contagem do tempo de execução
+    clock_t inicio = clock();
+
     quick_sort_rec(vetor, 0, n - 1, m, profundidade_atual);
+
+    // finaliza a contagem do tempo de execução
+    clock_t fim = clock();
+
+    // armazena a diferença entre ambas as contagens
+    m->tempoExecucao = (double)(fim - inicio)/CLOCKS_PER_SEC;
 
     // determinação da memória extra utilizada
     int frame_size = sizeof(int*) + 3*sizeof(int);
