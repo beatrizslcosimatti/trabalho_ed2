@@ -499,12 +499,49 @@ Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Exp
 
 \newpage
 
+
 \section{Reflexão sobre Uso de IA}
-O grupo deverá informar:
-• quais ferramentas de IA foram utilizadas;
-• em quais etapas auxiliaram;
-• erros encontrados nas respostas geradas;
-• correções realizadas pelo grupo.
+Nesta seção é discutido o uso de ferramentas de inteligência artificial na elaboração do projeto, descrevendo quais ferramentas de IA foram utilizadas, em quais etapas auxiliaram, erros encontrados nas respostas geradas e correções realizadas pelo grupo.
+
+\subsection{Como a IA Foi Utilizada}
+Durante o desenvolvimento deste trabalho, ferramentas de inteligência artificial generativa foram utilizadas principalmente como instrumentos de apoio à pesquisa, análise de resultados e elaboração do relatório final.
+
+No desenvolvimento do sistema adaptativo, a IA foi  utilizada para discutir possíveis heurísticas para seleção automática dos algoritmos de ordenação. Foram sugeridas regras iniciais para direcionar a escolha entre Insertion Sort, Quick Sort, Heap Sort e Radix Sort.
+
+A ferramenta também foi empregada como apoio na redação do relatório, auxiliando na organização das seções, na revisão textual e na formulação de explicações sobre os algoritmos estudados e sobre as decisões de projeto adotadas durante o desenvolvimento.
+
+Além da elaboração do conteúdo do relatório, a IA também foi utilizada como ferramenta de apoio no uso do \LaTeX\ e do ambiente de desenvolvimento adotado pela equipe. Optou-se por desenvolver o relatório em \LaTeX\ utilizando o VSCode em conjunto com Git, em vez de utilizar plataformas colaborativas como o Overleaf. Essa escolha foi motivada pela necessidade de integrar o relatório ao mesmo fluxo de versionamento utilizado no desenvolvimento do código, permitindo que todos os integrantes realizassem alterações e enviassem contribuições por meio de commits.
+
+Entretanto, essa abordagem exigiu lidar com aspectos técnicos relacionados à configuração do ambiente \LaTeX, compilação dos arquivos, resolução de erros de sintaxe, gerenciamento de pacotes e interpretação das mensagens de erro geradas pelo compilador. Nesses momentos, a IA foi frequentemente utilizada para auxiliar na identificação da origem dos problemas e sugerir possíveis soluções, reduzindo o tempo gasto na resolução de dificuldades relacionadas à ferramenta.
+
+Dessa forma, a IA contribuiu não apenas para a produção do conteúdo do relatório, mas também para viabilizar o uso eficiente da infraestrutura adotada pela equipe para escrita colaborativa e controle de versões.
+
+Outra aplicação importante da IA ocorreu na criação e refinamento de scripts auxiliares para automatização dos testes experimentais. Durante a fase de testes, foi necessário executar um grande número de combinações de algoritmos, tamanhos de entrada e distribuições de dados. Para reduzir o trabalho manual e minimizar erros na execução dos experimentos, a equipe desenvolveu arquivos de teste automatizados.
+
+Nesse contexto, a IA foi utilizada para sugerir a estrutura inicial desses scripts, auxiliar na organização dos comandos de execução e propor formas mais eficientes de coletar os resultados produzidos pelo programa. A utilização dessas ferramentas permitiu acelerar significativamente o processo de experimentação, tornando viável a realização de um número maior de testes e facilitando a comparação entre os algoritmos avaliados.
+
+Assim como ocorreu em outras etapas do projeto, todas as sugestões fornecidas pela IA foram revisadas e adaptadas pela equipe antes de serem incorporadas ao processo de testes.
+
+
+\subsection{Contribuições Positivas}
+A principal contribuição da IA ocorreu na fase de investigação das heurísticas utilizadas pelo sistema adaptativo. Em vez de servir como fonte definitiva de respostas, a ferramenta foi utilizada como mecanismo para geração de hipóteses que posteriormente foram avaliadas experimentalmente.
+
+Na elaboração do relatório, a utilização da IA contribuiu para melhorar a organização das ideias e a clareza das explicações, reduzindo o tempo necessário para estruturar o documento final.
+
+\subsection{Limitações e Erros Encontrados}
+Embora tenha sido útil como ferramenta de apoio, diversas sugestões fornecidas pela IA mostraram-se incorretas ou inadequadas quando confrontadas com os resultados experimentais.
+
+Um exemplo importante ocorreu durante a definição das heurísticas do sistema adaptativo. Inicialmente, foi sugerido que vetores muito pequenos deveriam ser direcionados automaticamente ao Insertion Sort. Entretanto, os experimentos realizados mostraram que o Quick Sort apresentou desempenho superior mesmo para vetores com apenas 50 elementos, levando à remoção dessa regra da heurística final.
+
+Esses episódios evidenciaram uma limitação importante das ferramentas de IA: respostas plausíveis e bem fundamentadas nem sempre correspondem ao comportamento real observado experimentalmente.
+
+\subsection{Aprendizados Obtidos}
+O principal aprendizado obtido durante o projeto foi que a inteligência artificial é mais útil como ferramenta de apoio à análise do que como mecanismo de tomada de decisão.
+
+As sugestões fornecidas pela IA frequentemente serviram como ponto de partida para novas investigações, mas a validação experimental permaneceu indispensável. Em diversas situações, hipóteses aparentemente razoáveis precisaram ser modificadas ou completamente descartadas após a execução dos testes.
+
+Dessa forma, a experiência mostrou que o uso responsável de ferramentas de IA exige supervisão constante e verificação dos resultados obtidos. No contexto deste trabalho, a contribuição mais relevante da IA não foi fornecer respostas prontas, mas acelerar o processo de discussão, refinamento e organização de ideias.
+
 
 \newpage
 
