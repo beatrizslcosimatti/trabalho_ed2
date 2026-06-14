@@ -1,1 +1,8 @@
 Algoritmo,Tamanho,Distribuicao,Tempo (s),Comparacoes,Trocas,Copias,Memoria Extra (bytes),Chamadas recursivas,Profundidade maxima,Operacoes
+quick,1000,aleatorio,0.000000,15622,2588,0,360, 1999, 18, 23386
+quick,9,terminal_manual,0.000000,64,8,0,100, 17, 5, 88
+radix,10000,quase_ordenado,0.001000,9999,0,100000,40200, 0, 0, 150045
+radix,100,quase_ordenado,0.000000,99,0,600,520, 0, 0, 927
+radix,500,quase_ordenado,0.000000,499,0,3000,2120, 0, 0, 4527
+insertion,1000,quase_ordenado,0.000000,1048,49,0,0, 0, 0, 7190
+radix,100000,quase_ordenado,0.004000,99999,0,1200000,400240, 0, 0, 1800054
