@@ -686,15 +686,6 @@ Descrever:
 \newpage
 
 \section{Resultados}
-
-Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Explicar:
-• decisões corretas;
-• decisões ruins;
-• comportamentos inesperados;
-• limitações observadas;
-• impacto das características da entrada.
-• impactos das entradas adversariais
-
     \subsection{Bubble Sort}
     Ao implementar o Bubble Sort, foi utilizada uma flag booleana (houveTroca) para identificar se o vetor está ordenado após percorre-lo.
     Assim, essa estratégia corroborou a eficiência do algoritmo diante de entradas já ordenadas.
@@ -727,7 +718,7 @@ Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Exp
     GRAFICO PIOR CASO
 
     Analisando os três gráficos gerados, observa-se que o algoritmo se comporta da maneira esperada para as entradas recebidas, possuindo uma complexidade temporal quadrática $O(n^2)$ no caso médio (entradas aleatórias) e pior caso, e complexidade temporal $O(n)$ no melhor caso (vetor ordenado).
-    No gráfico da Figura NUMERO, que exibe o comportamento no caso médio, é possível observar um pico inesperado no tempo de execução para o vetor de tamanho 225.000. 
+    No gráfico da Figura \ref{fig:casoMedioBubble}, que exibe o comportamento no caso médio, é possível observar um pico inesperado no tempo de execução para o vetor de tamanho 225.000. 
     Como o número de comparações e trocas matemáticas manteve o crescimento estritamente quadrático correspondente à teoria assintótica, conclui-se que essa variação não possui relação com a lógica interna do Bubble Sort, e sim de uma interferência ambiental externa relacionada ao gerenciamento de processos do Sistema Operacional.
     Processos que rodam em segundo plano disputam o uso do processador, diminuindo temporariamente o tempo de execução dedicado ao programa.
 
@@ -740,6 +731,43 @@ Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Exp
     Neste cenário, o elemento que deveria estar na última posição está na primeira, forçando o algoritmo a realizar o limite máximo teórico de comparações e trocas através da fórmula $\frac{n (n-1)}{2}$.
     Para grandes volumes de dados ($n > 10.000$), essa quantidade de operações sobrecarrega o processador, tornando o algoritmo lento demais para ser utilizado.
     
+    \subsection{Insertion Sort}
+    Para analisar o comportamento do Insertion Sort e validar as complexidades temporais esperadas, foi organizada a Tabela \ref{tab:insertion} a partir de entradas com características distintas.
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{c|c|c|c|c}
+            \hline
+            Tamanho (n) & Cenário de entrada & Tempo de execução & Comparações & Trocas\\
+            \hline
+            1000 & Já Ordenado (Melhor caso) & a & a & 0\\
+            1000 & Aleatório & a & a & a\\
+            1000 & Invertido (Pior caso) & a & a & a\\            
+        \end{tabular}
+        \caption{\label{tab:insertion}Tabelas e Métricas coletadas - Insertion Sort.}
+    \end{table}
+
+    Pela tabela, observa-se a mesma tendência de comportamento que o Bubble Sort: complexidade temporal quadrática $O(n^2)$ no caso médio e pior caso, e complexidade temporal $O(n)$ no melhor caso (vetor ordenado ou quase ordenado).
+    O comportamento do Insertion sort para entradas aleatórias pode ser visualizado no gráfico presente na Figura \ref{fig:casoMedioInsertion}.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.65\linewidth]{../output/graficos_separados/grafico_tempo_insertion.png}
+        \caption{Desempenho Insertion Sort: distribuição aleatória}
+        \label{fig:casoMedioInsertion}
+    \end{figure}
+
+    Pela Figura \ref{fig:casoMedioInsertion}, para uma distribuição aleatória do vetor, a complexidade de tempo do algoritmo é $O(n^2)$, conforme previsto para o caso médio.
+    O Insertion Sort demonstra uma sensibilidade extrema ao estado inicial do vetor. 
+    O algoritmo responde de forma quase linear e altamente eficiente quando a entrada já está estruturada de maneira favorável (ordenada ou quase ordenada).
+    
+    Diferente de algoritmos como o Bubble Sort tradicional, que realiza checagens redundantes, o Insertion Sort consegue consolidar faixas ordenadas à esquerda rapidamente, diminuindo drasticamente o tempo de execução do código.
+    A pior entrada possível (adversarial) para o Insertion Sort ocorre quando o vetor está em ordem estritamente decrescente. Neste cenário, cada novo elemento analisado como "chave" é menor do que todos os números que já foram organizados à sua esquerda, forçando o algoritmo a realizar o deslocamento máximo de dados de todas as posições anteriores a cada rodada.
+
+    Um comportamento que pode parecer contra-intuitivo nos testes práticos é o fato de o Insertion Sort apresentar um tempo de execução e número de operações significativamente menores do que o Bubble Sort em cenários aleatórios, mesmo ambos compartilhando a mesma complexidade teórica $O(n^2)$.
+    Isso acontece porque o Insertion Sort interrompe sua busca interna assim que encontra o lugar correto do elemento, o que estatisticamente reduz os deslocamentos pela metade. 
+    Já o Bubble Sort não possui essa parada imediata no laço interno e continua varrendo o restante das posições adjacentes, gerando mais desperdício de processamento.
+
     \subsection{Quick Sort}
     Com o intuito de validar a algoritmo quick sort implementado neste projeto, analisou-se as curvas do número de comparações entre elementos do vetor e númerode trocas necessárias para atingir a ordenação - para valores com diferentes ordens de grandeza - quais foram estudadas teoricamente e possuem comportamento esperado definido. 
     Dessa forma, nota-se que o número de comparações do quick sort para o melhor caso é na ordem de $2 \ n \ log \ n$, e um sexto desse número para a quantidade de trocas. 
@@ -794,12 +822,49 @@ Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Exp
 
 \newpage
 
+
 \section{Reflexão sobre Uso de IA}
-O grupo deverá informar:
-• quais ferramentas de IA foram utilizadas;
-• em quais etapas auxiliaram;
-• erros encontrados nas respostas geradas;
-• correções realizadas pelo grupo.
+Nesta seção é discutido o uso de ferramentas de inteligência artificial na elaboração do projeto, descrevendo quais ferramentas de IA foram utilizadas, em quais etapas auxiliaram, erros encontrados nas respostas geradas e correções realizadas pelo grupo.
+
+\subsection{Como a IA Foi Utilizada}
+Durante o desenvolvimento deste trabalho, ferramentas de inteligência artificial generativa foram utilizadas principalmente como instrumentos de apoio à pesquisa, análise de resultados e elaboração do relatório final.
+
+No desenvolvimento do sistema adaptativo, a IA foi  utilizada para discutir possíveis heurísticas para seleção automática dos algoritmos de ordenação. Foram sugeridas regras iniciais para direcionar a escolha entre Insertion Sort, Quick Sort, Heap Sort e Radix Sort.
+
+A ferramenta também foi empregada como apoio na redação do relatório, auxiliando na organização das seções, na revisão textual e na formulação de explicações sobre os algoritmos estudados e sobre as decisões de projeto adotadas durante o desenvolvimento.
+
+Além da elaboração do conteúdo do relatório, a IA também foi utilizada como ferramenta de apoio no uso do \LaTeX\ e do ambiente de desenvolvimento adotado pela equipe. Optou-se por desenvolver o relatório em \LaTeX\ utilizando o VSCode em conjunto com Git, em vez de utilizar plataformas colaborativas como o Overleaf. Essa escolha foi motivada pela necessidade de integrar o relatório ao mesmo fluxo de versionamento utilizado no desenvolvimento do código, permitindo que todos os integrantes realizassem alterações e enviassem contribuições por meio de commits.
+
+Entretanto, essa abordagem exigiu lidar com aspectos técnicos relacionados à configuração do ambiente \LaTeX, compilação dos arquivos, resolução de erros de sintaxe, gerenciamento de pacotes e interpretação das mensagens de erro geradas pelo compilador. Nesses momentos, a IA foi frequentemente utilizada para auxiliar na identificação da origem dos problemas e sugerir possíveis soluções, reduzindo o tempo gasto na resolução de dificuldades relacionadas à ferramenta.
+
+Dessa forma, a IA contribuiu não apenas para a produção do conteúdo do relatório, mas também para viabilizar o uso eficiente da infraestrutura adotada pela equipe para escrita colaborativa e controle de versões.
+
+Outra aplicação importante da IA ocorreu na criação e refinamento de scripts auxiliares para automatização dos testes experimentais. Durante a fase de testes, foi necessário executar um grande número de combinações de algoritmos, tamanhos de entrada e distribuições de dados. Para reduzir o trabalho manual e minimizar erros na execução dos experimentos, a equipe desenvolveu arquivos de teste automatizados.
+
+Nesse contexto, a IA foi utilizada para sugerir a estrutura inicial desses scripts, auxiliar na organização dos comandos de execução e propor formas mais eficientes de coletar os resultados produzidos pelo programa. A utilização dessas ferramentas permitiu acelerar significativamente o processo de experimentação, tornando viável a realização de um número maior de testes e facilitando a comparação entre os algoritmos avaliados.
+
+Assim como ocorreu em outras etapas do projeto, todas as sugestões fornecidas pela IA foram revisadas e adaptadas pela equipe antes de serem incorporadas ao processo de testes.
+
+
+\subsection{Contribuições Positivas}
+A principal contribuição da IA ocorreu na fase de investigação das heurísticas utilizadas pelo sistema adaptativo. Em vez de servir como fonte definitiva de respostas, a ferramenta foi utilizada como mecanismo para geração de hipóteses que posteriormente foram avaliadas experimentalmente.
+
+Na elaboração do relatório, a utilização da IA contribuiu para melhorar a organização das ideias e a clareza das explicações, reduzindo o tempo necessário para estruturar o documento final.
+
+\subsection{Limitações e Erros Encontrados}
+Embora tenha sido útil como ferramenta de apoio, diversas sugestões fornecidas pela IA mostraram-se incorretas ou inadequadas quando confrontadas com os resultados experimentais.
+
+Um exemplo importante ocorreu durante a definição das heurísticas do sistema adaptativo. Inicialmente, foi sugerido que vetores muito pequenos deveriam ser direcionados automaticamente ao Insertion Sort. Entretanto, os experimentos realizados mostraram que o Quick Sort apresentou desempenho superior mesmo para vetores com apenas 50 elementos, levando à remoção dessa regra da heurística final.
+
+Esses episódios evidenciaram uma limitação importante das ferramentas de IA: respostas plausíveis e bem fundamentadas nem sempre correspondem ao comportamento real observado experimentalmente.
+
+\subsection{Aprendizados Obtidos}
+O principal aprendizado obtido durante o projeto foi que a inteligência artificial é mais útil como ferramenta de apoio à análise do que como mecanismo de tomada de decisão.
+
+As sugestões fornecidas pela IA frequentemente serviram como ponto de partida para novas investigações, mas a validação experimental permaneceu indispensável. Em diversas situações, hipóteses aparentemente razoáveis precisaram ser modificadas ou completamente descartadas após a execução dos testes.
+
+Dessa forma, a experiência mostrou que o uso responsável de ferramentas de IA exige supervisão constante e verificação dos resultados obtidos. No contexto deste trabalho, a contribuição mais relevante da IA não foi fornecer respostas prontas, mas acelerar o processo de discussão, refinamento e organização de ideias.
+
 
 \newpage
 
