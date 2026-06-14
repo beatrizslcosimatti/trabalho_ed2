@@ -5,7 +5,6 @@
 #include "algoritmos.h"
 #include "caracterizacao.h"
 
-//Pode ser problematico para o Heap, caso o
 void vetor_aletorio(int*arr, int tamanho, int tamanho_elementos){
     for(int i = 0;i<tamanho;i++){
         arr[i]=rand()%tamanho_elementos;
@@ -13,20 +12,30 @@ void vetor_aletorio(int*arr, int tamanho, int tamanho_elementos){
 
 }
 
-void gera_vetor_quase_ordenado(int* arr, int n, double percentual) { //adicionei o double percentual aqui
-    for (int i = 0; i < n; i++) {
-        arr[i] = i + 1; // Fica: 1, 2, 3, 4, 5...
+void gera_vetor_quase_ordenado(int* arr, int n, double percentual)
+{
+    for (int i = 0; i < n; i++)
+    {
+        arr[i] = i + 1;
     }
-    //int qtd_trocas = n * 0.05; 
-    int qtd_trocas = n * percentual / 100.0;
-    
-    for (int i = 0; i < qtd_trocas; i++) {
-        int pos1 = rand() % n;
-        int pos2 = rand() % n;
-        
-        int temp = arr[pos1];
-        arr[pos1] = arr[pos2];
-        arr[pos2] = temp;
+
+    int inversoes_desejadas =
+        (int)((percentual / 100.0) * (n - 1));
+
+    int criadas = 0;
+
+    while (criadas < inversoes_desejadas)
+    {
+        int pos = rand() % (n - 1);
+
+        if (arr[pos] < arr[pos + 1])
+        {
+            int temp = arr[pos];
+            arr[pos] = arr[pos + 1];
+            arr[pos + 1] = temp;
+
+            criadas++;
+        }
     }
 }
 
@@ -215,19 +224,24 @@ int main(int argc, char** argv){
     // =================================================================
     // ETAPA 1: OBTENÇÃO DO VETOR (Independente da Origem)
     // =================================================================
-    if (arr != NULL && n > 0) {
-        tipo_distribuicao = "terminal_manual";
-        printf("Modo: Utilizando %d dados passados diretamente via terminal...\n", n);
-        
-    } else if (arquivo_input != NULL) {
-        printf("Modo: Lendo dados do arquivo '%s'...\n", arquivo_input);
-        
-        arr = ler_vetor_arquivo(arquivo_input, &n);
-        if (arr == NULL) {
-            return 1; 
-        }
+    if ((arr == NULL || n <= 0) && arquivo_input == NULL && tamanho <= 0)
+    {
+        printf(
+            "ERRO: Nenhum vetor foi fornecido.\n\n"
+            "Utilize uma das opcoes abaixo:\n"
+            "  --tamanho <N>      Gerar vetor automaticamente\n"
+            "  --input <arquivo>  Ler vetor de um arquivo\n"
+            "  --array <valores>  Inserir vetor manualmente\n\n"
+            "Exemplos:\n"
+            "  .\\programa --algoritmo quick --tamanho 1000\n"
+            "  .\\programa --algoritmo auto --tamanho 50000\n"
+            "  .\\programa --algoritmo heap --input dados.txt\n\n"
+        );
 
-    } else if (tamanho > 0) {
+        return 1;
+
+    } else if (tamanho > 0) 
+    {
         printf("Modo: Gerando %d dados dinamicamente para o algoritmo %s...\n", tamanho, algoritmo);
         n = tamanho;
         arr = (int*)malloc(n * sizeof(int));
@@ -357,14 +371,14 @@ int main(int argc, char** argv){
 
         printf("+==============================================================================+\n");
         printf("|                            RESULTADOS DA EXECUCAO                            |\n");
-        printf("+----------------------+-------------------------------------------------------+\n");
+        printf("+---------------------------+--------------------------------------------------+\n");
         printf("| %-20s | %-53s |\n", "Algoritmo", algoritmo);
         printf("| %-20s | %-53d |\n", "Tamanho do vetor", n);
         printf("| %-20s | %-53s |\n", "Distribuicao", tipo_distribuicao);
-        printf("| %-20s | %-53.9f |\n", "Tempo de execucao", tempo_execucao);
+        printf("| %-20s | %-53f |\n", "Tempo (s)", tempo_execucao);
         printf("| %-20s | %-53llu |\n", "Comparacoes", m.comparacoes);
         printf("| %-20s | %-53llu |\n", "Trocas", m.trocas);
-        printf("| %-20s | %-53llu |\n", "Memoria extra", m.memoria_extra_bytes);
+        printf("| %-20s | %-53llu |\n", "Memoria (bytes)", m.memoria_extra_bytes);
         printf("| %-20s | %-53llu |\n", "Chamadas recursivas", m.chamadas_recursivas);
         printf("| %-20s | %-53llu |\n", "Profundidade maxima", m.profundidade_maxima);
         printf("| %-20s | %-53llu |\n", "Copias", m.copias);
