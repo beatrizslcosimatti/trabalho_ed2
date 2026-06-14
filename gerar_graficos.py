@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # 1. Configuração de Caminhos (O "GPS" automático)
 diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-caminho_arquivo = os.path.join(diretorio_atual, 'output', 'dados.csv')
+caminho_arquivo = os.path.join(diretorio_atual, 'output', 'testes.csv')
 
 # Cria uma pasta específica para guardar os gráficos gerados
 pasta_graficos = os.path.join(diretorio_atual, 'output', 'graficos_separados')
@@ -14,6 +14,10 @@ if not os.path.exists(pasta_graficos):
 # 2. Carrega os dados e faz a faxina do cabeçalho
 df = pd.read_csv(caminho_arquivo)
 df.columns = df.columns.str.strip()
+
+# >>> CORREÇÃO DOS GRÁFICOS VAZIOS <<<
+# Remove espaços invisíveis da coluna de algoritmos e transforma tudo em minúsculo
+df['Algoritmo'] = df['Algoritmo'].astype(str).str.strip().str.lower()
 
 # 3. Filtra apenas os testes da distribuição "aleatorio"
 df_aleatorio = df[df['Distribuicao'] == 'aleatorio']
@@ -54,19 +58,30 @@ for alg in algoritmos:
     print(f"[ OK ] Salvo: {nome_arquivo}")
 
 print(f"\nSucesso! Todos os gráficos estão na pasta: {pasta_graficos}")
+
 # ==========================================================
 # GRÁFICOS COMPARATIVOS ESPECÍFICOS (A BATALHA DOS TITÃS)
 # ==========================================================
 
 print("\nGerando gráficos comparativos de alto nível...")
 
-# --- Gráfico 6: Heap vs Quick ---
+# --- Gráfico 6: Heap vs Quick (Eixo X Alinhado) ---
 plt.figure(figsize=(10, 6))
-# Lista específica dos dois que queremos comparar
-for alg in ['heap', 'quick']: 
-    if alg in algoritmos: # Verifica se existe no CSV para evitar erros
-        dados_alg = df_aleatorio[df_aleatorio['Algoritmo'] == alg]
-        plt.plot(dados_alg['Tamanho'], dados_alg['Tempo (s)'], marker='o', linewidth=2, label=alg.capitalize())
+
+# Descobre qual foi o tamanho MÁXIMO do vetor que o Heap Sort processou
+tamanhos_heap = df_aleatorio[df_aleatorio['Algoritmo'] == 'heap']['Tamanho']
+
+if not tamanhos_heap.empty:
+    max_tamanho_heap = tamanhos_heap.max()
+    
+    # Plota o Heap
+    dados_heap = df_aleatorio[df_aleatorio['Algoritmo'] == 'heap']
+    plt.plot(dados_heap['Tamanho'], dados_heap['Tempo (s)'], marker='o', linewidth=2, label='Heap')
+
+    # >>> MUDANÇA SOLICITADA: CORTA O QUICK SORT NO LIMITE DO HEAP <<<
+    dados_quick = df_aleatorio[(df_aleatorio['Algoritmo'] == 'quick') & (df_aleatorio['Tamanho'] <= max_tamanho_heap)]
+    if not dados_quick.empty:
+        plt.plot(dados_quick['Tamanho'], dados_quick['Tempo (s)'], marker='o', linewidth=2, label='Quick')
 
 plt.title('Confronto de Arquitetura: Heap Sort vs Quick Sort', fontsize=15, fontweight='bold')
 plt.xlabel('Tamanho do Vetor (N)', fontsize=12)
@@ -83,10 +98,11 @@ print("[ OK ] Salvo: grafico_6_heap_vs_quick.png")
 
 # --- Gráfico 7: Quick vs Radix ---
 plt.figure(figsize=(10, 6))
-# Lista específica para a batalha final
+
+# Filtra e plota apenas se existirem os dados
 for alg in ['quick', 'radix']:
-    if alg in algoritmos:
-        dados_alg = df_aleatorio[df_aleatorio['Algoritmo'] == alg]
+    dados_alg = df_aleatorio[df_aleatorio['Algoritmo'] == alg]
+    if not dados_alg.empty:
         plt.plot(dados_alg['Tamanho'], dados_alg['Tempo (s)'], marker='o', linewidth=2, label=alg.capitalize())
 
 plt.title('A Batalha Final: Quick Sort vs Radix Sort', fontsize=15, fontweight='bold')

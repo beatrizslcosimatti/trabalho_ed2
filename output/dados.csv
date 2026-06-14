@@ -1,4 +1,5 @@
 Algoritmo,Tamanho,Distribuicao,Tempo (s),Comparacoes,Trocas,Copias,Memoria Extra (bytes),Chamadas recursivas,Profundidade maxima,Operacoes
+<<<<<<< HEAD
 quick,1000,aleatorio,0.000000,15622,2588,0,360, 1999, 18, 23386
 quick,9,terminal_manual,0.000000,64,8,0,100, 17, 5, 88
 radix,10000,quase_ordenado,0.001000,9999,0,100000,40200, 0, 0, 150045
@@ -6,6 +7,7 @@ radix,100,quase_ordenado,0.000000,99,0,600,520, 0, 0, 927
 radix,500,quase_ordenado,0.000000,499,0,3000,2120, 0, 0, 4527
 insertion,1000,quase_ordenado,0.000000,1048,49,0,0, 0, 0, 7190
 radix,100000,quase_ordenado,0.004000,99999,0,1200000,400240, 0, 0, 1800054
+<<<<<<< HEAD
 quick,1000,aleatorio,0.000000,15680,2605,0,340, 1999, 17, 23495
 quick,1000,aleatorio,0.000000,15233,2643,0,340, 1999, 17, 23162
 quick,1000,aleatorio,0.000000,15194,2679,0,320, 1999, 16, 23231
@@ -15,3 +17,16 @@ quick,1000,aleatorio,0.000000,15742,2649,0,360, 1999, 18, 23689
 quick,1000,aleatorio,0.000000,15368,2691,0,360, 1999, 18, 23441
 radix,1000000,aleatorio,0.029000,999999,0,10000000,4000200, 0, 0, 15000045
 radix,1000000,aleatorio,0.029000,999999,0,12000000,4000240, 0, 0, 18000054
+=======
+bubble,1000,quase_ordenado,0.000000,2994,49,0,0, 0, 0, 9195
+bubble,1000,aleatorio,0.003000,498870,240479,0,0, 0, 0, 2463348
+bubble,1000,quase_ordenado,0.000000,999,0,0,0, 0, 0, 3004
+bubble,1000,quase_ordenado,0.000000,6972,999,0,0, 0, 0, 24949
+bubble,1000,decrescente,0.002000,499500,499500,0,0, 0, 0, 3501497
+insertion,1000,decrescente,0.002000,499500,499500,0,0, 0, 0, 2002996
+insertion,1000,quase_ordenado,0.000000,999,0,0,0, 0, 0, 6994
+insertion,1000,quase_ordenado,0.000000,1048,49,0,0, 0, 0, 7190
+insertion,1000,aleatorio,0.000000,254782,253791,0,0, 0, 0, 1022142
+=======
+>>>>>>> 1179a1b174850661060a8175508978695b90ab70
+>>>>>>> 4e872bf8c6b3278fb189dc16917bc4f5cd286043
