@@ -8,6 +8,8 @@
 \usepackage{indentfirst}
 \usepackage{booktabs}
 \usepackage{float}
+\usepackage{graphicx}
+\usepackage{float}
 
 \pagestyle{fancy}       % Ativa o estilo fancyhdr
 \fancyhf{}              % Limpa todos os cabeçalhos e rodapés padrão
@@ -129,7 +131,7 @@
         $$
 
         Após a resolução da recorrência, também nota-se que a complexidade é de $O (n \ log \ n)$.
-        Nesse sentido, evidencia-se que no melhor e pior caso, o quick sort utiliza em média $2 \ n \ log \ n$ comparações entre elementos distintos do vetor para ordená-lo, e aproximadamente, um sexto desse número de trocas.
+        Nesse sentido, evidencia-se que no melhor e médio caso, o quick sort utiliza em média $2 \ n \ log \ n$ comparações entre elementos distintos do vetor para ordená-lo, e aproximadamente, um sexto desse número de trocas.
         Por fim, o pior caso ocorre quando o pivô escolhido é sempre o menor ou o maior elemento do subvetor analisado. 
         Nessa situação, a cada etapa do algoritmo são geradas partições extremamente desbalanceadas, contendo 0 e $n-1$ elementos, o que resulta em uma árvore de recursão linear e leva a uma complexidade temporal de $O(n^2)$:
 
@@ -193,18 +195,59 @@ Apresentar tabelas, gráficos, métricas coletadas, com discussão crítica. Exp
 • limitações observadas;
 • impacto das características da entrada.
 • impactos das entradas adversariais
+    
+    \subsection{Quick Sort}
+    Com o intuito de validar a algoritmo quick sort implementado neste projeto, analisou-se as curvas do número de comparações entre elementos do vetor e númerode trocas necessárias para atingir a ordenação - para valores com diferentes ordens de grandeza - quais foram estudadas teoricamente e possuem comportamento esperado definido. 
+    Dessa forma, nota-se que o número de comparações do quick sort para o melhor caso é na ordem de $2 \ n \ log \ n$, e um sexto desse número para a quantidade de trocas. 
 
-    \subsection{Validação dos Algoritmos utilizados}
-    Esta sessão tem como intuito demonstrar o comportamento dos algoritmos em relação ao comportamento teórico esperado.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.65\linewidth]{imagens/graficoo3.png}
+        \caption{Comparativo entre o número de comparações e trocas e seu compartamento esperado para o melhor caso do quick sort. Escala dilog.}
+        \label{fig:ComparacoesVsTrocasQuickSort}
+    \end{figure}
     
-    \subsubsection{Quick Sort}
-    
+    No gráfico é possível observar que o comportamento esperado é efetivo, uma vez que os dados coletados acompanham as linhas das funções que descrevem o comportamento previsto. 
+    Observa-se que o gráfico foi elaborado em escala log-log para a melhor visalização do comportamento para as diferentes ordens de grandeza.
+
     Na implementação do quick sort desenvolvida, o pivô é escolhido por meio do método da mediana de três, utilizando os elementos inicial, central e final do subvetor. Essa estratégia reduz significativamente a ocorrência de partições desbalanceadas, especialmente em vetores já ordenados ou parcialmente ordenados. 
     Ainda assim, o pior caso permanece teoricamente possível e ocorre quando a mediana desses três elementos produz repetidamente pivôs próximos aos extremos do subvetor, gerando partições de tamanhos aproximadamente 0 e $n-1$.
     Nesse sentido, o método da mediana de três foi amplamente estudada por cientistas como David Musser, pesquisador conhecido por desenvolver o algoritmo Introsort, atualmente utilizado em diversas bibliotecas padrão da linguagem C++. 
     Em seu trabalho, Musser demonstrou que, embora a estratégia da mediana de três reduza significativamente a probabilidade de partições desbalanceadas em entradas comuns, ela não elimina completamente o pior caso do Quick Sort. 
-    O autor apresentou famílias de sequências especialmente construídas, conhecidas como \textit{Median-of-Three Killer Sequences}, capazes de induzir a escolha repetida de pivôs inadequados, resultando em partições altamente desbalanceadas e levando o algoritmo a uma complexidade temporal quadrática $O(n^2)$.
+    Sob essa ótica, existem famílias de sequências especialmente construídas, conhecidas como \textit{Median-of-Three Killer Sequences}, capazes de induzir a escolha repetida de pivôs inadequados, resultando em partições altamente desbalanceadas e levando o algoritmo a uma complexidade temporal quadrática $O(n^2)$.
     
+    Algumas dessas sequências conhecidas são a \textit{organ pipe} e intercalada.
+    A sequência \textit{organ pipe} se consiste em um array com o elemento central possuindo o maior valor do vetor e os elementos a esquerda e a direita dele decrescendo. 
+    Um exemplo de uma distribuição dessa forma, contínua, para $n=10$ é: \textit{[1 2 3 4 5 6 4 3 2 1]}.
+    Em relação a distribuição intercalada, o vetor se consiste em valores intercalados entre uma sequência crescente e outra decrescente, dessa forma, para $n=10$, uma possível configuração seria \textit{[1 10 2 9 3 8 4 7 5 6]}.
+    No gráfico a seguir, é possível visualizar um comparativo entre os tempos de execução para vetores de distribuição aleatória e distribuição seguindo o padrão \textit{organ pipe}:
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.65\linewidth]{imagens/graficoo1.png}
+        \caption{Comparatio de tempo de execução para a ordenação quick sort entre vetores de distribuição aleatória e quick sort.}
+        \label{fig:organPipeVsAleatorio}
+    \end{figure}
+
+    Através dos dados, é possível observar que essa distribuição não estressou devidamente o algoritmo, uma vez que a curva de ambos apresentou uma complexidade temporal de $O(n \ log \ n)$, embora a dsitribuição \textit{organ pipe} tenha apresentado tempos de execução ligeiramente maiores.
+    É válido destacar o comportamento da métrica que mede a profundidade máxima árvore de rescursão para ambos os casos.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.65\linewidth]{imagens/graficoo2.png}
+        \caption{Comparatio de tempo de execução para a ordenação quick sort entre vetores de distribuição aleatória e quick sort.}
+        \label{fig:organPipeVsAleatorioProfundidadeMaxima}
+    \end{figure}
+
+    Observa-se que a profundiade máxima para a distribuição \textit{organ pipe} foi significativamente maior do que para o caso aleatório, indicando que a escolha do pivô para esses vetores não foi tão eficaz quanto o observado no melhor caso, o que acarretou na necessidade de um maior número de partições e, consequentemente, uma maior árvore recursiva. 
+    Assim, os arrays criandos seguindo o modelo \textit{organ pipe} não estressaram o algoritmo implementado o suficienta para prejudicar a sua complexidade assintótica de tempo para $O(n^2)$, à medida que, como observado e analisado, a ditribuição se enquadra em um médio caso do quick sort. 
+    
+    Em relação aos vetores intercalados, o quick sort não conseguiu ordenar arrays com mais de 100 milhões de tamanho, uma vez que a péssima escolha dos pivôs para esse caso acarretaram em árvores de recursão extremamente grandes - com profundidade máxima maior que 80.000 para vetores na ordem de 200 milhões de tamanho - o que ocasionou a interrupção prematura da ordenação devido ao esgotamento da pilha de chamadas.
+    Dessa forma, observa-se que o pior caso esperado foi atingido, acarretando em uma execução na ordem de $O(n^2)$ e incapaz de ser finalizada para vetores grandes, como os analisados. 
+    Nesse sentido, evidencia-se tabém que para vetores menores aos analisados, de ordem de grandeza 10.000, a profundiade máxima da recursão aintgiu valores muito maiores do que a ordenação de vetores aleátorios na casa de 100 milhões de tamanho - por exemplo, um vetor aleatório de tamanho 1 bilhão atingiu profundiade máxima de 55, enquanto um vetor intercalado de 100 mil, atingiu 507.
+    Esses comportamentos destacam que a estratégia da mediana de três, embora eficiente em casos usuais, permanece suscetível a entradas adversárias capazes de produzir partições fortemente desbalanceadas.
+
+
 \newpage
 
 \section{Reflexão sobre Uso de IA}

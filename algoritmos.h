@@ -3,7 +3,6 @@
 //typedef unsigned long long int int_grande;
 
 typedef struct {
-    double tempoExecucao;
     unsigned long long int comparacoes;
     unsigned long long int trocas;
     unsigned long long int memoria_extra_bytes;

@@ -264,6 +264,7 @@ int main(int argc, char** argv){
     m.copias = 0;
     m.chamadas_recursivas = 0;
     m.memoria_extra_bytes = 0;
+    m.profundidade_maxima = 0;
 
     if (strcmp(algoritmo, "auto") == 0) {
         //Chama funções de caracterização do array
