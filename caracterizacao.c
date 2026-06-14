@@ -104,24 +104,30 @@ void max_e_min(int *v, int n, int *max, int *min){
 
 
 //decidir qual algoritmo
-void decidir_algoritmo(int n, float desordem, int repetidos, int range, double desvio, int min) {
-    //INSERTION
-    if (n < 50 || desordem < 5.0) {
-        printf("Algoritmo Escolhido: INSERTION SORT\n");
+const char* decidir_algoritmo(
+    int n,
+    float desordem,
+    int repetidos,
+    int range,
+    double desvio,
+    int min
+) {
+    (void)repetidos;
+    (void)desvio;
+
+    if (n <= 1000 && desordem <= 5.0) {
+        return "insertion";
     }
 
-    //RADIX
-    else if (range <= (2 * n) && min >= 0) {
-        printf("Algoritmo Escolhido: RADIX SORT\n");
+    // Se tiver negativo, evita Radix
+    if (min < 0 && n >= 10000) {
+        return "heap";
     }
 
-    //HEAP
-    else if (desordem>90) {
-        printf("Algoritmo Escolhido: HEAP SORT\n");
+    // Radix só para não-negativos e range proporcional ao tamanho
+    if (min >= 0 && range <= 10 * n) {
+        return "radix";
     }
 
-    //QUICK
-    else {
-        printf("Algoritmo Escolhido: QUICK SORT\n");
-    }
+    return "quick";
 }

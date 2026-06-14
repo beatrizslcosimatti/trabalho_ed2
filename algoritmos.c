@@ -26,8 +26,6 @@ void bubble_sort(int *vetor, int n, Metricas *m){
     m->trocas = 0; //qtd de trocas realizadas
     //m->operacoes = 0;
 
-    //inicia a contagem do tempo de execução
-    clock_t inicio = clock();
     m->operacoes++;
 
     m->operacoes++; //int i=0
@@ -55,10 +53,6 @@ void bubble_sort(int *vetor, int n, Metricas *m){
         }
     }
 
-    //finaliza a contagem do tempo de execução
-    clock_t fim = clock();
-    m->tempoExecucao = (double)(fim - inicio)/CLOCKS_PER_SEC;
-
 }
 
 // ================================================================================
@@ -67,12 +61,10 @@ void bubble_sort(int *vetor, int n, Metricas *m){
 
 void insertion_sort(int *vetor, int n, Metricas *m){
     //inicialização das métricas
-    m->comparacoes = 0; //qtd de comparações entre os valores do vetor
-    m->trocas = 0; //qtd de trocas realizadas
+    m->comparacoes = 0; //quantidade de comparações entre os valores do vetor
+    m->trocas = 0; //quantidade de trocas realizadas
     //m->operacoes = 0;
 
-    //inicia a contagem do tempo de execução
-    clock_t inicio = clock();
 
     m->operacoes++;
     for (int i = 1; i < n; i++) {
@@ -103,10 +95,6 @@ void insertion_sort(int *vetor, int n, Metricas *m){
         vetor[j + 1] = chave;
         m->operacoes++;
     }
-
-    //finaliza a contagem do tempo de execução
-    clock_t fim = clock();
-    m->tempoExecucao = (double)(fim - inicio)/CLOCKS_PER_SEC;
 }
 
 // ================================================================================
