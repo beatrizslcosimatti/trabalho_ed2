@@ -251,7 +251,6 @@ void quick_sort_rec(int *vetor, int inicio, int fim, Metricas *m, int profundida
 void quick_sort (int *vetor, int n, Metricas *m)
 {
     //inicialização das métricas
-    m->tempoExecucao = 0;
     m->trocas = 0;
     m->chamadas_recursivas = 0;
     m->comparacoes = 0;
@@ -260,16 +259,7 @@ void quick_sort (int *vetor, int n, Metricas *m)
     m->profundidade_maxima = 0;
     int profundidade_atual = 0;
 
-    // inicia a contagem do tempo de execução
-    clock_t inicio = clock();
-
     quick_sort_rec(vetor, 0, n - 1, m, profundidade_atual);
-
-    // finaliza a contagem do tempo de execução
-    clock_t fim = clock();
-
-    // armazena a diferença entre ambas as contagens
-    m->tempoExecucao = (double)(fim - inicio)/CLOCKS_PER_SEC;
 
     // determinação da memória extra utilizada
     int frame_size = sizeof(int*) + 3*sizeof(int);
