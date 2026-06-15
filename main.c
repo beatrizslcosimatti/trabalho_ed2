@@ -5,11 +5,12 @@
 #include "algoritmos.h"
 #include "caracterizacao.h"
 
+// GERAÇÃO AUTOMÁTICA DE VETORES --------------------------------------------------------------------------------
+
 void vetor_aletorio(int*arr, int tamanho, int tamanho_elementos){
     for(int i = 0;i<tamanho;i++){
         arr[i]=rand()%tamanho_elementos;
     }
-
 }
 
 void gera_vetor_quase_ordenado(int* arr, int n, double percentual)
@@ -93,6 +94,8 @@ void gera_vetor_intercalado(int* arr, int n) {
     }
 }
 
+// FUNÇÃO PARA A LEITURA DE ARQUIVOS --------------------------------------------------------------------------------
+
 int* ler_vetor_arquivo(const char* nome_arquivo, int* n) {
     // Tenta abrir o arquivo no modo leitura ("r" = read)
     FILE *arquivo = fopen(nome_arquivo, "r");
@@ -158,17 +161,20 @@ int main(int argc, char** argv){
 */
     srand(time(NULL));
 
+    // definição das variáveis e do modo padrão de execução
+
     const char* algoritmo = "auto";
     int tamanho = 0;
     char* arquivo_input=NULL;
     char* modo="padrao";
     char* tipo_distribuicao = "aleatorio";
-
-    //adicionando aqui p/ testar
     double percentual_desordem = 5.0;
 
     int* arr = NULL; 
-    int n = 0;       
+    int n = 0;   
+    
+    // DEFINIÇÃO DAS FLAGS --------------------------------------------------------------------------------
+
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--algoritmo") == 0 && i + 1 < argc) {
             algoritmo = argv[i + 1];
@@ -218,11 +224,9 @@ int main(int argc, char** argv){
         
     }
 
-    // =================================================================
-    // ETAPA 1: OBTENÇÃO DO VETOR (Independente da Origem)
-    // =================================================================
     if ((arr == NULL || n <= 0) && arquivo_input == NULL && tamanho <= 0)
     {
+        // mensagem de erro, caso as flags tenham sido inseridas de forma errada ou omitidas
         printf(
             "ERRO: Nenhum vetor foi fornecido.\n\n"
             "Utilize uma das opcoes abaixo:\n"
@@ -240,6 +244,7 @@ int main(int argc, char** argv){
     } 
     else if (arquivo_input != NULL)
     {
+        // leitura de arquivos diretamente do terminal
         printf("Modo: Lendo dados do arquivo '%s'...\n",
                arquivo_input);
 
@@ -266,6 +271,8 @@ int main(int argc, char** argv){
             return 1;
         }
 
+        // DEFINIÇÕES DA DISTRIBUIÇÃO UTILIZADA --------------------------------------------------------------------------------
+
         if (strcmp(tipo_distribuicao, "aleatorio") == 0) {
             vetor_aletorio(arr, n, 100000); 
         } else if (strcmp(tipo_distribuicao, "crescente") == 0) {
@@ -286,6 +293,7 @@ int main(int argc, char** argv){
         }
     }
 
+    //inicialização das métricas
     Metricas m;
     m.comparacoes = 0;
     m.trocas = 0;
@@ -295,9 +303,11 @@ int main(int argc, char** argv){
     m.memoria_extra_bytes = 0;
     m.profundidade_maxima = 0;
 
+    // MÉTRICAS DE DECISÃO DO ALGORITMO --------------------------------------------------------------------------------
+
     if (strcmp(algoritmo, "auto") == 0) {
-        //Chama funções de caracterização do array
         
+        //Chama funções de caracterização do array
         float desordem = calcular_desordem(arr, n);
         printf("[Metrica 2] Grau de desordem: %.2f\n", desordem);
         
@@ -320,6 +330,7 @@ int main(int argc, char** argv){
 
     clock_t inicio = clock();
 
+    // chamada dos algoritmos 
     if (strcmp(algoritmo, "heap") == 0) {
         heap_sort(arr, n, &m);
     } 
@@ -343,9 +354,12 @@ int main(int argc, char** argv){
 
     clock_t fim = clock();
 
+    //determina o tempo de execução do algoritmo 
     double tempo_execucao = (double)(fim - inicio) / CLOCKS_PER_SEC;
 
     const char* caminho_csv = "output/dados.csv";
+
+    // ARQUIVO CSV --------------------------------------------------------------------------------
 
     FILE *check_arquivo = fopen(caminho_csv, "r");
     int precisa_cabecalho = 0;
@@ -382,7 +396,7 @@ int main(int argc, char** argv){
 
         printf("\n");
 
-        // tabela para imprimir os dados no terminal
+        // TABELA DO TERMINAL --------------------------------------------------------------------------------
 
         printf("+==============================================================================+\n");
         printf("|                            RESULTADOS DA EXECUCAO                            |\n");

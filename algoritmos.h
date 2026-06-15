@@ -1,6 +1,5 @@
 #ifndef ALGORITMOS_H
 #define ALGORITMOS_H
-//typedef unsigned long long int int_grande;
 
 typedef struct {
     unsigned long long int comparacoes;
