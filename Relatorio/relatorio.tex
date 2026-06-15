@@ -598,6 +598,15 @@ A regra associada à presença de valores negativos foi incluída por razões te
 
 Os conjuntos de dados utilizados durante os experimentos continham apenas valores não negativos, impossibilitando a validação experimental dessa decisão. Dessa forma, a utilização do Heap Sort para vetores negativos de grande porte foi baseada em propriedades teóricas dos algoritmos analisados e deve ser entendida como uma decisão conservadora da heurística.
 
+\subsubsection{Ausência do Bubble Sort na Heurística}
+
+Embora o Bubble Sort tenha sido implementado e analisado ao longo do projeto, ele não foi incorporado à heurística final do sistema adaptativo.
+
+Durante os experimentos realizados, não foi identificado nenhum cenário em que o Bubble Sort apresentasse desempenho superior aos demais algoritmos disponíveis. Em vetores pequenos e quase ordenados, o Insertion Sort demonstrou resultados melhores. Em entradas gerais, o Quick Sort apresentou desempenho significativamente superior. Para grandes volumes de dados, o Radix Sort mostrou-se mais eficiente quando aplicável.
+
+Dessa forma, a inclusão do Bubble Sort na árvore de decisão não produziria benefícios práticos ao sistema, podendo apenas aumentar a complexidade da heurística sem melhorar os resultados obtidos.
+
+Apesar disso, o algoritmo foi mantido no projeto para fins de comparação experimental, servindo como referência para avaliar o comportamento dos demais métodos de ordenação.
 
 \section{Validação das Heurísticas}
 
@@ -961,9 +970,16 @@ Dessa forma, a experiência mostrou que o uso responsável de ferramentas de IA 
 
 
 \section{Conclusão}
-Resumo dos principais achados.
 
+O presente trabalho teve como objetivo estudar, implementar e analisar diferentes algoritmos de ordenação, bem como desenvolver um sistema adaptativo capaz de selecionar automaticamente o método mais adequado para cada conjunto de dados de entrada.
 
-\section{Referências Bibliográficas}
+Inicialmente, foram implementados e avaliados os algoritmos Bubble Sort, Insertion Sort, Quick Sort, Heap Sort e Radix Sort. A análise teórica realizada ao longo do projeto foi complementada por uma extensa campanha experimental, permitindo verificar na prática os comportamentos assintóticos esperados para cada algoritmo e identificar as situações em que cada um deles apresenta melhor desempenho.
 
+Com base nessas observações, foi desenvolvido um sistema de caracterização de vetores capaz de extrair métricas relevantes, como grau de desordem, amplitude dos valores, quantidade de elementos repetidos e medidas de dispersão dos dados. A partir dessas informações, foi construída uma heurística de decisão responsável por selecionar automaticamente o algoritmo de ordenação considerado mais adequado para cada cenário.
+
+Os experimentos realizados mostraram que nem todas as hipóteses inicialmente propostas se confirmaram. Algumas regras consideradas promissoras foram descartadas após os testes. Por outro lado, observou-se que o Insertion Sort apresenta excelente desempenho em vetores quase ordenados, enquanto o Radix Sort demonstrou grande eficiência em conjuntos de dados não negativos com amplitude compatível ao tamanho do vetor. O Quick Sort, especialmente devido ao uso da estratégia da mediana de três para seleção do pivô, mostrou-se uma solução robusta para a maioria dos casos gerais analisados.
+
+De maneira geral, os resultados obtidos demonstram que a utilização de um sistema adaptativo permite explorar as vantagens específicas de diferentes algoritmos de ordenação, produzindo soluções mais eficientes do que a utilização de um único método para todos os cenários. Além disso, o desenvolvimento do projeto evidenciou a importância da validação experimental no processo de tomada de decisão, mostrando que hipóteses teoricamente plausíveis nem sempre se confirmam quando submetidas a testes práticos.
+
+Por fim, o trabalho permitiu aprofundar os conhecimentos relacionados à análise de algoritmos, estruturas de dados, avaliação de desempenho e desenvolvimento de sistemas adaptativos, consolidando conceitos fundamentais da disciplina de Estruturas de Dados II.
 \end{document}
