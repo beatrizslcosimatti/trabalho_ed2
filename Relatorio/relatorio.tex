@@ -53,6 +53,9 @@
     }
 \end{titlepage}
 
+%sumário
+\tableofcontents
+\newpage
 
 \section{Introdução}
 
@@ -104,12 +107,7 @@
         É um algoritmo estável e in-place, mas seu comportamento degrada-se drasticamente em entradas grandes e aleatórias.
 
     \subsection{Quick Sort}
-        O algoritmo de ordenação Quick Sort foi desenvolvido e publicado pela primeira vez em 1961, pelo cientista da computação britânico Charles Antony Richard Hoare (1934 - 2026). 
-        A técnica de ordenação foi concebida enquanto o cientista estudava na Universidade de Moscou e trabalhava no \textit{National Physical Laboratory (NPL)}, do Reino Unido. 
-        Na ocasião, Hoare estava participando de um projeto que tinha como objetivo a tradução de textos em russo para inglês e, para isso, como os dicionários erar armazenados em fita magnética, necessitava ordenar das palavras dentro de uma sentença em ordem alfabética. 
-        Nesse contexto, surgiu a necessidade de desenvolver um algoritmo de ordenação que fosse assintoticamente menor que $O(n^2)$.
-
-        Sob essa ótica, o algoritmo é baseado no paradigma da divisão e conquista. 
+        O algoritmo de ordenação Quick Sort é baseado no paradigma da divisão e conquista. 
         Nesse sentido, a aplicação se consiste em ordenar o vetor em torno de um pivô escolhido, de modo que, os elementos à esquerda do pivô sejam menores que ele e os elementos à direita, consequentemente, sejam maiores.
         Dessa forma, o vetor é subdividido em duas partições, que terão o mesmo processo aplicado sobre elas, através de chamadas recursivas da função. 
         Assim, as chamadas se encerram quando o caso base de um elemento na partição é atingido, uma vez que ele já estará ordenado. 
@@ -274,6 +272,16 @@ Também é possível utilizar o modo automático:
 \end{verbatim}
 
 Nesse caso, o sistema realiza uma caracterização prévia do vetor e seleciona automaticamente o algoritmo considerado mais adequado para aquela entrada.
+
+Os algoritmos disponíveis são:
+
+\begin{itemize}
+    \item \texttt{bubble}
+    \item \texttt{insertion}
+    \item \texttt{quick}
+    \item \texttt{heap}
+    \item \texttt{radix}
+\end{itemize}
 
 \subsubsection{Geração Dinâmica de Vetores}
 
@@ -684,11 +692,33 @@ Consequentemente, não foi identificada uma situação experimental em que sua u
 
 
 \section{Metodologia Experimental}
-Descrever:
-• ambiente utilizado;
-• datasets;
-• tamanhos testados;
-• critérios de avaliação
+
+\subsection{Ambiente de Execução e Ferramentas}
+A respeito da realização o projeto, foi utilizado como ambiente de desenvolvimento (IDE), o Visual Studio Code (VSCode), para a escrita, depuração e organização modular do código em C.
+Para o controle de versão e a colaboração entre os membros do grupo, utilizou-se o Git para o versionamento local do código-fonte e o GitHub como plataforma de hospedagem e sincronização do repositório remoto.
+
+\subsection{Conjuntos de Dados (Datasets) e Distribuições}
+
+Com base na estratégia de validação do script de \textit{benchmark}, os algoritmos foram submetidos a cenários específicos projetados para confrontar a heurística de decisão automática contra execuções estáticas individuais. Foram utilizadas três distribuições principais de dados:
+
+\begin{itemize}
+    \item \textbf{Quase Ordenado:} Vetores com baixo grau de desordem (inversões adjacentes limitadas a até 5\%);
+    \item \textbf{Aleatório:} Valores pseudoaleatórios distribuídos uniformemente;
+    \item \textbf{Decrescente:} Configuração de pior caso linear onde os elementos estão em ordem estritamente inversa.
+\end{itemize}
+
+\subsection{Volumetria e Tamanhos Testados}
+
+A volumetria dos testes foi dividida em quatro fases assintóticas no script de automação para avaliar os limiares de transição do sistema adaptativo:
+
+\begin{itemize}
+    \item \textbf{Pequeno Porte (Foco em \textit{Insertion Sort}):} Arranjos de 100, 500 e 1.000 elementos na distribuição quase ordenada, incluindo um limiar de 2.000 para forçar a alternância do sistema ao estourar a eficiência do algoritmo;
+    \item \textbf{Médio/Grande Porte (Foco em \textit{Heap Sort}):} Vetores de 10.000, 50.000 e 100.000 elementos para validar o acionamento de segurança do algoritmo;
+    \item \textbf{Grande Porte (Foco em \textit{Radix Sort}):} Volumes de 500.000, 1.000.000 e 5.000.000 de elementos em distribuição aleatória, onde os métodos não-comparativos superam o limite inferior dos baseados em comparação;
+    \item \textbf{Altíssimo Porte (Foco em \textit{Quick Sort}):} Testes extremos com 2.000.000, 4.000.000 e 8.000.000 de elementos na distribuição decrescente para validar o algoritmo como a resposta padrão (\textit{fallback}) do sistema.
+\end{itemize}
+
+
 
 
 \section{Resultados}
