@@ -99,9 +99,7 @@
         O Insertion Sort (Ordenação por Inserção) consiste em inserir um novo elemento em um vetor já ordenado ou quase ordenado.
         Ele percorre o vetor a partir do segundo elemento (índice 1), selecionando-o como uma "chave", e compara essa chave com os elementos que estão nas posições anteriores (à sua esquerda).
         Caso os elementos anteriores sejam maiores que a chave, eles são deslocados uma posição para a direita para abrir espaço, e esse processo se repete até encontrar a posição correta, onde a chave é inserida.
-        Ele percorre o vetor a partir do segundo elemento (índice 1), selecionando-o como uma "chave", e compara essa chave com os elementos que estão nas posições anteriores (à sua esquerda).
-        Caso os elementos anteriores sejam maiores que a chave, eles são deslocados uma posição para a direita para abrir espaço, e esse processo se repete até encontrar a posição correta, onde a chave é finalmente inserida.
-
+        
         Assim, sua complexidade de tempo é $O(n^2)$, exceto no caso em que o vetor já está ordenado (ou quase ordenado).
         Nessa situação, a chave é comparada apenas uma vez com o elemento imediatamente anterior e o loop interno é interrompido por um break, tornando a complexidade $O(n)$.
         É um algoritmo estável e in-place, mas seu comportamento degrada-se drasticamente em entradas grandes e aleatórias.
@@ -360,6 +358,7 @@ Nesse caso, o vetor utilizado pelo algoritmo será:
 \subsubsection{Saída do Programa}
 
 Ao final da execução, a aplicação apresenta no terminal uma tabela contendo as principais métricas coletadas durante a ordenação, incluindo:
+algoritmo, tamanho, distribuição, tempo, comparações, cópias e operações.
 Além da exibição em tela, todos os resultados são armazenados automaticamente em um arquivo CSV localizado no diretório \texttt{output}, permitindo posterior análise estatística e construção de gráficos.
 
 \subsection{Distribuições dos Vetores Utilizados}
@@ -484,17 +483,17 @@ Observa-se que as distribuições \textit{organ pipe} e intercalada foram inclu�
 
 \subsection{Dados de Desempenho Coletados}
 
-Diversos dados foram coletados durante as execuções e testes dos algoritmos, com o intuito de estudar sistematicamente o comportamento de cada método no cenários analisados. 
+Diversos dados foram coletados durante as execuções e testes dos algoritmos, com o intuito de estudar sistematicamente o comportamento de cada método nos cenários analisados. 
 Nesse sentido, os dados de desempenho coletados foram:
 
 \begin{itemize}
     \item \textbf{Tempo de execução:} determinação do tempo de execução da ordenação em segundos;
     \item \textbf{Número de comparações:} número total de comparações entre elementos do vetor durante a execução;
-    \item \textbf{Número de trocas:} mede a quantidade de trocas de valores entre dois elementos do vetor, nos códigos implementados, a função de troca foi modularizada e chamada por todos os algoritmos conforme a necessiadade;
+    \item \textbf{Número de trocas:} mede a quantidade de trocas de valores entre dois elementos do vetor, nos códigos implementados, a função de troca foi modularizada e chamada por todos os algoritmos conforme a necessidade;
     \item \textbf{Número de operações:} quantifica a quantidade de operações totais realizada pelo algoritmo durante a execução - como atribuição de valores, operações matemáticas, comparações e outros-;
     \item \textbf{Número de cópias:} determina a quantidade de vezes que cópias de elementos e vetores são realizadas;
     \item \textbf{Chamadas recursivas:} quantifica o total de chamadas recursivas necessárias para a ordenação;
-    \item \textbf{Profundiade Máxima da Recursão:} mede a altura máxima da árvore de recursão percorrida pelo algoritmo, ou de forma equivalente, O maior número de chamadas da função recursiva simultaneamente ativas na pilha de execução durante toda a ordenação;
+    \item \textbf{Profundidade Máxima da Recursão:} mede a altura máxima da árvore de recursão percorrida pelo algoritmo, ou de forma equivalente, O maior número de chamadas da função recursiva simultaneamente ativas na pilha de execução durante toda a ordenação;
     \item \textbf{Memória Extra Utilizada:} determina a quantidade de memória auxiliar utilizada para a ordenação através de uma estimativa envolvendo as variáveis auxiliares criadas e o tamanho delas em bytes.
 \end{itemize}
 
@@ -853,7 +852,7 @@ A volumetria dos testes foi dividida em quatro fases assintóticas no script de 
     
     Em relação aos vetores intercalados, o quick sort não conseguiu ordenar arrays com mais de 100 milhões de tamanho, uma vez que a péssima escolha dos pivôs para esse caso acarretaram em árvores de recursão extremamente grandes - com profundidade máxima maior que 80.000 para vetores na ordem de 200 milhões de tamanho - o que ocasionou a interrupção prematura da ordenação devido ao esgotamento da pilha de chamadas.
     Dessa forma, observa-se que o pior caso esperado foi atingido, acarretando em uma execução na ordem de $O(n^2)$ e incapaz de ser finalizada para vetores grandes, como os analisados. 
-    Nesse sentido, evidencia-se tabém que para vetores menores aos analisados, de ordem de grandeza 10.000, a profundiade máxima da recursão aintgiu valores muito maiores do que a ordenação de vetores aleátorios na casa de 100 milhões de tamanho - por exemplo, um vetor aleatório de tamanho 1 bilhão atingiu profundiade máxima de 55, enquanto um vetor intercalado de 100 mil, atingiu 507.
+    Nesse sentido, evidencia-se também que para vetores menores aos analisados, de ordem de grandeza 10.000, a profundiade máxima da recursão atingiu valores muito maiores do que a ordenação de vetores aleátorios na casa de 100 milhões de tamanho - por exemplo, um vetor aleatório de tamanho 1 bilhão atingiu profundiade máxima de 55, enquanto um vetor intercalado de 100 mil, atingiu 507.
     Esses comportamentos destacam que a estratégia da mediana de três, embora eficiente em casos usuais, permanece suscetível a entradas adversárias capazes de produzir partições fortemente desbalanceadas.
 
     \subsection{Heap Sort}
