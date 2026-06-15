@@ -302,14 +302,12 @@ Relatorio/relatorio.pdf
 Link do vídeo demonstrativo:
 
 ```text
-Adicionar link aqui
+https://youtu.be/l6-dY-ksW28
 ```
 
+---
 
+## Automatização dos testes
 
-
-
-
-
-
-
+Os testes automatizados podem ser executados pelo arquivo benchmark.ps1
+Os dados coletados estão disponíveis em output/testes.csv

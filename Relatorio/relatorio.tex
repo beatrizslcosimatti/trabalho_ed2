@@ -53,6 +53,9 @@
     }
 \end{titlepage}
 
+%sumário
+\tableofcontents
+\newpage
 
 \section{Introdução}
 
@@ -78,7 +81,7 @@
 
     Também foi feito um vídeo para apresentar o projeto, que pode ser visualizado no seguinte link:
     \begin{center}
-    \url{www.nossoVideoDivo.com}
+    \url{https://youtu.be/l6-dY-ksW28}
     \end{center}
 
 \section{Algoritmos Base}
@@ -96,20 +99,13 @@
         O Insertion Sort (Ordenação por Inserção) consiste em inserir um novo elemento em um vetor já ordenado ou quase ordenado.
         Ele percorre o vetor a partir do segundo elemento (índice 1), selecionando-o como uma "chave", e compara essa chave com os elementos que estão nas posições anteriores (à sua esquerda).
         Caso os elementos anteriores sejam maiores que a chave, eles são deslocados uma posição para a direita para abrir espaço, e esse processo se repete até encontrar a posição correta, onde a chave é inserida.
-        Ele percorre o vetor a partir do segundo elemento (índice 1), selecionando-o como uma "chave", e compara essa chave com os elementos que estão nas posições anteriores (à sua esquerda).
-        Caso os elementos anteriores sejam maiores que a chave, eles são deslocados uma posição para a direita para abrir espaço, e esse processo se repete até encontrar a posição correta, onde a chave é finalmente inserida.
-
+        
         Assim, sua complexidade de tempo é $O(n^2)$, exceto no caso em que o vetor já está ordenado (ou quase ordenado).
         Nessa situação, a chave é comparada apenas uma vez com o elemento imediatamente anterior e o loop interno é interrompido por um break, tornando a complexidade $O(n)$.
         É um algoritmo estável e in-place, mas seu comportamento degrada-se drasticamente em entradas grandes e aleatórias.
 
     \subsection{Quick Sort}
-        O algoritmo de ordenação Quick Sort foi desenvolvido e publicado pela primeira vez em 1961, pelo cientista da computação britânico Charles Antony Richard Hoare (1934 - 2026). 
-        A técnica de ordenação foi concebida enquanto o cientista estudava na Universidade de Moscou e trabalhava no \textit{National Physical Laboratory (NPL)}, do Reino Unido. 
-        Na ocasião, Hoare estava participando de um projeto que tinha como objetivo a tradução de textos em russo para inglês e, para isso, como os dicionários erar armazenados em fita magnética, necessitava ordenar das palavras dentro de uma sentença em ordem alfabética. 
-        Nesse contexto, surgiu a necessidade de desenvolver um algoritmo de ordenação que fosse assintoticamente menor que $O(n^2)$.
-
-        Sob essa ótica, o algoritmo é baseado no paradigma da divisão e conquista. 
+        O algoritmo de ordenação Quick Sort é baseado no paradigma da divisão e conquista. 
         Nesse sentido, a aplicação se consiste em ordenar o vetor em torno de um pivô escolhido, de modo que, os elementos à esquerda do pivô sejam menores que ele e os elementos à direita, consequentemente, sejam maiores.
         Dessa forma, o vetor é subdividido em duas partições, que terão o mesmo processo aplicado sobre elas, através de chamadas recursivas da função. 
         Assim, as chamadas se encerram quando o caso base de um elemento na partição é atingido, uma vez que ele já estará ordenado. 
@@ -118,12 +114,10 @@
         Para o algoritmo implementado neste projeto, utilizou-se o método da mediana de 3 para se determinar o pivô. Ele se consiste em armazenar o primeiro, central e último elemento do vetor em variáveis auxiliares e retornar a mediana entre eles, nesse caso, o elemento do meio.
         Essa técnica, embora seja mais complexa do que aplicações comuns que utilizam o primero ou último elemento do array como pivôs, tem como benefícios a melhora do tempo de execução e a possibilidade da execução possuir uma complexidade de $O(n \ log \ n)$ mesmo para vetores ordenados ou parcialmente ordenados - embora as métricas de análise dos vetores utilizadas para esse projeto evitem tais casos.
 
-        No caso da partição, existem três principais métodos comumente utilizados para o quick sort, o particonamento de Lomoto, Naive e Hoare, para este trabalho se utilizou o particionamento de Hoare. 
+        No caso da partição, utilizou-se o particionamento de Hoare. 
         O método se consiste em na definição de dois ponteiros, nas duas extremidades do vetor e que, a cada interação, se movem em direção de seu encontro até que um elemento que necessita ser trocado de lugar seja encontrado. 
         Considerando \textit{i} o elemento na posição zero do vetor e \textit{j} o elemento na posição final ambos são movidos até que \textit{i} encontre um elemento maior que o pivô e, analogamente, \textit{j} encontre um elemento menor que o pivô.
         Nesse caso, os valores encontrados trocam de posição e \textit{i} e \textit{j} voltam a percorrer o vetor até que eles se cruzem ou sobrepassem. 
-        Destaca-se, que assim como a partição de Lomoto, o algoritimo de Hoare possui uma complexidade de tempo de $O(n)$ e de espaço de $O(1)$, contudo, ela é considerada mais rápida que o outro método, uma vez que, no geral, realiza menos trocas entre elementos.
-        Em relação ao particionamento de Naive, o algoritmo se baseia na criação de um vetor auxiliar, ou seja, a complexidade de espaço é de $O(n)$, sendo significaativamente menos eficiente que o método utilizado.
 
         Dado as características da partição de Hoare, é importante destacar que o quick sort é um algoritmo \textit{in-place}, ou seja, não utliza nenhum vetor auxiliar para a ordenação, uma vez que as trocas são realizadas dentro do próprio vetor.
         Além disso, o algoritmo não é estável, uma vez que não preserva a ordem relativa entre elementos de mesmo valor. 
@@ -158,23 +152,7 @@
         Para o pior caso, observa-se que o algoritmo necessita realizar, em média, $n^2 / 2$ comparações para ordenar o vetor, o que representa um aumento assintótico significativo em relação aos outros casos. 
         Em relação à complexidade de espaço, cada chamada recursiva apresenta complexidade $O(1)$ - devido a característica \textit{in-place} do algoritimo -, no entanto, multiplas chamadas ocorrem simultaneamente, modificando o comportamento da complexidade espacial conforme o caso de execução. 
         Para o médio e melhor cado, a árvore de recursão gerada é balanceada e possui profundidade de $O(log \ n)$, o que acarreta em uma complexidade de espaço de $O(log \ n)$.
-        Em contrapartida, devido ao comportamento linear da árvore no pior caso, sua altura é de $O(n)$, acarretando em uma complexidade assintótica de $O(n)$.
-        Assim, foi possível elaborar a seguinte tabela comparativa:
-
-        \begin{table}[H]
-            \centering
-            \label{tab:complexidade}
-            \begin{tabular}{lcc}
-            \toprule
-            \textbf{Variação} & \textbf{Complexidade de tempo} & \textbf{Complexidade de espaço} \\
-            \midrule
-            Melhor caso     & $O(n\log n)$ & $O(\log n)$ \\
-            Caso médio      & $O(n\log n)$ & $O(\log n)$ \\
-            Pior caso       & $O(n^2)$     & $O(n)$ \\
-            \bottomrule
-            \end{tabular}
-            \caption{Complexidade de tempo e espaço do quick sort.}
-        \end{table}
+        Em contrapartida, devido ao comportamento linear da árvore no pior caso, sua altura é de $O(n^2)$, acarretando em uma complexidade assintótica de $O(n^2)$.
 
  \subsection{Heap Sort}
     O Heap Sort baseia-se na estrutura de dados \textit{Max-Heap}, uma árvore binária quase completa mapeada implicitamente em um vetor. Para um nó no índice $i$, seus filhos estão localizados em $2i + 1$ e $2i + 2$, e o valor do pai é sempre maior ou igual ao de seus filhos.
@@ -362,6 +340,7 @@ Nesse caso, o vetor utilizado pelo algoritmo será:
 \subsubsection{Saída do Programa}
 
 Ao final da execução, a aplicação apresenta no terminal uma tabela contendo as principais métricas coletadas durante a ordenação, incluindo:
+algoritmo, tamanho, distribuição, tempo, comparações, cópias e operações.
 Além da exibição em tela, todos os resultados são armazenados automaticamente em um arquivo CSV localizado no diretório \texttt{output}, permitindo posterior análise estatística e construção de gráficos.
 
 \subsection{Distribuições dos Vetores Utilizados}
@@ -486,17 +465,17 @@ Observa-se que as distribuições \textit{organ pipe} e intercalada foram inclu�
 
 \subsection{Dados de Desempenho Coletados}
 
-Diversos dados foram coletados durante as execuções e testes dos algoritmos, com o intuito de estudar sistematicamente o comportamento de cada método no cenários analisados. 
+Diversos dados foram coletados durante as execuções e testes dos algoritmos, com o intuito de estudar sistematicamente o comportamento de cada método nos cenários analisados. 
 Nesse sentido, os dados de desempenho coletados foram:
 
 \begin{itemize}
     \item \textbf{Tempo de execução:} determinação do tempo de execução da ordenação em segundos;
     \item \textbf{Número de comparações:} número total de comparações entre elementos do vetor durante a execução;
-    \item \textbf{Número de trocas:} mede a quantidade de trocas de valores entre dois elementos do vetor, nos códigos implementados, a função de troca foi modularizada e chamada por todos os algoritmos conforme a necessiadade;
+    \item \textbf{Número de trocas:} mede a quantidade de trocas de valores entre dois elementos do vetor, nos códigos implementados, a função de troca foi modularizada e chamada por todos os algoritmos conforme a necessidade;
     \item \textbf{Número de operações:} quantifica a quantidade de operações totais realizada pelo algoritmo durante a execução - como atribuição de valores, operações matemáticas, comparações e outros-;
     \item \textbf{Número de cópias:} determina a quantidade de vezes que cópias de elementos e vetores são realizadas;
     \item \textbf{Chamadas recursivas:} quantifica o total de chamadas recursivas necessárias para a ordenação;
-    \item \textbf{Profundiade Máxima da Recursão:} mede a altura máxima da árvore de recursão percorrida pelo algoritmo, ou de forma equivalente, O maior número de chamadas da função recursiva simultaneamente ativas na pilha de execução durante toda a ordenação;
+    \item \textbf{Profundidade Máxima da Recursão:} mede a altura máxima da árvore de recursão percorrida pelo algoritmo, ou de forma equivalente, O maior número de chamadas da função recursiva simultaneamente ativas na pilha de execução durante toda a ordenação;
     \item \textbf{Memória Extra Utilizada:} determina a quantidade de memória auxiliar utilizada para a ordenação através de uma estimativa envolvendo as variáveis auxiliares criadas e o tamanho delas em bytes.
 \end{itemize}
 
@@ -601,6 +580,15 @@ A regra associada à presença de valores negativos foi incluída por razões te
 
 Os conjuntos de dados utilizados durante os experimentos continham apenas valores não negativos, impossibilitando a validação experimental dessa decisão. Dessa forma, a utilização do Heap Sort para vetores negativos de grande porte foi baseada em propriedades teóricas dos algoritmos analisados e deve ser entendida como uma decisão conservadora da heurística.
 
+\subsubsection{Ausência do Bubble Sort na Heurística}
+
+Embora o Bubble Sort tenha sido implementado e analisado ao longo do projeto, ele não foi incorporado à heurística final do sistema adaptativo.
+
+Durante os experimentos realizados, não foi identificado nenhum cenário em que o Bubble Sort apresentasse desempenho superior aos demais algoritmos disponíveis. Em vetores pequenos e quase ordenados, o Insertion Sort demonstrou resultados melhores. Em entradas gerais, o Quick Sort apresentou desempenho significativamente superior. Para grandes volumes de dados, o Radix Sort mostrou-se mais eficiente quando aplicável.
+
+Dessa forma, a inclusão do Bubble Sort na árvore de decisão não produziria benefícios práticos ao sistema, podendo apenas aumentar a complexidade da heurística sem melhorar os resultados obtidos.
+
+Apesar disso, o algoritmo foi mantido no projeto para fins de comparação experimental, servindo como referência para avaliar o comportamento dos demais métodos de ordenação.
 
 \section{Validação das Heurísticas}
 
@@ -685,11 +673,33 @@ Consequentemente, não foi identificada uma situação experimental em que sua u
 
 
 \section{Metodologia Experimental}
-Descrever:
-• ambiente utilizado;
-• datasets;
-• tamanhos testados;
-• critérios de avaliação
+
+\subsection{Ambiente de Execução e Ferramentas}
+A respeito da realização o projeto, foi utilizado como ambiente de desenvolvimento (IDE), o Visual Studio Code (VSCode), para a escrita, depuração e organização modular do código em C.
+Para o controle de versão e a colaboração entre os membros do grupo, utilizou-se o Git para o versionamento local do código-fonte e o GitHub como plataforma de hospedagem e sincronização do repositório remoto.
+
+\subsection{Conjuntos de Dados (Datasets) e Distribuições}
+
+Com base na estratégia de validação do script de \textit{benchmark}, os algoritmos foram submetidos a cenários específicos projetados para confrontar a heurística de decisão automática contra execuções estáticas individuais. Foram utilizadas três distribuições principais de dados:
+
+\begin{itemize}
+    \item \textbf{Quase Ordenado:} Vetores com baixo grau de desordem (inversões adjacentes limitadas a até 5\%);
+    \item \textbf{Aleatório:} Valores pseudoaleatórios distribuídos uniformemente;
+    \item \textbf{Decrescente:} Configuração de pior caso linear onde os elementos estão em ordem estritamente inversa.
+\end{itemize}
+
+\subsection{Volumetria e Tamanhos Testados}
+
+A volumetria dos testes foi dividida em quatro fases assintóticas no script de automação para avaliar os limiares de transição do sistema adaptativo:
+
+\begin{itemize}
+    \item \textbf{Pequeno Porte (Foco em \textit{Insertion Sort}):} Arranjos de 100, 500 e 1.000 elementos na distribuição quase ordenada, incluindo um limiar de 2.000 para forçar a alternância do sistema ao estourar a eficiência do algoritmo;
+    \item \textbf{Médio/Grande Porte (Foco em \textit{Heap Sort}):} Vetores de 10.000, 50.000 e 100.000 elementos para validar o acionamento de segurança do algoritmo;
+    \item \textbf{Grande Porte (Foco em \textit{Radix Sort}):} Volumes de 500.000, 1.000.000 e 5.000.000 de elementos em distribuição aleatória, onde os métodos não-comparativos superam o limite inferior dos baseados em comparação;
+    \item \textbf{Altíssimo Porte (Foco em \textit{Quick Sort}):} Testes extremos com 2.000.000, 4.000.000 e 8.000.000 de elementos na distribuição decrescente para validar o algoritmo como a resposta padrão (\textit{fallback}) do sistema.
+\end{itemize}
+
+
 
 
 \section{Resultados}
@@ -769,7 +779,7 @@ Descrever:
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.65\linewidth]{../output/graficos_separados/grafico_tempo_insertion.png}
+        \includegraphics[width=0.6\linewidth]{../output/graficos_separados/grafico_tempo_insertion.png}
         \caption{Desempenho Insertion Sort: distribuição aleatória}
         \label{fig:casoMedioInsertion}
     \end{figure}
@@ -791,7 +801,7 @@ Descrever:
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.65\linewidth]{imagens/graficoo3.png}
+        \includegraphics[width=0.6\linewidth]{imagens/graficoo3.png}
         \caption{Comparativo entre o número de comparações e trocas e seu compartamento esperado para o melhor caso do quick sort. Escala dilog.}
         \label{fig:ComparacoesVsTrocasQuickSort}
     \end{figure}
@@ -801,19 +811,13 @@ Descrever:
 
     Na implementação do quick sort desenvolvida, o pivô é escolhido por meio do método da mediana de três, utilizando os elementos inicial, central e final do subvetor. Essa estratégia reduz significativamente a ocorrência de partições desbalanceadas, especialmente em vetores já ordenados ou parcialmente ordenados. 
     Ainda assim, o pior caso permanece teoricamente possível e ocorre quando a mediana desses três elementos produz repetidamente pivôs próximos aos extremos do subvetor, gerando partições de tamanhos aproximadamente 0 e $n-1$.
-    Nesse sentido, o método da mediana de três foi amplamente estudada por cientistas como David Musser, pesquisador conhecido por desenvolver o algoritmo Introsort, atualmente utilizado em diversas bibliotecas padrão da linguagem C++. 
-    Em seu trabalho, Musser demonstrou que, embora a estratégia da mediana de três reduza significativamente a probabilidade de partições desbalanceadas em entradas comuns, ela não elimina completamente o pior caso do Quick Sort. 
     Sob essa ótica, existem famílias de sequências especialmente construídas, conhecidas como \textit{Median-of-Three Killer Sequences}, capazes de induzir a escolha repetida de pivôs inadequados, resultando em partições altamente desbalanceadas e levando o algoritmo a uma complexidade temporal quadrática $O(n^2)$.
-    
     Algumas dessas sequências conhecidas são a \textit{organ pipe} e intercalada.
-    A sequência \textit{organ pipe} se consiste em um array com o elemento central possuindo o maior valor do vetor e os elementos a esquerda e a direita dele decrescendo. 
-    Um exemplo de uma distribuição dessa forma, contínua, para $n=10$ é: \textit{[1 2 3 4 5 6 4 3 2 1]}.
-    Em relação a distribuição intercalada, o vetor se consiste em valores intercalados entre uma sequência crescente e outra decrescente, dessa forma, para $n=10$, uma possível configuração seria \textit{[1 10 2 9 3 8 4 7 5 6]}.
     No gráfico a seguir, é possível visualizar um comparativo entre os tempos de execução para vetores de distribuição aleatória e distribuição seguindo o padrão \textit{organ pipe}:
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.65\linewidth]{imagens/graficoo1.png}
+        \includegraphics[width=0.6\linewidth]{imagens/graficoo1.png}
         \caption{Comparatio de tempo de execução para a ordenação quick sort entre vetores de distribuição aleatória e quick sort.}
         \label{fig:organPipeVsAleatorio}
     \end{figure}
@@ -823,7 +827,7 @@ Descrever:
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.65\linewidth]{imagens/graficoo2.png}
+        \includegraphics[width=0.6\linewidth]{imagens/graficoo2.png}
         \caption{Comparatio de tempo de execução para a ordenação quick sort entre vetores de distribuição aleatória e quick sort.}
         \label{fig:organPipeVsAleatorioProfundidadeMaxima}
     \end{figure}
@@ -833,7 +837,7 @@ Descrever:
     
     Em relação aos vetores intercalados, o quick sort não conseguiu ordenar arrays com mais de 100 milhões de tamanho, uma vez que a péssima escolha dos pivôs para esse caso acarretaram em árvores de recursão extremamente grandes - com profundidade máxima maior que 80.000 para vetores na ordem de 200 milhões de tamanho - o que ocasionou a interrupção prematura da ordenação devido ao esgotamento da pilha de chamadas.
     Dessa forma, observa-se que o pior caso esperado foi atingido, acarretando em uma execução na ordem de $O(n^2)$ e incapaz de ser finalizada para vetores grandes, como os analisados. 
-    Nesse sentido, evidencia-se tabém que para vetores menores aos analisados, de ordem de grandeza 10.000, a profundiade máxima da recursão aintgiu valores muito maiores do que a ordenação de vetores aleátorios na casa de 100 milhões de tamanho - por exemplo, um vetor aleatório de tamanho 1 bilhão atingiu profundiade máxima de 55, enquanto um vetor intercalado de 100 mil, atingiu 507.
+    Nesse sentido, evidencia-se também que para vetores menores aos analisados, de ordem de grandeza 10.000, a profundiade máxima da recursão atingiu valores muito maiores do que a ordenação de vetores aleátorios na casa de 100 milhões de tamanho - por exemplo, um vetor aleatório de tamanho 1 bilhão atingiu profundiade máxima de 55, enquanto um vetor intercalado de 100 mil, atingiu 507.
     Esses comportamentos destacam que a estratégia da mediana de três, embora eficiente em casos usuais, permanece suscetível a entradas adversárias capazes de produzir partições fortemente desbalanceadas.
 
     \subsection{Heap Sort}
@@ -842,7 +846,7 @@ Descrever:
     \begin{figure}[H]
         \centering
         % Lembre-se de colocar aqui o nome do gráfico focado nas COMPARAÇÕES gerado no Python
-        \includegraphics[width=0.65\linewidth]{imagens/grafico_tempo_heap.png}
+        \includegraphics[width=0.6\linewidth]{imagens/grafico_tempo_heap.png}
         \caption{Curva assintótica evidenciando a complexidade constante de $O(n\log_2 n)$ do Heap Sort baseada no número de comparações lógicas.}
         \label{fig:HeapAssintotico}
     \end{figure}
@@ -853,7 +857,7 @@ Descrever:
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.65\linewidth]{imagens/grafico_6_heap_vs_quick.png}
+        \includegraphics[width=0.6\linewidth]{imagens/grafico_6_heap_vs_quick.png}
         \caption{Comparativo de tempo de execução entre Heap Sort e Quick Sort evidenciando a degradação temporal do Heap Sort decorrente de Cache Misses para vetores massivos.}
         \label{fig:HeapVsQuickCache}
     \end{figure}
@@ -863,7 +867,7 @@ Descrever:
     Para demonstrar a rapidz e a sua complexidade espacial de $O(n)$ fezemos uma comparação direta com o quick sort que tem compleidade $O(n\log_2n)$:
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.65\linewidth]{imagens/grafico_7_quick_vs_radix.png}
+        \includegraphics[width=0.6\linewidth]{imagens/grafico_7_quick_vs_radix.png}
         \caption{Comparativo de tempo de execução entre Quick Sort e Radix Sort evidenciando a superioridade do modelo não-comparativo em vetores massivos.}
         \label{fig:QuickVsRadix}
     \end{figure}
@@ -942,9 +946,16 @@ Dessa forma, a experiência mostrou que o uso responsável de ferramentas de IA 
 
 
 \section{Conclusão}
-Resumo dos principais achados.
 
+O presente trabalho teve como objetivo estudar, implementar e analisar diferentes algoritmos de ordenação, bem como desenvolver um sistema adaptativo capaz de selecionar automaticamente o método mais adequado para cada conjunto de dados de entrada.
 
-\section{Referências Bibliográficas}
+Inicialmente, foram implementados e avaliados os algoritmos Bubble Sort, Insertion Sort, Quick Sort, Heap Sort e Radix Sort. A análise teórica realizada ao longo do projeto foi complementada por uma extensa campanha experimental, permitindo verificar na prática os comportamentos assintóticos esperados para cada algoritmo e identificar as situações em que cada um deles apresenta melhor desempenho.
 
+Com base nessas observações, foi desenvolvido um sistema de caracterização de vetores capaz de extrair métricas relevantes, como grau de desordem, amplitude dos valores, quantidade de elementos repetidos e medidas de dispersão dos dados. A partir dessas informações, foi construída uma heurística de decisão responsável por selecionar automaticamente o algoritmo de ordenação considerado mais adequado para cada cenário.
+
+Os experimentos realizados mostraram que nem todas as hipóteses inicialmente propostas se confirmaram. Algumas regras consideradas promissoras foram descartadas após os testes. Por outro lado, observou-se que o Insertion Sort apresenta excelente desempenho em vetores quase ordenados, enquanto o Radix Sort demonstrou grande eficiência em conjuntos de dados não negativos com amplitude compatível ao tamanho do vetor. O Quick Sort, especialmente devido ao uso da estratégia da mediana de três para seleção do pivô, mostrou-se uma solução robusta para a maioria dos casos gerais analisados.
+
+De maneira geral, os resultados obtidos demonstram que a utilização de um sistema adaptativo permite explorar as vantagens específicas de diferentes algoritmos de ordenação, produzindo soluções mais eficientes do que a utilização de um único método para todos os cenários. Além disso, o desenvolvimento do projeto evidenciou a importância da validação experimental no processo de tomada de decisão, mostrando que hipóteses teoricamente plausíveis nem sempre se confirmam quando submetidas a testes práticos.
+
+Por fim, o trabalho permitiu aprofundar os conhecimentos relacionados à análise de algoritmos, estruturas de dados, avaliação de desempenho e desenvolvimento de sistemas adaptativos, consolidando conceitos fundamentais da disciplina de Estruturas de Dados II.
 \end{document}
